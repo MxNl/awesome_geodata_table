@@ -1,0 +1,25 @@
+---
+title: "Awesome Geodata Table"
+author: "Max Nölscher, Anne-Karin Cooke, Sandra Willkommen, Mariana Espina-Gomez"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(readr)
+library(dplyr)
+library(DT)
+knitr::opts_chunk$set(echo = TRUE)
+source("R/awesome_geodata_table_html.R")
+```
+
+
+```{r, include=FALSE}
+# awesome_geodata_table_html()
+awesome_table_raw <- read_csv2(  "inst/extdata/awesome_geodata_table.csv")
+awesome_table_raw <- awesome_table_raw |>
+  dplyr::slice(-c(1, 2))
+
+awesome_table_raw |> 
+  awesome_geodata_table_html()
+```

@@ -16,3 +16,13 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 URL: https://github.com/MxNl/awesome_geodata_table
 BugReports: https://github.com/MxNl/awesome_geodata_table/issues
+Depends: 
+    R (>= 4.12)
+Imports: 
+    readr,
+    dplyr,
+    DT,
+    rmarkdown
+Suggests: 
+    devtools,
+    usethis
