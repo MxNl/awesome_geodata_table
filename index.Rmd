@@ -1,6 +1,6 @@
 ---
 title: "Awesome Geodata Table"
-author: "Max asd, Anne-Karin Cooke, Sandra Willkommen, Mariana Espina-Gomez"
+author: "Max Nölscher, Anne-Karin Cooke, Sandra Willkommen, Mariana Espina-Gomez"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 ---
