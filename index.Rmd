@@ -5,6 +5,8 @@ date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 ---
 
+<br>
+
 ```{r setup, include=FALSE}
 library(readr)
 library(dplyr)
@@ -13,13 +15,18 @@ knitr::opts_chunk$set(echo = TRUE)
 source("R/awesome_geodata_table_html.R")
 ```
 
-
 ```{r, include=FALSE}
 # awesome_geodata_table_html()
-awesome_table_raw <- read_csv2(  "inst/extdata/awesome_geodata_table.csv")
-awesome_table_raw <- awesome_table_raw |>
+awesome_geodata_table_raw <- read_csv2( "inst/extdata/awesome_geodata_table.csv",
+                                        col_types = "fffffffffffficcffffffff")
+awesome_geodata_table_raw <- awesome_geodata_table_raw |>
   dplyr::slice(-c(1, 2))
+```
 
-awesome_table_raw |> 
+```{r, echo=FALSE}
+awesome_geodata_table_raw |> 
+  # mutate(across(everything(), as.factor)) |>
+  # mutate(across(all_of("Publication Year"), as.integer)) |>
   awesome_geodata_table_html()
 ```
+

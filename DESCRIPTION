@@ -25,4 +25,5 @@ Imports:
     rmarkdown
 Suggests: 
     devtools,
-    usethis
+    usethis,
+    styler
