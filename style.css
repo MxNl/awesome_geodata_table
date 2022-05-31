@@ -25,19 +25,21 @@
 .mytitle{
   text-transform: uppercase;
   font-family: 'Montserrat';
-  font-size: 140%;
+  font-size: 160%;
   font-weight: 300;
-  letter-spacing: 4px;
+  letter-spacing: 8px;
 }
 
 .mysubtitle{
-  color:grey;
+  color:black;
   font-family: 'Montserrat';
+  letter-spacing: 2px;
 }
 
 .mydate{
-  color:grey;
+  color:black;
   font-family: 'Montserrat';
+  letter-spacing: 2px;
 }
 
 h1, .h1, h2, .h2, h3, .h3 {
