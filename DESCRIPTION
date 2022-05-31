@@ -22,7 +22,10 @@ Imports:
     readr,
     dplyr,
     DT,
-    rmarkdown
+    rmarkdown,
+    purrr,
+    here,
+    allcontributors
 Suggests: 
     devtools,
     usethis,
