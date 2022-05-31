@@ -1,13 +1,17 @@
 ---
 title: "Awesome Geodata Table"
-author: "Anne-Karin Cooke, Sandra Willkommen, Mariana Espina-Gomez, Max Nölscher"
+subtitle: "A searchable collection of geodatasets maintained by its community"
+# author: "Anne-Karin Cooke, Sandra Willkommen, Mariana Espina-Gomez, Max Nölscher"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output: html_document
+output:
+  html_document:
+      css: style.css
+      toc: FALSE
+      includes: 
+        before_body: header.html
 ---
 
 <!-- <br> -->
-
-sdfsdf
 
 ```{r setup, include=FALSE}
 library(readr)
@@ -18,7 +22,6 @@ source("R/awesome_geodata_table_html.R")
 ```
 
 ```{r, include=FALSE}
-# awesome_geodata_table_html()
 awesome_geodata_table_raw <- read_csv2( "inst/extdata/awesome_geodata_table.csv",
                                         col_types = "fffffffffffficcffffffff")
 awesome_geodata_table_raw <- awesome_geodata_table_raw |>
@@ -27,9 +30,6 @@ awesome_geodata_table_raw <- awesome_geodata_table_raw |>
 
 ```{r, echo=FALSE}
 awesome_geodata_table_raw |> 
-  # mutate(across(everything(), as.factor)) |>
-  # mutate(across(all_of("Publication Year"), as.integer)) |>
   awesome_geodata_table_html()
 ```
 
-@author
