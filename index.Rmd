@@ -1,8 +1,8 @@
 ---
-title: "Awesome Geodata Table"
-subtitle: "A searchable collection of geodatasets maintained by its community"
+title: "<center><div class='mytitle'>Awesome Geodata Table</div></center>"
+subtitle: "<center><div class='mytitle'>A searchable collection of geodatasets maintained by its community</div></center>"
 # author: "Anne-Karin Cooke, Sandra Willkommen, Mariana Espina-Gomez, Max Nölscher"
-date: "`r format(Sys.time(), '%d %B, %Y')`"
+date: "<center><div class='mydate'>`r format(Sys.time(), '%d %B, %Y')`</div></center>"
 output:
   html_document:
       css: style.css
