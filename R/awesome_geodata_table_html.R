@@ -68,7 +68,7 @@ awesome_geodata_table_html <- function(x) {
     mutate(across(contains(" link"), ~ stringr::str_c("<a href='",.x,"'>","link","</a>"))) |>
     DT::datatable(
       filter = "top",
-      extensions = "FixedColumns",
+      extensions = c("FixedColumns", "Buttons"),
       container = sketch_test,
       escape = FALSE,
       # rownames = FALSE,
@@ -81,8 +81,15 @@ awesome_geodata_table_html <- function(x) {
         paging = FALSE,
         scrollY = "50vh",
         scrollCollapse = TRUE,
-        dom = "ft",
-        search = list(search = "")
+        # dom = "ft",
+        search = list(search = ""),
+        dom = 'Bfrtip',
+        buttons =
+          list('copy', 'print', list(
+            extend = 'collection',
+            buttons = c('csv', 'excel', 'pdf'),
+            text = 'Download'
+          ))
       )
     ) |>
     DT::formatStyle(columns = 1:ncol(x), fontSize = "90%")
