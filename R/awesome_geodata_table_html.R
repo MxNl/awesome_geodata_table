@@ -31,8 +31,8 @@ awesome_geodata_table_html <- function(x) {
     pull(style) |>
     unique() |>
     stringr::str_c(collapse = ", ") %>%
-    stringr::str_c("tr(th(rowspan = 2, ''),", ., ")")
-  # View()
+    stringr::str_c("tr(", ., ")")
+  # stringr::str_c("tr(th(rowspan = 2, ''),", ., ")")
 
   sketch_thirdrow <- headers |>
     filter(!is.na(colspan_group3)) |>
@@ -62,34 +62,88 @@ awesome_geodata_table_html <- function(x) {
     )
   ))
 
+  headers_multi_level <- headers |>
+    group_by(name) |>
+    summarise(merged = stringr::str_c(value, collapse = "_")) |>
+    pull(merged)
+
+  show_main <- which(headers_multi_level %in% c(
+    "Name_Name_Name",
+    "Tags_Tags_Tags",
+    "Domain_Domain_Domain",
+    "Resolution_temporal_min",
+    "Resolution_temporal_max",
+    "Resolution_spatial_min",
+    "Resolution_spatial_max",
+    "Extent_temporal_start",
+    "Extent_temporal_end",
+    "Extent_spatial_spatial",
+    "Data type_Data type_Data type",
+    "Data format_Data format_Data format"
+  ))
+
+  hide_main <- which(headers_multi_level %in% headers_multi_level[-show_main])
+
+
   x |>
     # mutate(across(contains(" link"), ~ stringr::str_c("[link](", .x, ")"))) |>
     # mutate(across(contains(" link"), ~ stringr::str_c("<a href='", .x, "'link</a>"))) |>
-    mutate(across(contains(" link"), ~ stringr::str_c("<a href='",.x,"'>","link","</a>"))) |>
+    mutate(across(contains(" link"), ~ stringr::str_c("<a href='", .x, "'>", "link", "</a>"))) |>
     DT::datatable(
       filter = "top",
       extensions = c("FixedColumns", "Buttons"),
       container = sketch_test,
       escape = FALSE,
-      # rownames = FALSE,
+      rownames = FALSE,
       options = list(
         pageLength = 5,
         width = "100%",
         autoWidth = TRUE,
         scrollX = TRUE,
-        fixedColumns = list(leftColumns = 2),
+        fixedColumns = list(leftColumns = 1),
         paging = FALSE,
         scrollY = "50vh",
         scrollCollapse = TRUE,
         # dom = "ft",
         search = list(search = ""),
-        dom = 'Bfrtip',
+        dom = "Bfrtip",
         buttons =
-          list('copy', 'print', list(
-            extend = 'collection',
-            buttons = c('csv', 'excel', 'pdf'),
-            text = 'Download'
-          ))
+          list(
+            list(
+              extend = "collection",
+              text = "Table Columns",
+              buttons = list(
+                list(
+                  extend = "colvisGroup",
+                  text = "Show all",
+                  show = ":hidden"
+                ),
+                list(
+                  extend = "colvisGroup",
+                  text = "Main Filter Columns",
+                  show = show_main,
+                  hide = hide_main
+                )
+              )
+            ),
+            # list(
+            #   extend = 'collection',
+            #   text = "Table control",
+            #   buttons = list(
+            #     text = "test",
+            #     action = "function ( e, dt, node, config ) {
+            #                 dt.column( -2 ).visible( ! dt.column( -2 ).visible() );
+            #             }"
+            #   )
+            # ),
+            "copy",
+            "print",
+            list(
+              extend = "collection",
+              buttons = c("csv", "excel", "pdf"),
+              text = "Download"
+            )
+          )
       )
     ) |>
     DT::formatStyle(columns = 1:ncol(x), fontSize = "90%")
