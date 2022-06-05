@@ -1,0 +1,37 @@
+---
+output: 
+  github_document:
+    pandoc_args: --webtex
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# Awesome Geodata Table <img src='man/figures/eumohp_logo_wo_outline.png' align="right" height="139"/>
+
+<!-- badges: start -->
+![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+`r badger::badge_devel("MxNl/eumohpclipr", "blue")`
+`r badger::badge_repostatus("Active")`
+`r badger::badge_last_commit("MxNl/awesome_geodata_table")`
+`r badger::badge_license("MIT + file LICENSE")`
+<!-- badges: end -->
+
+## How to use the table?
+
+## How to add entries to the table?
+
+## Citation
+
+```{r}
+# citation("awesome_geodata_table")
+```
