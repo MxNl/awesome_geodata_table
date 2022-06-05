@@ -25,8 +25,8 @@ list.files("R", full.names = TRUE) |>
 
 ```{r, include=FALSE, echo=FALSE, message=FALSE}
 awesome_geodata_table_raw <- awesome_geodata_table_read()
-awesome_geodata_table_raw <- awesome_geodata_table_raw |>
-  dplyr::slice(-c(1, 2))
+# awesome_geodata_table_raw <- awesome_geodata_table_raw |>
+#   dplyr::slice(-c(1, 2))
 ```
 
 ```{r, echo=FALSE, message=FALSE}
