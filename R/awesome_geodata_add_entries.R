@@ -29,4 +29,4 @@ awesome_geodata_table$Method[nrow(awesome_geodata_table)] <- "hybrid"
 awesome_geodata_table$'Usage requirement'[nrow(awesome_geodata_table)] <- "final product"
 awesome_geodata_table$Comment[nrow(awesome_geodata_table)] <- "This data set is licenced by CC BY 4.0. Datacanbe freely downloaded for research, study, or teaching, but must be cited appropriately."
 
- write.csv(awesome_geodata_table, file="awesome_geodata_table.csv", row.names = F)
+write.csv2(awesome_geodata_table, file="awesome_geodata_table.csv", row.names = F)
