@@ -2,7 +2,7 @@ awesome_geodata_table_read <- function() {
 
   path <- here::here("inst", "extdata", "awesome_geodata_table.csv")
 
-  coltypes <- "fffffffDDffficcffffffff"
+  coltypes <- "cffffffDDffficcffffffff"
 
   readr::read_csv2(
     path,
