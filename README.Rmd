@@ -38,6 +38,8 @@ Just open the [**Awesome Geodata Table**](https://mxnl.github.io/awesome_geodata
 
 # How to add entries to the table?
 
+## Step-by-step
+
   1. Copy the content of the following code chunk by using the button at the top right
 ```{r, eval=FALSE}
 Name: <Name of the dataset (character)>
@@ -67,9 +69,19 @@ Usage requirement: < ( : )>
 Comment: < ( : )>
 ```
   
-  2. asdas
-  3. sdfsss
+  2. Go to the directory [inst/extdata/new_entries](https://github.com/MxNl/awesome_geodata_table/tree/main/inst/extdata/new_entries)
+  3. Click on `Add file` -> `Create new file`
+  4. Enter a file name (!Please don't use spaces) and use the file extension .yml
+  5. Paste the previously copied text into the file and replace the placeholders with the meta data of the dataset that you want to add.
+  6. When entered all meta data and finished editing of that file, scroll down and select `Create a new branch for this commit and start a pull request.`
+  7. Click on `Propose new file`
+  8. Click on `Create pull request`
 
+One of the administrators of this repository will then add your new entry! We might need to make some minor changes to the entered meta data in case it doesn't match the requirements on the column specifications.
+
+## Detailed column specifications
+
+...
 
 # Citation
 
