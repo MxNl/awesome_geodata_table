@@ -41,11 +41,30 @@ Just open the [**Awesome Geodata Table**](https://mxnl.github.io/awesome_geodata
   1. Copy the content of the following code chunk by using the button at the top right
 ```{r, eval=FALSE}
 Name: <Name of the dataset (character)>
-Tags: <Tags related to the dataset (character: maximum 3 comma-separated tags)>
-Domain: <first associated domain (character: maximum 1 word)>
+Tags: <Tags related to the dataset (character: maximum three comma-separated tags)>
+Domain: <first associated domain (character: maximum one word)>
 Resolution_temporal_min: <minimum temporal resolution (character: see details)>
 Resolution_temporal_max: <minimum temporal resolution (character: see details)>
-...
+Resolution_spatial_min: <spatial resolution in meters (numeric: single number)>
+Resolution_spatial_max: <spatial resolution in meters (numeric: single number)>
+Extent_temporal_start: <Start of the covered period (date: single date in format YY-MM-DD)>
+Extent_temporal_end: <End of the covered period (date: single date in format YY-MM-DD)>
+Extent_spatial_spatial: <Name of the covered region (character: maximum one word)>
+Data_Data type: < ( : )>
+Data_Data format: < ( : )>
+Data_File extension: < ( : )>
+Data_Data link: < ( : )>
+Publication Year: < ( : )>
+Publication link: < ( : )>
+Version updates: < ( : )>
+Upload frequency: < ( : )>
+Temporal type: < ( : )>
+Access: < ( : )>
+Publisher: < ( : )>
+Data limitations: < ( : )>
+Method: < ( : )>
+Usage requirement: < ( : )>
+Comment: < ( : )>
 ```
   
   2. asdas
