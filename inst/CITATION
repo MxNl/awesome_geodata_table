@@ -1,0 +1,13 @@
+citHeader("To cite awesome_geodata_table in publications use:")
+
+citEntry(
+  entry = "Manual",
+  title = "awesome_geodata_table A Searchable Collection of Geodatasets Maintained by its Community",
+  author = "Anne-Karin Cooke and Sandra Willkommen and Mariana Gomez-Ospina and Maximilian Nölscher",
+  year = "2022",
+  note = "R package version 0.0.0.9000",
+  url = "https://github.com/MxNl/awesome_geodata_table",
+  textVersion = paste(
+
+  )
+)

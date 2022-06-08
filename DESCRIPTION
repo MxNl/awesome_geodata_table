@@ -1,18 +1,34 @@
 Package: awesome_geodata_table
-Title: What the Package Does (One Line, Title Case)
+Title: A Searchable Collection of Geodatasets Maintained by its Community
 Version: 0.0.0.9000
-Authors@R: 
-    person(given = "First",
-           family = "Last",
+Authors@R: c(
+    person(given = "Anne-Karin",
+           family = "Cooke",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: MIT + file LICENSE
+           email = "anne-karin.cooke@bgr.de",
+           comment = c(ORCID = "0000-0002-3940-661X")),
+    person(given = "Sandra",
+           family = "Willkommen",
+           role = c("aut", "cre"),
+           email = "sandra.willkommen@bgr.de",
+           comment = c(ORCID = "YOUR-ORCID-ID")),
+    person(given = "Mariana",
+           family = "Gomez-Ospina",
+           role = c("aut", "cre"),
+           email = "mariana.gomezospina@bgr.de",
+           comment = c(ORCID = "YOUR-ORCID-ID")),
+    person(given = "Maximilian",
+           family = "Nölscher",
+           role = c("aut", "cre"),
+           email = "maximilian.noelscher@bgr.de",
+           comment = c(ORCID = "0000-0001-5606-1900")))
+Description: This page provides a searchable html table to simplify the search for data sets in many geoscientific domains by using column-wise filter functionality and a search box. Its database is meant to grow over time through its users and the geoscientific community.
+License: CC BY 4.0
+Date: 2022-06-01
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 URL: https://github.com/MxNl/awesome_geodata_table
 BugReports: https://github.com/MxNl/awesome_geodata_table/issues
 Depends: 
