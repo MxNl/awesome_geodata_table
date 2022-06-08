@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# Awesome Geodata Table <img src='man/figures/eumohp_logo_wo_outline.png' align="right" height="139"/>
+# Awesome Geodata Table <img src='man/figures/awesome_geodata_table_logo.png' align="right" height="139"/>
 
 <!-- badges: start -->
 ![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)

@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# Awesome Geodata Table <img src='man/figures/eumohp_logo_wo_outline.png' align="right" height="139"/>
+# Awesome Geodata Table <img src='man/figures/awesome_geodata_table_logo.png' align="right" height="139"/>
 
 <!-- badges: start -->
 
