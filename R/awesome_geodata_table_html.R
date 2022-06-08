@@ -27,6 +27,7 @@ awesome_geodata_table_html <- function(x) {
   x |>
     arrange(Name) |>
     format_link() |>
+    mutate(Comment = tidyr::replace_na(Comment, "No comment yet.                      ")) |>
     DT::datatable(
       filter = "top",
       extensions = c("FixedColumns", "Buttons"),
@@ -39,6 +40,19 @@ awesome_geodata_table_html <- function(x) {
         autoWidth = TRUE,
         scrollX = TRUE,
         fixedColumns = list(leftColumns = 1),
+        columnDefs = list(
+          list(
+            width = '200px',
+            targets = which(headers_multi_level %in% c("Comment_Comment_Comment", "Tags_Tags_Tags", "Name_Name_Name"))-1),
+          list(
+            targets = which(headers_multi_level %in% c("Comment_Comment_Comment"))-1,
+            render = JS(
+              "function(data, type, row, meta) {",
+              "return type === 'display' && data.length > 30 ?",
+              "'<span title=\"' + data + '\">' + data.substr(0, 30) + '...</span>' : data;",
+              "}")
+            )
+          ),
         paging = FALSE,
         scrollY = "50vh",
         scrollCollapse = TRUE,

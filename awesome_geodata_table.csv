@@ -14,16 +14,4 @@
 "z-EPISODES";"groundwater, geology, aquifer";"climate";"1h";"1h";"5000";"5000";"11.01.2000";"11.01.2015";"Europe";"vector";"NetCDF";".ncdf";"https://rstudio.github.io/DT/";"2028";"https://rstudio.github.io/DT/";"no";"1d";"static";"free account + proposal";"Copernicus";"not in tropical latitudes";"model-based";"preprocessed";NA
 "z-ERA6";"weather, temperature, precipitation";"climate";"1h";"1h";"5000";"5000";"12.01.2000";"12.01.2015";"Europe";"raster";"NetCDF";".netcdf";"https://rstudio.github.io/DT/";"2029";"https://rstudio.github.io/DT/";"yes";"3m";"dynamic";"paid";"Uni Potsdam";"not reliable for high latitudes";"observation-based";"raw";NA
 "Global pesticide pollution risk";"pesticides pollution risk health";"agriculture";"1a";"1a";"5 arc-min (10km at the equator)";"5 arc-min (10km at the equator)";NA;NA;"global";"raster";"GeoTiff";".tif";"https://figshare.com/articles/dataset/Global_pesticide_pollution_risk_data_sets/10302218";"2022";"https://www.nature.com/articles/s41561-021-00712-5";"no";NA;"static";"free";"nature";NA;"hybrid";"final product";"This data set is licenced by CC BY 4.0. Datacanbe freely downloaded for research, study, or teaching, but must be cited appropriately."
-NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
-NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
-NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
-NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
-NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
-NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
-NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
-NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
-NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
-NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
-NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
-NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA;NA
 "Global pesticide pollution risk";"pesticides pollution risk health";"agriculture";"1 a";"1 a";"5 arc-min (10km at the equator)";"5 arc-min (10km at the equator)";NA;NA;"global";"raster";"GeoTiff";".tif";"https://figshare.com/articles/dataset/Global_pesticide_pollution_risk_data_sets/10302218";"2022";"https://www.nature.com/articles/s41561-021-00712-5";"no";NA;"static";"free";"nature";"NA";"hybrid";"final product";"This data set is licenced by CC BY 4.0. Datacanbe freely downloaded for research, study, or teaching, but must be cited appropriately."
