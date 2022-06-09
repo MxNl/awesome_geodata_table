@@ -27,10 +27,13 @@ awesome_geodata_table_html <- function(x) {
   x |>
     arrange(Name) |>
     format_link() |>
+    # format_tags not causing line breaks yet.
+    format_tags() |>
     mutate(Comment = tidyr::replace_na(Comment, "No comment yet.                      ")) |>
     DT::datatable(
       filter = "top",
       extensions = c("FixedColumns", "Buttons"),
+      # extensions = c("Buttons"),
       container = header_sketch[[2]],
       escape = FALSE,
       rownames = FALSE,
