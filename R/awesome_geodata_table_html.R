@@ -45,7 +45,7 @@ awesome_geodata_table_html <- function(x) {
         fixedColumns = list(leftColumns = 1),
         columnDefs = list(
           list(
-            width = '200px',
+            # width = '200px',
             targets = which(headers_multi_level %in% c("Comment_Comment_Comment", "Tags_Tags_Tags", "Name_Name_Name"))-1),
           list(
             targets = which(headers_multi_level %in% c("Comment_Comment_Comment"))-1,
