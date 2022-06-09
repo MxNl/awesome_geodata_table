@@ -1,0 +1,25 @@
+Name: ERA5
+Tags: <Tags related to the dataset (character: maximum three comma-separated tags)>
+Domain: <first associated domain (character: maximum one word)>
+Resolution_temporal_min: <minimum temporal resolution (character: see details)>
+Resolution_temporal_max: <minimum temporal resolution (character: see details)>
+Resolution_spatial_min: <spatial resolution in meters (numeric: single number)>
+Resolution_spatial_max: <spatial resolution in meters (numeric: single number)>
+Extent_temporal_start: <Start of the covered period (date: single date in format YY-MM-DD)>
+Extent_temporal_end: <End of the covered period (date: single date in format YY-MM-DD)>
+Extent_spatial_spatial: <Name of the covered region (character: maximum one word)>
+Data_Data type: < ( : )>
+Data_Data format: < ( : )>
+Data_File extension: < ( : )>
+Data_Data link: < ( : )>
+Publication Year: < ( : )>
+Publication link: < ( : )>
+Version updates: < ( : )>
+Upload frequency: < ( : )>
+Temporal type: < ( : )>
+Access: < ( : )>
+Publisher: < ( : )>
+Data limitations: < ( : )>
+Method: < ( : )>
+Usage requirement: < ( : )>
+Comment: < ( : )>
