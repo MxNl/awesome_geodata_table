@@ -2,6 +2,7 @@ complex_header <- function(filepath) {
   headers <- readr::read_csv2(
     here::here("inst", "extdata", "awesome_geodata_table.csv"),
     col_names = FALSE,
+    skip = 1,
     n_max = 3
   ) |>
     tidyr::pivot_longer(everything()) |>
@@ -47,6 +48,7 @@ complex_header <- function(filepath) {
     filter(!is.na(colspan_group3)) |>
     distinct(name, colspan_group3) |>
     pull(colspan_group3)
+    # stringr::str_c("&nbsp;&nbsp;&nbsp;", ., "&nbsp;&nbsp;&nbsp;")
 
   sketch <- htmltools::withTags(table(
     class = "display",
@@ -58,19 +60,6 @@ complex_header <- function(filepath) {
       )
     )
   ))
-  # sketch <- htmltools::withTags(table(
-  #   class = "display",
-  #   thead(
-  #     tr(
-  #       th(rowspan = 2, "Species"),
-  #       th(colspan = 2, "Sepal"),
-  #       th(colspan = 2, "Petal")
-  #     ),
-  #     tr(
-  #       lapply(rep(c("Length", "Width"), 2), th)
-  #     )
-  #   )
-  # ))
 
   return(list(headers, sketch))
 }

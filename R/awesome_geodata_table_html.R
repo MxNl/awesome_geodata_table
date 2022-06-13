@@ -26,10 +26,12 @@ awesome_geodata_table_html <- function(x) {
 
   x |>
     arrange(Name) |>
-    format_link() |>
     # format_tags not causing line breaks yet.
+    format_link() |>
+    format_colwidth_workaround() |>
     format_tags() |>
-    mutate(Comment = tidyr::replace_na(Comment, "No comment yet.                      ")) |>
+    # format_resolution() |>
+    format_comment() |>
     DT::datatable(
       filter = "top",
       extensions = c("FixedColumns", "Buttons"),
@@ -39,7 +41,7 @@ awesome_geodata_table_html <- function(x) {
       rownames = FALSE,
       options = list(
         pageLength = 5,
-        width = "100%",
+        width = "150%",
         autoWidth = TRUE,
         scrollX = TRUE,
         fixedColumns = list(leftColumns = 1),
