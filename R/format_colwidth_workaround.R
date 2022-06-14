@@ -29,6 +29,7 @@ format_colwidth_workaround <- function(x) {
     mutate(across(where(is.numeric), replace_hard, NA_real_)) |>
     mutate(across(where(is.character), replace_hard, NA_character_)) |>
     mutate(across(where(lubridate::is.Date), replace_hard, lubridate::NA_Date_)) |>
+    mutate(across(where(is.factor), replace_hard, NA_character_)) |>
     mutate(across(all_of(c("min", "max")), replace_hard, whattoadd)) |>
     readr::type_convert(column_types_original)
 
