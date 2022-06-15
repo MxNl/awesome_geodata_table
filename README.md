@@ -41,33 +41,105 @@ data sets or use the column filters to narrow your search. <br><br>
 1.  Copy the content of the following code chunk by using the button at
     the top right
 
-``` r
-Name: <Name of the dataset (character)>
-Tags: <Tags related to the dataset (character: maximum three comma-separated tags)>
-Domain: <first associated domain (character: maximum one word)>
-Resolution_temporal_min: <minimum temporal resolution (character: see details)>
-Resolution_temporal_max: <minimum temporal resolution (character: see details)>
-Resolution_spatial_min: <spatial resolution in meters (numeric: single number)>
-Resolution_spatial_max: <spatial resolution in meters (numeric: single number)>
-Extent_temporal_start: <Start of the covered period (date: single date in format YY-MM-DD)>
-Extent_temporal_end: <End of the covered period (date: single date in format YY-MM-DD)>
-Extent_spatial_spatial: <Name of the covered region (character: maximum one word)>
-Data_Data type: < ( : )>
-Data_Data format: < ( : )>
-Data_File extension: < ( : )>
-Data_Data link: < ( : )>
-Publication Year: < ( : )>
-Publication link: < ( : )>
-Version updates: < ( : )>
-Upload frequency: < ( : )>
-Temporal type: < ( : )>
-Access: < ( : )>
-Publisher: < ( : )>
-Data limitations: < ( : )>
-Method: < ( : )>
-Usage requirement: < ( : )>
-Comment: < ( : )>
+``` {r}
+generate_entry_description()
 ```
+
+Name: \<Full name of the dataset with optional abbreviation in round
+brackets (data type: teeeeeeext)> Covered_Variables: \<Name of a single
+parameter/variable in the dataset (data type: teeeeeeext)> Tags: \<Tags
+related to the dataset (data type: teeeeeeext)> Domain: \<Strongest
+associated domain (data type: teeeeeeext)> Resolution-temporal-min:
+\<Minimum temporal resolution (data type: teeeeeeext)>
+Resolution-temporal-max: \<Maximum temporal resolution (data type:
+teeeeeeext)> Resolution-spatial-min\_\[m\]: \<Minimum spatial resolution
+in meters (data type: teeeeeeext)> Resolution-spatial-max\_\[m\]:
+\<Maximum spatial resolution in meters (data type: teeeeeeext)>
+Resolution-spatial-unconverted_units: \<Raw units of the spatial
+resolution (data type: teeeeeeext)> Resolution-spatial-vertical:
+\<Vertical spatial resolution (data type: teeeeeeext)>
+Extent-temporal-start: \<Start of the covered period (data type:
+teeeeeeext)> Extent-temporal-end: \<End of the covered period (data
+type: teeeeeeext)> Extent-spatial: \<teeeeext (data type: teeeeeeext)>
+Data-type: \<teeeeext (data type: teeeeeeext)> Data-format: \<teeeeext
+(data type: teeeeeeext)> Data-file_extension: \<teeeeext (data type:
+teeeeeeext)> Download_link: \<teeeeext (data type: teeeeeeext)>
+Literatur-year\_(first): \<teeeeext (data type: teeeeeeext)>
+Literatur-link: \<teeeeext (data type: teeeeeeext)> Version_updates:
+\<teeeeext (data type: teeeeeeext)> Upload_frequency: \<teeeeext (data
+type: teeeeeeext)> Temporal_type: \<teeeeext (data type: teeeeeeext)>
+Access: \<teeeeext (data type: teeeeeeext)> Publisher: \<teeeeext (data
+type: teeeeeeext)> Data_limitations: \<teeeeext (data type: teeeeeeext)>
+Method: \<teeeeext (data type: teeeeeeext)> Usage_requirement:
+\<teeeeext (data type: teeeeeeext)> minTempRes: \<teeeeext (data type:
+teeeeeeext)> maxTempRes: \<teeeeext (data type: teeeeeeext)> Comment:
+\<teeeeext (data type: teeeeeeext)>`{r}`
+
+asdasda
+
+    Name: <Full name of the dataset with optional abbreviation in round brackets (data type: teeeeeeext)>
+    Covered_Variables: <Name of a single parameter/variable in the dataset (data type: teeeeeeext)>
+    Tags: <Tags related to the dataset (data type: teeeeeeext)>
+    Domain: <Strongest associated domain (data type: teeeeeeext)>
+    Resolution-temporal-min: <Minimum temporal resolution (data type: teeeeeeext)>
+    Resolution-temporal-max: <Maximum temporal resolution (data type: teeeeeeext)>
+    Resolution-spatial-min_[m]: <Minimum spatial resolution in meters (data type: teeeeeeext)>
+    Resolution-spatial-max_[m]: <Maximum spatial resolution in meters (data type: teeeeeeext)>
+    Resolution-spatial-unconverted_units: <Raw units of the spatial resolution (data type: teeeeeeext)>
+    Resolution-spatial-vertical: <Vertical spatial resolution (data type: teeeeeeext)>
+    Extent-temporal-start: <Start of the covered period (data type: teeeeeeext)>
+    Extent-temporal-end: <End of the covered period (data type: teeeeeeext)>
+    Extent-spatial: <teeeeext (data type: teeeeeeext)>
+    Data-type: <teeeeext (data type: teeeeeeext)>
+    Data-format: <teeeeext (data type: teeeeeeext)>
+    Data-file_extension: <teeeeext (data type: teeeeeeext)>
+    Download_link: <teeeeext (data type: teeeeeeext)>
+    Literatur-year_(first): <teeeeext (data type: teeeeeeext)>
+    Literatur-link: <teeeeext (data type: teeeeeeext)>
+    Version_updates: <teeeeext (data type: teeeeeeext)>
+    Upload_frequency: <teeeeext (data type: teeeeeeext)>
+    Temporal_type: <teeeeext (data type: teeeeeeext)>
+    Access: <teeeeext (data type: teeeeeeext)>
+    Publisher: <teeeeext (data type: teeeeeeext)>
+    Data_limitations: <teeeeext (data type: teeeeeeext)>
+    Method: <teeeeext (data type: teeeeeeext)>
+    Usage_requirement: <teeeeext (data type: teeeeeeext)>
+    minTempRes: <teeeeext (data type: teeeeeeext)>
+    maxTempRes: <teeeeext (data type: teeeeeeext)>
+    Comment: <teeeeext (data type: teeeeeeext)>
+
+sdfsdd
+
+    Name: <Full name of the dataset with optional abbreviation in round brackets (data type: teeeeeeext)>
+    Covered_Variables: <Name of a single parameter/variable in the dataset (data type: teeeeeeext)>
+    Tags: <Tags related to the dataset (data type: teeeeeeext)>
+    Domain: <Strongest associated domain (data type: teeeeeeext)>
+    Resolution-temporal-min: <Minimum temporal resolution (data type: teeeeeeext)>
+    Resolution-temporal-max: <Maximum temporal resolution (data type: teeeeeeext)>
+    Resolution-spatial-min_[m]: <Minimum spatial resolution in meters (data type: teeeeeeext)>
+    Resolution-spatial-max_[m]: <Maximum spatial resolution in meters (data type: teeeeeeext)>
+    Resolution-spatial-unconverted_units: <Raw units of the spatial resolution (data type: teeeeeeext)>
+    Resolution-spatial-vertical: <Vertical spatial resolution (data type: teeeeeeext)>
+    Extent-temporal-start: <Start of the covered period (data type: teeeeeeext)>
+    Extent-temporal-end: <End of the covered period (data type: teeeeeeext)>
+    Extent-spatial: <teeeeext (data type: teeeeeeext)>
+    Data-type: <teeeeext (data type: teeeeeeext)>
+    Data-format: <teeeeext (data type: teeeeeeext)>
+    Data-file_extension: <teeeeext (data type: teeeeeeext)>
+    Download_link: <teeeeext (data type: teeeeeeext)>
+    Literatur-year_(first): <teeeeext (data type: teeeeeeext)>
+    Literatur-link: <teeeeext (data type: teeeeeeext)>
+    Version_updates: <teeeeext (data type: teeeeeeext)>
+    Upload_frequency: <teeeeext (data type: teeeeeeext)>
+    Temporal_type: <teeeeext (data type: teeeeeeext)>
+    Access: <teeeeext (data type: teeeeeeext)>
+    Publisher: <teeeeext (data type: teeeeeeext)>
+    Data_limitations: <teeeeext (data type: teeeeeeext)>
+    Method: <teeeeext (data type: teeeeeeext)>
+    Usage_requirement: <teeeeext (data type: teeeeeeext)>
+    minTempRes: <teeeeext (data type: teeeeeeext)>
+    maxTempRes: <teeeeext (data type: teeeeeeext)>
+    Comment: <teeeeext (data type: teeeeeeext)>
 
 2.  Go to the directory
     [inst/extdata/new_entries](https://github.com/MxNl/awesome_geodata_table/tree/main/inst/extdata/new_entries)

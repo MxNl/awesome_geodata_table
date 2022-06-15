@@ -23,7 +23,6 @@ format_colwidth_workaround <- function(x) {
     stringr::str_sub(end = 1) |>
     stringr::str_c(collapse = "")
 
-
   table_to_add <- x |>
     slice(1) |>
     mutate(across(where(is.numeric), replace_hard, NA_real_)) |>

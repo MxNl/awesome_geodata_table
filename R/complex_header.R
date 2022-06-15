@@ -3,7 +3,8 @@ complex_header <- function(filepath) {
     here::here("inst", "extdata", "awesome_geodata_table.csv"),
     col_names = FALSE,
     skip = 1,
-    n_max = 3
+    n_max = 3,
+    show_col_types = FALSE,locale = locale(decimal_mark = ",", grouping_mark = ".")
   ) |>
     tidyr::pivot_longer(everything()) |>
     mutate(name = stringr::str_remove(name, "X")) |>
