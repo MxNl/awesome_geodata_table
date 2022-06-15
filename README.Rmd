@@ -45,12 +45,7 @@ Just open the [**Awesome Geodata Table**](https://mxnl.github.io/awesome_geodata
 ## Step-by-step
 
   1. Copy the content of the following code chunk by using the button at the top right
-  
-```{r runanalysis, code=readLines('src/entry_descriptions.R'), echo=FALSE, eval=TRUE, comment=NA}
-```
-  
-  
-  sdfsdd
+
 ```{r, echo=FALSE, results='hold', comment=NA}
 generate_entry_description()
 ```
