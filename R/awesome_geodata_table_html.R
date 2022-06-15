@@ -2,24 +2,21 @@ awesome_geodata_table_html <- function(x) {
   header_sketch <- complex_header()
 
   headers_multi_level <- header_sketch |>
-    purrr::chuck(1) |>
-    group_by(name) |>
-    summarise(merged = stringr::str_c(value, collapse = "_")) |>
-    pull(merged)
+    unique_headers_clean(as_character_vector = TRUE)
 
   show_main <- which(headers_multi_level %in% c(
-    "Name_Name_Name",
-    "Tags_Tags_Tags",
-    "Domain_Domain_Domain",
-    "Resolution_temporal_min",
-    "Resolution_temporal_max",
-    "Resolution_spatial_min",
-    "Resolution_spatial_max",
-    "Extent_temporal_start",
-    "Extent_temporal_end",
-    "Extent_spatial_spatial",
-    "Data type_Data type_Data type",
-    "Data format_Data format_Data format"
+    "Name",
+    "Tags",
+    "Domain",
+    "Resolution-temporal-min",
+    "Resolution-temporal-max",
+    "Resolution-spatial-min_[m]",
+    "Resolution-spatial-max_[m]",
+    "Extent-temporal-start",
+    "Extent-temporal-end",
+    "Extent-spatial-spatial",
+    "Data_type",
+    "Data_format"
   ))
 
   hide_main <- which(headers_multi_level %in% headers_multi_level[-show_main])
