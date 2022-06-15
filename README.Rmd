@@ -27,6 +27,7 @@ list.files("R", full.names = TRUE) |>
 `r badger::badge_repostatus("Active")`
 `r badger::badge_last_commit("MxNl/awesome_geodata_table")`
 `r badger::badge_license("CC BY 4.0")`
+[![R-CMD-check](https://github.com/MxNl/awesome_geodata_table/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MxNl/awesome_geodata_table/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 # What is it good for?

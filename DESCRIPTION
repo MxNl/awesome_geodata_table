@@ -40,9 +40,12 @@ Imports:
     rmarkdown,
     purrr,
     here,
-    allcontributors
+    allcontributors,
+    stringr
 Suggests: 
     devtools,
     usethis,
     styler,
-    badger
+    badger,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
