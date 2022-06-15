@@ -37,15 +37,16 @@ Imports:
     readr,
     dplyr,
     DT,
-    rmarkdown,
     purrr,
     here,
     allcontributors,
     stringr
-Suggests: 
+Suggests:
+    rmarkdown,
     devtools,
     usethis,
     styler,
     badger,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    knitr
 Config/testthat/edition: 3
