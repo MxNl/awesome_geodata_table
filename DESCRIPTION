@@ -40,7 +40,8 @@ Imports:
     purrr,
     here,
     allcontributors,
-    stringr
+    stringr,
+    tidyr
 Suggests:
     devtools,
     usethis,

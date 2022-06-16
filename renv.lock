@@ -201,6 +201,20 @@
       "Hash": "976cf154dfb043c012d87cddd8bca363",
       "Requirements": []
     },
+    "bslib": {
+      "Package": "bslib",
+      "Version": "0.3.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "56ae7e1987b340186a8a5a157c2ec358",
+      "Requirements": [
+        "htmltools",
+        "jquerylib",
+        "jsonlite",
+        "rlang",
+        "sass"
+      ]
+    },
     "cachem": {
       "Package": "cachem",
       "Version": "1.0.6",
@@ -1035,6 +1049,25 @@
       "Hash": "04884d9a75d778aca22c7154b8333ec9",
       "Requirements": []
     },
+    "rmarkdown": {
+      "Package": "rmarkdown",
+      "Version": "2.14",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "31b60a882fabfabf6785b8599ffeb8ba",
+      "Requirements": [
+        "bslib",
+        "evaluate",
+        "htmltools",
+        "jquerylib",
+        "jsonlite",
+        "knitr",
+        "stringr",
+        "tinytex",
+        "xfun",
+        "yaml"
+      ]
+    },
     "roxygen2": {
       "Package": "roxygen2",
       "Version": "7.1.2",
@@ -1093,6 +1126,20 @@
       "Requirements": [
         "curl",
         "xml2"
+      ]
+    },
+    "sass": {
+      "Package": "sass",
+      "Version": "0.4.1",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "f37c0028d720bab3c513fd65d28c7234",
+      "Requirements": [
+        "R6",
+        "fs",
+        "htmltools",
+        "rappdirs",
+        "rlang"
       ]
     },
     "scales": {
@@ -1213,6 +1260,26 @@
         "vctrs"
       ]
     },
+    "tidyr": {
+      "Package": "tidyr",
+      "Version": "1.2.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "d8b95b7fee945d7da6888cf7eb71a49c",
+      "Requirements": [
+        "cpp11",
+        "dplyr",
+        "ellipsis",
+        "glue",
+        "lifecycle",
+        "magrittr",
+        "purrr",
+        "rlang",
+        "tibble",
+        "tidyselect",
+        "vctrs"
+      ]
+    },
     "tidyselect": {
       "Package": "tidyselect",
       "Version": "1.1.1",
@@ -1225,6 +1292,16 @@
         "purrr",
         "rlang",
         "vctrs"
+      ]
+    },
+    "tinytex": {
+      "Package": "tinytex",
+      "Version": "0.39",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "29f67ab15405b390b90e56ff22198ead",
+      "Requirements": [
+        "xfun"
       ]
     },
     "triebeard": {
