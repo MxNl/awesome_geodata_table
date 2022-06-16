@@ -1,4 +1,4 @@
-Package: awesome_geodata_table
+Package: AwesomeGeodataTable
 Title: A Searchable Collection of Geodatasets Maintained by its Community
 Version: 0.0.0.9000
 Authors@R: c(
