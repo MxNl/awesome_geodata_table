@@ -44,8 +44,6 @@ data sets or use the column filters to narrow your search. <br><br>
 
 <!-- -->
 
-    Name: <Full name of the dataset with optional abbreviation in round brackets (data type: teeeeeeext)>
-    Covered_Variables: <Name of a single parameter/variable in the dataset (data type: teeeeeeext)>
     Tags: <Tags related to the dataset (data type: teeeeeeext)>
     Domain: <Strongest associated domain (data type: teeeeeeext)>
     Resolution-temporal-min: <Minimum temporal resolution (data type: teeeeeeext)>
@@ -64,7 +62,6 @@ data sets or use the column filters to narrow your search. <br><br>
     Literatur-year_(first): <teeeeext (data type: teeeeeeext)>
     Literatur-link: <teeeeext (data type: teeeeeeext)>
     Version_updates: <teeeeext (data type: teeeeeeext)>
-    Upload_frequency: <teeeeext (data type: teeeeeeext)>
     Temporal_type: <teeeeext (data type: teeeeeeext)>
     Access: <teeeeext (data type: teeeeeeext)>
     Publisher: <teeeeext (data type: teeeeeeext)>
@@ -79,7 +76,7 @@ data sets or use the column filters to narrow your search. <br><br>
     [inst/extdata/new_entries](https://github.com/MxNl/awesome_geodata_table/tree/main/inst/extdata/new_entries)
 3.  Click on `Add file` -\> `Create new file`
 4.  Enter a file name (!Please don’t use spaces) and use the file
-    extension .yml
+    extension .txt
 5.  Paste the previously copied text into the file and replace the
     placeholders with the meta data of the dataset that you want to add.
 6.  When entered all meta data and finished editing of that file, scroll

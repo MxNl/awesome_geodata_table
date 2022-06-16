@@ -7,6 +7,6 @@
 # * https://testthat.r-lib.org/reference/test_package.html#special-files
 
 library(testthat)
-library(awesome_geodata_table)
+library(AwesomeGeodataTable)
 
-test_check("awesome_geodata_table")
+test_check("AwesomeGeodataTable")
