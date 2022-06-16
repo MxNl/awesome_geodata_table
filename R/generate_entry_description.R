@@ -1,5 +1,5 @@
-generate_entry_description <- function() {
-  headers_as_in_csv <- complex_header() |>
+generate_entry_description <- function(filepath) {
+  headers_as_in_csv <- complex_header(filepath) |>
     unique_headers_clean()
 
   headers_defined <- list(

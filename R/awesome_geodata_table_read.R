@@ -1,12 +1,10 @@
-awesome_geodata_table_read <- function() {
+awesome_geodata_table_read <- function(filepath) {
 
-  path <- here::here("inst", "extdata", "awesome_geodata_table.csv")
-
-  coltypes <- path |>
+  coltypes <- filepath |>
     read_column_types()
 
   readr::read_csv2(
-    path,
+    filepath,
     col_types = coltypes,
     skip = 3)
 }

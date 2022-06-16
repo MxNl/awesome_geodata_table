@@ -27,6 +27,7 @@ list.files("R", full.names = TRUE) |>
 `r badger::badge_repostatus("Active")`
 `r badger::badge_last_commit("MxNl/awesome_geodata_table")`
 `r badger::badge_license("CC BY 4.0")`
+[![R-CMD-check](https://github.com/MxNl/awesome_geodata_table/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MxNl/awesome_geodata_table/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 # What is it good for?
@@ -47,12 +48,12 @@ Just open the [**Awesome Geodata Table**](https://mxnl.github.io/awesome_geodata
   1. Copy the content of the following code chunk by using the button at the top right
 
 ```{r, echo=FALSE, results='hold', comment=NA}
-generate_entry_description()
+generate_entry_description(CSV_TABLE_PATH)
 ```
   
   2. Go to the directory [inst/extdata/new_entries](https://github.com/MxNl/awesome_geodata_table/tree/main/inst/extdata/new_entries)
   3. Click on `Add file` -> `Create new file`
-  4. Enter a file name (!Please don't use spaces) and use the file extension .yml
+  4. Enter a file name (!Please don't use spaces) and use the file extension .txt
   5. Paste the previously copied text into the file and replace the placeholders with the meta data of the dataset that you want to add.
   6. When entered all meta data and finished editing of that file, scroll down and select `Create a new branch for this commit and start a pull request.`
   7. Click on `Propose new file`

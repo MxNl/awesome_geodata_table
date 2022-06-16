@@ -1,6 +1,6 @@
 complex_header <- function(filepath) {
   headers <- readr::read_csv2(
-    here::here("inst", "extdata", "awesome_geodata_table.csv"),
+    filepath,
     col_names = FALSE,
     skip = 1,
     n_max = 3,

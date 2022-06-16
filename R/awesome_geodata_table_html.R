@@ -1,5 +1,5 @@
 awesome_geodata_table_html <- function(x) {
-  header_sketch <- complex_header()
+  header_sketch <- complex_header(CSV_TABLE_PATH)
 
   headers_multi_level <- header_sketch |>
     unique_headers_clean(as_character_vector = TRUE)

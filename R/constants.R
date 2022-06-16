@@ -1,0 +1,1 @@
+CSV_TABLE_PATH <- here::here("inst", "extdata", "awesome_geodata_table.csv")
