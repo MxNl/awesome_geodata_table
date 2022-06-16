@@ -5,7 +5,8 @@ awesome_geodata_table_html <- function(x) {
     unique_headers_clean(as_character_vector = TRUE)
 
   show_main <- which(headers_multi_level %in% c(
-    "Name",
+    "Parameter",
+    "Dataset name",
     "Tags",
     "Domain",
     "Resolution-temporal-min",
@@ -22,7 +23,7 @@ awesome_geodata_table_html <- function(x) {
   hide_main <- which(headers_multi_level %in% headers_multi_level[-show_main])
 
   x |>
-    arrange(Name) |>
+    arrange(Parameter) |>
     # format_tags not causing line breaks yet.
     format_link() |>
     format_colwidth_workaround() |>
