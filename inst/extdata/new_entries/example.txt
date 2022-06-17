@@ -1,7 +1,8 @@
-Name: asdaaa
-Covered_Variables: dasd, asd
+Parameter: soil moisture
+Dataset_name: Example dataset
 Tags: fujkfu, kfkf
-Domain: sdfssssss
+Domain: Atmospheric Sciences
+Unit: m^2
 Resolution-temporal-min: <=1h
 Resolution-temporal-max: >10a
 Resolution-spatial-min_[m]: 1
@@ -14,14 +15,16 @@ Extent-spatial: Europe
 Data-type: asda
 Data-format: fsd
 Data-file_extension: .tge
+Coordinate_reference_system: WGS84
 Download_link: hrth
 Literatur-year_(first): 2019
 Literatur-link: www.bgr.de
 Version_updates: yes
-Upload_frequency: 1a
+Upload_delay: 1a
 Temporal_type: static
 Access: free
 Publisher: asdas
+License: CCBY0
 Data_limitations: <asda
 Method: model-based
 Usage_requirement: raw
