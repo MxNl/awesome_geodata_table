@@ -33,7 +33,7 @@ complex_header <- function(filepath) {
   sketch_firstrow <- headers |>
     pull(style1) |>
     unique() |>
-    stringr::str_c(collapse = ", ") %>%
+    stringr::str_c(collapse = ", ") |>
     stringr::str_c("tr(", ., ")")
   # stringr::str_c("tr(th(rowspan = 2, ''),", ., ")")
 
