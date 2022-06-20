@@ -1,3 +1,9 @@
+library(purrr)
+library(tidyr)
+library(readr)
+library(magrittr)
+library(stringr)
+
 test_that("Equal column names", {
   get_unique_column_names_from_new_entries <- function () {
     NEW_ENTRY_DIRECTORY %>%
