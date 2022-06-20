@@ -45,7 +45,7 @@ Just open the [**Awesome Geodata Table**](https://mxnl.github.io/awesome_geodata
 
 ## Step-by-step
 
-  1. Copy the content of the following code chunk by using the button at the top right
+  1. Copy the content of the following code chunk by using the button at the top right.
 
 ```{r, echo=FALSE, results='hold', comment=NA}
 generate_entry_description(CSV_TABLE_PATH)
