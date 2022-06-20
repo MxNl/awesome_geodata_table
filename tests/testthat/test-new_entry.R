@@ -28,7 +28,7 @@ test_that("column categories are correct", {
   new_entry <- NEW_ENTRY_DIRECTORY %>%
     list.files(full.names = TRUE, pattern = ".txt") %>%
     purrr::map(read_new_entry) %>%
-    reduce(bind_rows)
+    purrr::reduce(bind_rows)
 
   expect_true({
     new_entry %>%
