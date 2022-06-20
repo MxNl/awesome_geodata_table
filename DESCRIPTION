@@ -41,7 +41,8 @@ Imports:
     here,
     allcontributors,
     stringr,
-    tidyr
+    tidyr,
+    magrittr
 Suggests:
     devtools,
     usethis,
