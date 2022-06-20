@@ -63,7 +63,7 @@ One of the administrators of this repository will then add your new entry! We mi
 
 ## Detailed column specifications
 
-Text... (links to Wiki?!)
+Text... (links to Wiki?!) sdf
 
 # Citation
 
