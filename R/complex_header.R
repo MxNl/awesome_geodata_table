@@ -33,9 +33,8 @@ complex_header <- function(filepath) {
   sketch_firstrow <- headers |>
     pull(style1) |>
     unique() |>
-    stringr::str_c(collapse = ", ") |>
+    stringr::str_c(collapse = ", ") %>%
     stringr::str_c("tr(", ., ")")
-  # stringr::str_c("tr(th(rowspan = 2, ''),", ., ")")
 
   sketch_secondrow <- headers |>
     filter(!is.na(style2)) |>
@@ -49,7 +48,6 @@ complex_header <- function(filepath) {
     filter(!is.na(colspan_group3)) |>
     distinct(name, colspan_group3) |>
     pull(colspan_group3)
-    # stringr::str_c("&nbsp;&nbsp;&nbsp;", ., "&nbsp;&nbsp;&nbsp;")
 
   sketch <- htmltools::withTags(table(
     class = "display",
