@@ -91,7 +91,7 @@ in case it doesn’t match the requirements on the column specifications.
 
 ## Detailed column specifications
 
-Text…
+Text… (links to Wiki?!) sdf
 
 # Citation
 

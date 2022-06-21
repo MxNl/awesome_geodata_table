@@ -28,6 +28,8 @@ awesome_geodata_table_html <- function(x) {
     format_link() |>
     format_colwidth_workaround() |>
     format_tags() |>
+    format_utf8_critical_characters() |>
+    format_lower_case() |>
     # format_resolution() |>
     format_comment() |>
     DT::datatable(
