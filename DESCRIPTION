@@ -42,8 +42,9 @@ Imports:
     allcontributors,
     stringr,
     tidyr,
-    magrittr
+    here
 Suggests:
+    magrittr,
     devtools,
     usethis,
     styler,

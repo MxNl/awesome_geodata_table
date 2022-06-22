@@ -38,6 +38,7 @@ awesome_geodata_table_html <- function(x) {
     format_lower_case() |>
     # format_resolution() |>
     format_comment() |>
+    impute_tags() |>
     DT::datatable(
       filter = "top",
       extensions = c("FixedColumns", "Buttons"),
@@ -54,9 +55,9 @@ awesome_geodata_table_html <- function(x) {
         columnDefs = list(
           list(
             # width = '200px',
-            targets = which(headers_multi_level %in% c("Comment_Comment_Comment", "Tags_Tags_Tags", "Name_Name_Name"))-1),
+            targets = which(headers_multi_level %in% c("Comment", "Tags", "Name"))-1),
           list(
-            targets = which(headers_multi_level %in% c("Comment_Comment_Comment"))-1,
+            targets = which(headers_multi_level %in% c("Comment", "Tags"))-1,
             render = DT::JS(
               "function(data, type, row, meta) {",
               "return type === 'display' && data.length > 30 ?",
