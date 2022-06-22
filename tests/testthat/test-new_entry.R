@@ -39,11 +39,11 @@ test_that("column categories are correct", {
   new_entry <- NEW_ENTRY_DIRECTORY |>
   list.files(full.names = TRUE, pattern = ".txt") |>
     map(read_new_entry) |>
-    reduce(bind_rows)
+    reduce(dplyr::bind_rows)
 
   expect_true({
     new_entry |>
-    pull(Domain) |>
+    dplyr::pull(Domain) |>
     is_in(COLUMN_CATEGORIES_DOMAIN) |>
     all()})
 })

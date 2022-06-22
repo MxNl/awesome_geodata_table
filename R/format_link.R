@@ -1,8 +1,8 @@
 format_link <- function(x) {
   x |>
-    mutate(
-      across(
-        contains("link"),
+    dplyr::mutate(
+      dplyr::across(
+        dplyr::contains("link"),
         ~ stringr::str_c("<a href='", .x, "'>", "link", "</a>")
         )
       )

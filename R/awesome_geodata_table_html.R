@@ -1,3 +1,9 @@
+#' generate html table
+#'
+#' @param x a tibble.
+#' @return The html table.
+#' @export
+
 awesome_geodata_table_html <- function(x) {
   header_sketch <- complex_header(CSV_TABLE_PATH)
 
@@ -23,7 +29,7 @@ awesome_geodata_table_html <- function(x) {
   hide_main <- which(headers_multi_level %in% headers_multi_level[-show_main])
 
   x |>
-    arrange(Parameter) |>
+    dplyr::arrange(Parameter) |>
     # format_tags not causing line breaks yet.
     format_link() |>
     format_colwidth_workaround() |>
@@ -51,7 +57,7 @@ awesome_geodata_table_html <- function(x) {
             targets = which(headers_multi_level %in% c("Comment_Comment_Comment", "Tags_Tags_Tags", "Name_Name_Name"))-1),
           list(
             targets = which(headers_multi_level %in% c("Comment_Comment_Comment"))-1,
-            render = JS(
+            render = DT::JS(
               "function(data, type, row, meta) {",
               "return type === 'display' && data.length > 30 ?",
               "'<span title=\"' + data + '\">' + data.substr(0, 30) + '...</span>' : data;",

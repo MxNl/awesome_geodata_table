@@ -1,3 +1,9 @@
+#' read table
+#'
+#' @param filepath filepath.
+#' @return a tibble.
+#' @export
+#'
 awesome_geodata_table_read <- function(filepath) {
 
   coltypes <- filepath |>

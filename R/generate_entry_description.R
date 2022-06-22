@@ -128,9 +128,9 @@ generate_entry_description <- function(filepath) {
     tidyr::unnest_wider(value)
 
   headers_as_in_csv |>
-    inner_join(headers_defined, by = c("column_names" = "name")) |>
-    mutate(merged = stringr::str_glue("{column_names}: <{short_description} (data type: {details})>")) |>
-    pull(merged) |>
+    dplyr::inner_join(headers_defined, by = c("column_names" = "name")) |>
+    dplyr::mutate(merged = stringr::str_glue("{column_names}: <{short_description} (data type: {details})>")) |>
+    dplyr::pull(merged) |>
     stringr::str_c(collapse = "\n") |>
     cat()
 

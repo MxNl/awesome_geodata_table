@@ -1,8 +1,8 @@
 format_lower_case <- function(x) {
   x |>
-    mutate(
-      across(
-        all_of(
+    dplyr::mutate(
+      dplyr::across(
+        dplyr::all_of(
           c(
             "Parameter"
           )

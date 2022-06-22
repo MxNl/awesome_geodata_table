@@ -18,25 +18,25 @@ format_colwidth_workaround <- function(x) {
   }
 
   column_types_original <- x |>
-    summarise(across(everything(), class)) |>
+    dplyr::summarise(dplyr::across(dplyr::everything(), class)) |>
     unlist() |>
     stringr::str_sub(end = 1) |>
     stringr::str_c(collapse = "")
 
   table_to_add <- x |>
-    slice(1) |>
-    mutate(across(where(is.numeric), replace_hard, NA_real_)) |>
-    mutate(across(where(is.character), replace_hard, NA_character_)) |>
-    mutate(across(where(lubridate::is.Date), replace_hard, lubridate::NA_Date_)) |>
-    mutate(across(where(is.factor), replace_hard, NA_character_)) |>
-    mutate(across(all_of(c("min", "max")), replace_hard, whattoadd)) |>
+    dplyr::slice(1) |>
+    dplyr::mutate(dplyr::across(where(is.numeric), replace_hard, NA_real_)) |>
+    dplyr::mutate(dplyr::across(where(is.character), replace_hard, NA_character_)) |>
+    dplyr::mutate(dplyr::across(where(lubridate::is.Date), replace_hard, lubridate::NA_Date_)) |>
+    dplyr::mutate(dplyr::across(where(is.factor), replace_hard, NA_character_)) |>
+    dplyr::mutate(dplyr::across(dplyr::all_of(c("min", "max")), replace_hard, whattoadd)) |>
     readr::type_convert(column_types_original)
 
   x |>
-    bind_rows(table_to_add) |>
-    mutate(
-      across(
-        all_of(c("min", "max")),
+    dplyr::bind_rows(table_to_add) |>
+    dplyr::mutate(
+      dplyr::across(
+        dplyr::all_of(c("min", "max")),
         factor,
         levels = levels))
 }
