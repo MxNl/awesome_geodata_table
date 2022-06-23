@@ -32,7 +32,7 @@ jobs:
 
       - name: Merge new entries
         run: |
-          library(AwesomeGeodataTable)
+          devtools::load_all()
           merge_and_delete_new_entries()
         shell: Rscript {0}
 
