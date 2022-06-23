@@ -5,7 +5,7 @@ unique_headers_clean <- function(complex_headers, as_character_vector = FALSE) {
     dplyr::distinct(value) |>
     dplyr::mutate(value = stringr::str_replace_all(value, " ", "_")) |>
     dplyr::summarise(column_names = stringr::str_c(value, collapse = "-")) |>
-    select(-name)
+    dplyr::select(-name)
 
   if (as_character_vector) {
     headers_clean <- headers_clean |>
