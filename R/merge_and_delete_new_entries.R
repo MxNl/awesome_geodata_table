@@ -1,7 +1,7 @@
 merge_and_delete_new_entries <- function (filepath) {
   table_old <- CSV_TABLE_PATH |>
     awesome_geodata_table_read() |>
-    mutate(across(everything(), as.character))
+    dplyr::mutate(dplyr::across(dplyr::everything(), as.character))
 
   unique_header_clean <- CSV_TABLE_PATH |>
     complex_header() |>
@@ -13,11 +13,11 @@ merge_and_delete_new_entries <- function (filepath) {
   new_entry_files <- list_new_entry_files()
 
   new_rows <- new_entry_files |>
-    map_df(read_new_entry) |>
+    purrr::map_df(read_new_entry) |>
     tidyr::separate_rows(Parameter, sep = ",") |>
-    mutate(Parameter = stringr::str_squish(Parameter)) |>
+    dplyr::mutate(Parameter = stringr::str_squish(Parameter)) |>
     readr::type_convert(col_types = true_column_types()) |>
-    mutate(across(everything(), as.character))
+    dplyr::mutate(across(everything(), as.character))
 
   get_table_header_csv() |>
     purrr::set_names(unique_header_clean) |>
