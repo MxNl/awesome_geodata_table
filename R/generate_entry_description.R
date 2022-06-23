@@ -99,6 +99,10 @@ generate_entry_description <- function(filepath) {
       short_description = "teeeeext",
       details = "teeeeeeext"
     ),
+    `License` = list(
+      short_description = "teeeeext",
+      details = "teeeeeeext"
+    ),
     `Data_limitations` = list(
       short_description = "teeeeext",
       details = "teeeeeeext"

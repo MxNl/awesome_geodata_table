@@ -30,10 +30,10 @@ awesome_geodata_table_html <- function(x) {
 
   x |>
     # format_tags not causing line breaks yet.
-    format_link() |>
-    format_colwidth_workaround() |>
-    format_tags() |>
     format_utf8_critical_characters() |>
+    format_link() |>
+    format_tags() |>
+    format_colwidth_workaround() |>
     format_lower_case() |>
     # format_resolution() |>
     format_comment() |>
