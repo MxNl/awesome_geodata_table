@@ -29,7 +29,6 @@ awesome_geodata_table_html <- function(x) {
   hide_main <- which(headers_multi_level %in% headers_multi_level[-show_main])
 
   x |>
-    dplyr::arrange(Parameter) |>
     # format_tags not causing line breaks yet.
     format_link() |>
     format_colwidth_workaround() |>
@@ -39,6 +38,7 @@ awesome_geodata_table_html <- function(x) {
     # format_resolution() |>
     format_comment() |>
     impute_tags() |>
+    dplyr::arrange('Dataset name', Parameter) |>
     DT::datatable(
       filter = "top",
       extensions = c("FixedColumns", "Buttons"),
