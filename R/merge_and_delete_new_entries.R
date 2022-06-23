@@ -17,7 +17,7 @@ merge_and_delete_new_entries <- function (filepath) {
     tidyr::separate_rows(Parameter, sep = ",") |>
     dplyr::mutate(Parameter = stringr::str_squish(Parameter)) |>
     readr::type_convert(col_types = true_column_types()) |>
-    dplyr::mutate(across(everything(), as.character))
+    dplyr::mutate(dplyr::across(dplyr::everything(), as.character))
 
   get_table_header_csv() |>
     purrr::set_names(unique_header_clean) |>
