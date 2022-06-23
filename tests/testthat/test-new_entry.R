@@ -19,8 +19,6 @@ test_that("Equal column names", {
   expect_equal(get_unique_column_names_from_new_entries(), true_column_names())
 })
 
-print("yes, here!")
-
 test_that("data types are correct", {
   convert_columns_to_true_data_types <- function () {
     NEW_ENTRY_DIRECTORY |>
@@ -32,8 +30,6 @@ test_that("data types are correct", {
 
   expect_silent(convert_columns_to_true_data_types())
 })
-
-print("yes, here!")
 
 test_that("column categories are correct", {
   new_entry <- NEW_ENTRY_DIRECTORY |>

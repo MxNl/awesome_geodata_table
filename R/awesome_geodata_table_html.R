@@ -38,7 +38,7 @@ awesome_geodata_table_html <- function(x) {
     # format_resolution() |>
     format_comment() |>
     impute_tags() |>
-    dplyr::arrange('Dataset name', Parameter) |>
+    dplyr::arrange(`Dataset name`, Parameter) |>
     DT::datatable(
       filter = "top",
       extensions = c("FixedColumns", "Buttons"),

@@ -2,9 +2,9 @@
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
 on:
   push:
-    branches: [main, master]
+    branches:
   pull_request:
-    branches: [main, master]
+    branches:
 
 name: test-coverage
 
@@ -29,3 +29,16 @@ jobs:
       - name: Test coverage
         run: covr::codecov(quiet = FALSE)
         shell: Rscript {0}
+
+      - name: Merge new entries
+        run: |
+          library(AwesomeGeodataTable)
+          merge_and_delete_new_entries()
+        shell: Rscript {0}
+
+      - name: Commit report
+        run: |
+          git config --global user.name 'MxNl'
+          git config --global user.email 'maxnoelscher@posteo.de'
+          git commit -am "Automated commit"
+          git push
