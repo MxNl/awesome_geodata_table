@@ -38,7 +38,8 @@ jobs:
 
       - name: Commit report
         run: |
-          git config --global user.name 'MxNl'
-          git config --global user.email 'maxnoelscher@posteo.de'
-          git commit -am "Automated commit"
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git add --all
+          git commit -am "add data"
           git push
