@@ -16,9 +16,9 @@ Data-type: <teeeeext (data type: teeeeeeext)>
 Data-format: <teeeeext (data type: teeeeeeext)>
 Data-file_extension: <teeeeext (data type: teeeeeeext)>
 Coordinate_reference_system: <teeeeext (data type: teeeeeeext)>
-Download_link: <teeeeext (data type: teeeeeeext)>
+Download: <teeeeext (data type: teeeeeeext)>
 Published_first: 2003
-Literatur: <teeeeext (data type: teeeeeeext)>
+Literature: <teeeeext (data type: teeeeeeext)>
 Version_updates: <teeeeext (data type: teeeeeeext)>
 Upload_delay: <teeeeext (data type: teeeeeeext)>
 Temporal_type: <teeeeext (data type: teeeeeeext)>
