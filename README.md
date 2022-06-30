@@ -44,27 +44,33 @@ data sets or use the column filters to narrow your search. <br><br>
 
 <!-- -->
 
+    Parameter: <Name of a single parameter/variable in the dataset (data type: teeeeeeext)>
+    Dataset_name: <Full name of the dataset with optional abbreviation in round brackets (data type: teeeeeeext)>
     Tags: <Tags related to the dataset (data type: teeeeeeext)>
     Domain: <Strongest associated domain (data type: teeeeeeext)>
-    Resolution-temporal-min: <Minimum temporal resolution (data type: teeeeeeext)>
-    Resolution-temporal-max: <Maximum temporal resolution (data type: teeeeeeext)>
-    Resolution-spatial-min_[m]: <Minimum spatial resolution in meters (data type: teeeeeeext)>
-    Resolution-spatial-max_[m]: <Maximum spatial resolution in meters (data type: teeeeeeext)>
-    Resolution-spatial-unconverted_units: <Raw units of the spatial resolution (data type: teeeeeeext)>
-    Resolution-spatial-vertical: <Vertical spatial resolution (data type: teeeeeeext)>
-    Extent-temporal-start: <Start of the covered period (data type: teeeeeeext)>
-    Extent-temporal-end: <End of the covered period (data type: teeeeeeext)>
-    Extent-spatial: <teeeeext (data type: teeeeeeext)>
+    Unit: <Unit or dimension of the parameter (data type: teeeeeeext)>
+    Resolution_(temporal)-min: <Minimum temporal resolution (data type: teeeeeeext)>
+    Resolution_(temporal)-max: <Maximum temporal resolution (data type: teeeeeeext)>
+    Resolution_(spatial)-min_[m]: <Minimum spatial resolution in meters (data type: teeeeeeext)>
+    Resolution_(spatial)-max_[m]: <Maximum spatial resolution in meters (data type: teeeeeeext)>
+    Resolution_(spatial)-unconverted_units: <Raw units of the spatial resolution (data type: teeeeeeext)>
+    Resolution_(spatial)-vertical: <Vertical spatial resolution (data type: teeeeeeext)>
+    Coverage_(temporal)-start: <Start of the covered period (data type: teeeeeeext)>
+    Coverage_(temporal)-end: <End of the covered period (data type: teeeeeeext)>
+    Coverage_(spatial): <teeeeext (data type: teeeeeeext)>
     Data-type: <teeeeext (data type: teeeeeeext)>
     Data-format: <teeeeext (data type: teeeeeeext)>
     Data-file_extension: <teeeeext (data type: teeeeeeext)>
-    Download_link: <teeeeext (data type: teeeeeeext)>
-    Literatur-year_(first): <teeeeext (data type: teeeeeeext)>
-    Literatur-link: <teeeeext (data type: teeeeeeext)>
+    Coordinate_reference_system: <teeeeext (data type: teeeeeeext)>
+    Download: <teeeeext (data type: teeeeeeext)>
+    Published_first: <teeeeext (data type: teeeeeeext)>
+    Literatur: <teeeeext (data type: teeeeeeext)>
     Version_updates: <teeeeext (data type: teeeeeeext)>
+    Upload_delay: <teeeeext (data type: teeeeeeext)>
     Temporal_type: <teeeeext (data type: teeeeeeext)>
     Access: <teeeeext (data type: teeeeeeext)>
     Publisher: <teeeeext (data type: teeeeeeext)>
+    License: <teeeeext (data type: teeeeeeext)>
     Data_limitations: <teeeeext (data type: teeeeeeext)>
     Method: <teeeeext (data type: teeeeeeext)>
     Usage_requirement: <teeeeext (data type: teeeeeeext)>

@@ -2,7 +2,7 @@ format_link <- function(x) {
   x |>
     dplyr::mutate(
       dplyr::across(
-        dplyr::contains("link"),
+        dplyr::all_of(c("Download", "Literature")),
         ~ stringr::str_c("<a href='", .x, "'>", "link", "</a>")
         )
       )

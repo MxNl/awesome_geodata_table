@@ -130,6 +130,18 @@
         "sys"
       ]
     },
+    "assertr": {
+      "Package": "assertr",
+      "Version": "2.8",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Hash": "38c61c51fa8311904551d58895da2858",
+      "Requirements": [
+        "MASS",
+        "dplyr",
+        "rlang"
+      ]
+    },
     "badger": {
       "Package": "badger",
       "Version": "0.2.1",

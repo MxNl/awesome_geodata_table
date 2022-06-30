@@ -19,9 +19,9 @@ awesome_geodata_table_html <- function(table_data) {
     "Resolution-temporal-max",
     "Resolution-spatial-min_[m]",
     "Resolution-spatial-max_[m]",
-    "Extent-temporal-start",
-    "Extent-temporal-end",
-    "Extent-spatial-spatial",
+    "Coverage-temporal-start",
+    "Coverage-temporal-end",
+    "Coverage-spatial-spatial",
     "Data_type",
     "Data_format"
   ))
@@ -53,7 +53,7 @@ awesome_geodata_table_html <- function(table_data) {
       defaultExpanded = TRUE,
       striped = TRUE,
       # bordered = TRUE,
-      height = 600,
+      height = 1000,
       highlight = TRUE,
       compact = TRUE,
       elementId = "awesome_geodata_table_download",
