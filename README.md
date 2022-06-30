@@ -64,7 +64,7 @@ data sets or use the column filters to narrow your search. <br><br>
     Coordinate_reference_system: <teeeeext (data type: teeeeeeext)>
     Download: <teeeeext (data type: teeeeeeext)>
     Published_first: <teeeeext (data type: teeeeeeext)>
-    Literatur: <teeeeext (data type: teeeeeeext)>
+    Literature: <teeeeext (data type: teeeeeeext)>
     Version_updates: <teeeeext (data type: teeeeeeext)>
     Upload_delay: <teeeeext (data type: teeeeeeext)>
     Temporal_type: <teeeeext (data type: teeeeeeext)>
