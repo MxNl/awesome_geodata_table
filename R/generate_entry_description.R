@@ -3,12 +3,12 @@ generate_entry_description <- function(filepath) {
     unique_headers_clean()
 
   headers_defined <- list(
-    `Name` = list(
-      short_description = "Full name of the dataset with optional abbreviation in round brackets",
+    Parameter = list(
+      short_description = "Name of a single parameter/variable in the dataset",
       details = "teeeeeeext"
     ),
-    `Covered_Variables` = list(
-      short_description = "Name of a single parameter/variable in the dataset",
+    `Dataset_name` = list(
+      short_description = "Full name of the dataset with optional abbreviation in round brackets",
       details = "teeeeeeext"
     ),
     `Tags` = list(
@@ -19,39 +19,43 @@ generate_entry_description <- function(filepath) {
       short_description = "Strongest associated domain",
       details = "teeeeeeext"
     ),
-    `Resolution-temporal-min` = list(
+    Unit = list(
+      short_description = "Unit or dimension of the parameter",
+      details = "teeeeeeext"
+    ),
+    `Resolution_(temporal)-min` = list(
       short_description = "Minimum temporal resolution",
       details = "teeeeeeext"
     ),
-    `Resolution-temporal-max` = list(
+    `Resolution_(temporal)-max` = list(
       short_description = "Maximum temporal resolution",
       details = "teeeeeeext"
     ),
-    `Resolution-spatial-min_[m]` = list(
+    `Resolution_(spatial)-min_[m]` = list(
       short_description = "Minimum spatial resolution in meters",
       details = "teeeeeeext"
     ),
-    `Resolution-spatial-max_[m]` = list(
+    `Resolution_(spatial)-max_[m]` = list(
       short_description = "Maximum spatial resolution in meters",
       details = "teeeeeeext"
     ),
-    `Resolution-spatial-unconverted_units` = list(
+    `Resolution_(spatial)-unconverted_units` = list(
       short_description = "Raw units of the spatial resolution",
       details = "teeeeeeext"
     ),
-    `Resolution-spatial-vertical` = list(
+    `Resolution_(spatial)-vertical` = list(
       short_description = "Vertical spatial resolution",
       details = "teeeeeeext"
     ),
-    `Extent-temporal-start` = list(
+    `Coverage_(temporal)-start` = list(
       short_description = "Start of the covered period",
       details = "teeeeeeext"
     ),
-    `Extent-temporal-end` = list(
+    `Coverage_(temporal)-end` = list(
       short_description = "End of the covered period",
       details = "teeeeeeext"
     ),
-    `Extent-spatial` = list(
+    `Coverage_(spatial)` = list(
       short_description = "teeeeext",
       details = "teeeeeeext"
     ),
@@ -67,15 +71,19 @@ generate_entry_description <- function(filepath) {
       short_description = "teeeeext",
       details = "teeeeeeext"
     ),
-    `Download_link` = list(
+    Coordinate_reference_system = list(
       short_description = "teeeeext",
       details = "teeeeeeext"
     ),
-    `Literatur-year_(first)` = list(
+    `Download` = list(
       short_description = "teeeeext",
       details = "teeeeeeext"
     ),
-    `Literatur-link` = list(
+    Published_first = list(
+      short_description = "teeeeext",
+      details = "teeeeeeext"
+    ),
+    Literature = list(
       short_description = "teeeeext",
       details = "teeeeeeext"
     ),
@@ -83,7 +91,7 @@ generate_entry_description <- function(filepath) {
       short_description = "teeeeext",
       details = "teeeeeeext"
     ),
-    `Upload_frequency` = list(
+    Upload_delay = list(
       short_description = "teeeeext",
       details = "teeeeeeext"
     ),
@@ -129,7 +137,8 @@ generate_entry_description <- function(filepath) {
     )
   ) |>
     tibble::enframe() |>
-    tidyr::unnest_wider(value)
+    tidyr::unnest_wider(value) %>%
+    assertr::verify(identical(.$name, headers_as_in_csv$column_names))
 
   headers_as_in_csv |>
     dplyr::inner_join(headers_defined, by = c("column_names" = "name")) |>

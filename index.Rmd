@@ -14,20 +14,20 @@ output:
 
 <br><br><br><br>
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, message = FALSE, warning = FALSE}
 library(readr)
 library(dplyr)
-library(DT)
+library(reactable)
 knitr::opts_chunk$set(echo = TRUE)
 list.files("R", full.names = TRUE) |>
   purrr::map(source)
 ```
 
-```{r, include=FALSE, echo=FALSE, message=FALSE}
+```{r, include=FALSE, echo=FALSE, message=FALSE, warning = FALSE}
 awesome_geodata_table_raw <- awesome_geodata_table_read(CSV_TABLE_PATH)
 ```
 
-```{r, echo=FALSE, message=FALSE}
+```{r, echo=FALSE, message=FALSE, warning = FALSE}
 awesome_geodata_table_raw |>
   awesome_geodata_table_html()
 ```

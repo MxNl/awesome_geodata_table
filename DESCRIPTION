@@ -36,13 +36,17 @@ Depends:
 Imports: 
     readr,
     dplyr,
-    DT,
     purrr,
     here,
     allcontributors,
     stringr,
     tidyr,
-    here
+    here,
+    reactable,
+    tippy,
+    shiny,
+    htmltools,
+    assertr
 Suggests:
     magrittr,
     devtools,

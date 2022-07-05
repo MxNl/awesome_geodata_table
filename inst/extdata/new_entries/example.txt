@@ -1,33 +1,33 @@
-Parameter: soil moisture
-Dataset_name: Example dataset
-Tags: fujkfu, kfkf
-Domain: Atmospheric Sciences
-Unit: m^2
-Resolution-temporal-min: <=1h
-Resolution-temporal-max: >10a
-Resolution-spatial-min_[m]: 1
-Resolution-spatial-max_[m]: 10arcsec
-Resolution-spatial-unconverted_units: 634d
-Resolution-spatial-vertical: shallow
-Extent-temporal-start: 2022-01-01
-Extent-temporal-end: 10.02.2000
-Extent-spatial: Europe
-Data-type: asda
-Data-format: fsd
-Data-file_extension: .tge
-Coordinate_reference_system: WGS84
-Download_link: hrth
-Literatur-year_(first): 2019
-Literatur-link: www.bgr.de
-Version_updates: yes
-Upload_delay: 1a
-Temporal_type: static
-Access: free
-Publisher: asdas
-License: CCBY0
-Data_limitations: <asda
-Method: model-based
-Usage_requirement: raw
-minTempRes: wef
-maxTempRes: sadf
+Parameter: example-parameter
+Dataset_name: example-dataset
+Tags: <Tags related to the dataset (data type: teeeeeeext)>
+Domain: Hydrological Sciences
+Unit: <Unit or dimension of the parameter (data type: teeeeeeext)>
+Resolution_(temporal)-min: <Minimum temporal resolution (data type: teeeeeeext)>
+Resolution_(temporal)-max: <Maximum temporal resolution (data type: teeeeeeext)>
+Resolution_(spatial)-min_[m]: 1
+Resolution_(spatial)-max_[m]: 10
+Resolution_(spatial)-unconverted_units: <Raw units of the spatial resolution (data type: teeeeeeext)>
+Resolution_(spatial)-vertical: <Vertical spatial resolution (data type: teeeeeeext)>
+Coverage_(temporal)-start: 2000-01-01
+Coverage_(temporal)-end: 2003-01-01
+Coverage_(spatial): <teeeeext (data type: teeeeeeext)>
+Data-type: <teeeeext (data type: teeeeeeext)>
+Data-format: <teeeeext (data type: teeeeeeext)>
+Data-file_extension: <teeeeext (data type: teeeeeeext)>
+Coordinate_reference_system: <teeeeext (data type: teeeeeeext)>
+Download: <teeeeext (data type: teeeeeeext)>
+Published_first: 2003
+Literature: <teeeeext (data type: teeeeeeext)>
+Version_updates: <teeeeext (data type: teeeeeeext)>
+Upload_delay: <teeeeext (data type: teeeeeeext)>
+Temporal_type: <teeeeext (data type: teeeeeeext)>
+Access: <teeeeext (data type: teeeeeeext)>
+Publisher: <teeeeext (data type: teeeeeeext)>
+License: <teeeeext (data type: teeeeeeext)>
+Data_limitations: <teeeeext (data type: teeeeeeext)>
+Method: <teeeeext (data type: teeeeeeext)>
+Usage_requirement: <teeeeext (data type: teeeeeeext)>
+minTempRes: <teeeeext (data type: teeeeeeext)>
+maxTempRes: <teeeeext (data type: teeeeeeext)>
 Comment: <teeeeext (data type: teeeeeeext)>
