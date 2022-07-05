@@ -53,14 +53,22 @@ awesome_geodata_table_html <- function(table_data) {
       defaultExpanded = TRUE,
       striped = TRUE,
       # bordered = TRUE,
-      height = 1000,
+      height = 800,
       highlight = TRUE,
       compact = TRUE,
       elementId = "awesome_geodata_table_download",
       defaultColDef = colDef(
         align = "center"
       ),
-      columns = column_definintion
+      columns = column_definintion,
+      theme = reactableTheme(
+        # borderColor = "#dfe2e5",
+        # stripedColor = "#f6f8fa",
+        # highlightColor = "#f0f5f9",
+        cellPadding = "6px 8px",
+        cellStyle = list(fontSize = "6 px"),
+        searchInputStyle = list(width = "50%")
+      )
     )
 
   htmltools::browsable(
