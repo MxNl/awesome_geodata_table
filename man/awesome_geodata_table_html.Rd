@@ -4,10 +4,10 @@
 \alias{awesome_geodata_table_html}
 \title{generate html table}
 \usage{
-awesome_geodata_table_html(x)
+awesome_geodata_table_html(table_data)
 }
 \arguments{
-\item{x}{a tibble.}
+\item{table_data}{a tibble.}
 }
 \value{
 The html table.
