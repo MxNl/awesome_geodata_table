@@ -1,5 +1,3 @@
-CSV_TABLE_PATH <- here::here("inst", "extdata", "awesome_geodata_table.csv")
-NEW_ENTRY_DIRECTORY <- here::here("inst", "extdata", "new_entries")
 COLUMN_CATEGORIES_DOMAIN <- c(
   "Atmospheric Sciences",
   "Biogeosciences",

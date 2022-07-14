@@ -1,6 +1,6 @@
 merge_and_delete_new_entries <- function (filepath) {
   table_old <- CSV_TABLE_PATH |>
-    awesome_geodata_table_read() |>
+    agt_raw_read() |>
     dplyr::mutate(dplyr::across(dplyr::everything(), as.character))
 
   unique_header_clean <- CSV_TABLE_PATH |>

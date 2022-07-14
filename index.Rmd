@@ -24,7 +24,7 @@ list.files("R", full.names = TRUE) |>
 ```
 
 ```{r, include=FALSE, echo=FALSE, message=FALSE, warning = FALSE}
-awesome_geodata_table_raw <- awesome_geodata_table_read(CSV_TABLE_PATH)
+awesome_geodata_table_raw <- agt_raw_read(CSV_TABLE_PATH)
 ```
 
 ```{r, echo=FALSE, message=FALSE, warning = FALSE}

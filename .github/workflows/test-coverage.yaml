@@ -27,17 +27,3 @@ jobs:
       - name: Test coverage
         run: covr::codecov(quiet = FALSE)
         shell: Rscript {0}
-
-      - name: Merge new entries
-        run: |
-          devtools::load_all()
-          merge_and_delete_new_entries()
-        shell: Rscript {0}
-
-      - name: Commit report
-        run: |
-          git config --local user.email "actions@github.com"
-          git config --local user.name "GitHub Actions"
-          git add --all
-          git commit -am "add data"
-          git push

@@ -1,21 +1,65 @@
-columndef_list <- function(x) {
-  columns <- x |>
-    names() |>
-    bind_cols(read_column_types() |> stringr::str_split("")) |>
-    purrr::set_names(c("name", "type"))
-
-  columns_with_range_slider <- columns %>% define_column_range_slider()
-  columns_sticky <- columns %>% define_columns_sticky()
-  columns_url <- columns %>% define_columns_url()
-  columns_binary <- columns %>% define_column_binary()
-  columns_comment <- columns %>% define_column_comment()
-  # columns_latex <- columns %>% define_column_latex()
-
-  c(
-    columns_with_range_slider,
-    columns_sticky,
-    columns_url,
-    columns_binary,
-    columns_comment
+columndef_list <- function() {
+  list(
+    `Dataset name` = colDef(
+      name = "Dataset name",
+      align = "left",
+      sticky = "left",
+      minWidth = 200
+    ),
+    Parameter = colDef(
+      name = "Parameter",
+      align = "left",
+      sticky = "left",
+      minWidth = 200
+    ),
+    min = colDef(
+      name = "min",
+      width = 300,
+      cell = reactablefmtr::color_tiles(
+        data = data,
+        colors = viridis::mako(n = 17, begin = 0, end = 0.7, direction = -1), #MetBrewer::met.brewer("VanGogh3", n = 5, direction = -1),
+        opacity = 0.5,
+        bold_text = TRUE,
+        box_shadow = TRUE
+      )
+    ),
+    `Version updates` = colDef(
+      name = "Version updates",
+      cell = function(value) {
+        # Render as an X mark or check mark
+        if (value == "no") {
+          render_reactable_cell_with_tippy(text = "\u274c", tooltip = value)
+        } else if (value == "yes") {
+          render_reactable_cell_with_tippy(text = "\u2714\ufe0f", tooltip = value)
+        } else if (is.na(value)) {
+          "unknown"
+        } else value
+      }
+    ),
+    Download = colDef(
+      name = "Download",
+      cell = function(value, index) {
+        if (stringr::str_detect(value, "http") | is.na(value)) {
+          htmltools::tags$a(href = value, target = "_blank", "link")
+        } else {
+          "no link yet"
+        }
+      }
+    ),
+    Literature = colDef(
+      name = "Literature",
+      cell = function(value, index) {
+        if (stringr::str_detect(value, "http") | is.na(value)) {
+          htmltools::tags$a(href = value, target = "_blank", "link")
+        } else {
+          "no link yet"
+        }
+      }
+    )
+    # Comment = colDef(
+    #   name = "Comment",
+    #   cell = function(value, index, name) {
+    #       render_reactable_cell_with_tippy(text = value, tooltip = value) }
+    # )
   )
 }
