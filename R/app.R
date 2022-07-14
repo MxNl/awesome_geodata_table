@@ -17,6 +17,7 @@ awesome_geodata_table_App <- function() {
     agt_table() %>%
     agt_prepare(column_types)
   table_config <- agt_configure(data, double_column_names, column_types)
+  spatial_res_range <- c(data$`min [m]`, data$`min [m]`) %>% range(na.rm = TRUE)
 
   ui = tagList(
     navbarPage(
@@ -24,7 +25,7 @@ awesome_geodata_table_App <- function() {
       "",
       tabPanel("Awesome Geodata Table",
                sidebarPanel(
-                 awesometableFilterUI("awesome_geodata_table"),
+                 awesometableFilterUI("awesome_geodata_table", spatial_res_range),
                  width = 3
                ),
                mainPanel(

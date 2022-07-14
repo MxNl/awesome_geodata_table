@@ -55,11 +55,11 @@ columndef_list <- function() {
           "no link yet"
         }
       }
+    ),
+    Comment = colDef(
+      name = "Comment",
+      cell = function(value, index, name) {
+          render_reactable_cell_with_tippy(text = value, tooltip = value) }
     )
-    # Comment = colDef(
-    #   name = "Comment",
-    #   cell = function(value, index, name) {
-    #       render_reactable_cell_with_tippy(text = value, tooltip = value) }
-    # )
   )
 }
