@@ -1,4 +1,4 @@
-awesometableFilterUI <- function(id, spatial_res_range) {
+awesometableFilterUI <- function(id, spatial_res_range, temporal_res_unique, temporal_cov_range) {
   tagList(
     selectInput(
       NS(id, "Dataset name"),
@@ -31,10 +31,31 @@ awesometableFilterUI <- function(id, spatial_res_range) {
     ),
     sliderInput(
       NS(id, "spatial_res"),
-      label = "spatial Resolution",
-      min = spatial_res_range[1],
+      label = "Resolution (spatial)",
+      min = 0,
       max = spatial_res_range[2],
       value = spatial_res_range
+    ),
+    sliderTextInput(
+      NS(id, "temporal_res"),
+      label = "Resolution (temporal)",
+      choices = temporal_res_unique,
+      selected = c(temporal_res_unique[1], temporal_res_unique[length(temporal_res_unique)]),
+      grid = TRUE
+    ),
+    sliderInput(
+      NS(id, "temporal_coverage"),
+      label = "Coverage (temporal)",
+      min = temporal_cov_range[1],
+      max = temporal_cov_range[2],
+      value = temporal_cov_range,
+      sep = ""
+    ),
+    selectInput(
+      NS(id, "spatial_coverage"),
+      label = "Coverage (spatial)",
+      choices = unique(data$`Coverage (spatial)`) %>% sort(),
+      multiple = TRUE
     )
   )
 }

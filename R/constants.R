@@ -22,3 +22,13 @@ COLUMN_CATEGORIES_DOMAIN <- c(
   "Solar-Terrestrial Sciences",
   "Tectonics & Structural Geology"
 )
+
+COLUMN_CATEGORIES_TEMPRES <- c(
+  "(0h, 1h]",
+  "(1h, 1d]",
+  "(1d, 7d]",
+  "(7d, 1m]",
+  "(1m, 1a]",
+  "(1a, 10a]",
+  "static"
+)

@@ -51,7 +51,9 @@ Imports:
     shinythemes,
     reactablefmtr,
     viridis,
-    shinyjs
+    shinyjs,
+    shinyWidgets,
+    lubridate
 Suggests:
     magrittr,
     devtools,

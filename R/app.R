@@ -1,12 +1,16 @@
 library(dplyr)
 library(purrr)
+library(lubridate)
 library(googlesheets4)
 library(stringr)
 library(shiny)
 library(shinyjs)
 library(shinythemes)
+library(shinyWidgets)
 library(reactable)
 library(reactablefmtr)
+
+# data("COLUMN_CATEGORIES_TEMPRES")
 
 awesome_geodata_table_App <- function() {
 
@@ -17,7 +21,12 @@ awesome_geodata_table_App <- function() {
     agt_table() %>%
     agt_prepare(column_types)
   table_config <- agt_configure(data, double_column_names, column_types)
-  spatial_res_range <- c(data$`min [m]`, data$`min [m]`) %>% range(na.rm = TRUE)
+  spatial_res_range <- c(data$`min [m]`, data$`max [m]`) %>%
+    range(na.rm = TRUE)
+  temporal_cov_range <- c(data$start, data$end) %>%
+    range(na.rm = TRUE) %>%
+    year()
+  temporal_res_unique <- COLUMN_CATEGORIES_TEMPRES %>% discard(str_detect, "static")
 
   ui = tagList(
     navbarPage(
@@ -25,7 +34,12 @@ awesome_geodata_table_App <- function() {
       "",
       tabPanel("Awesome Geodata Table",
                sidebarPanel(
-                 awesometableFilterUI("awesome_geodata_table", spatial_res_range),
+                 awesometableFilterUI(
+                   "awesome_geodata_table",
+                   spatial_res_range,
+                   temporal_res_unique,
+                   temporal_cov_range
+                 ),
                  width = 3
                ),
                mainPanel(

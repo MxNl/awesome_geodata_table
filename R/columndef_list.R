@@ -23,6 +23,12 @@ columndef_list <- function() {
         box_shadow = TRUE
       )
     ),
+    start = colDef(
+      format = colFormat(date = TRUE, locales = "en-GB")
+    ),
+    end = colDef(
+      format = colFormat(date = TRUE, locales = "en-GB")
+    ),
     `Version updates` = colDef(
       name = "Version updates",
       cell = function(value) {
@@ -59,7 +65,7 @@ columndef_list <- function() {
     Comment = colDef(
       name = "Comment",
       cell = function(value, index, name) {
-          render_reactable_cell_with_tippy(text = value, tooltip = value) }
+        render_reactable_cell_with_tippy(text = value, tooltip = value) }
     )
   )
 }
