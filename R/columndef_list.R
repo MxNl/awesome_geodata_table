@@ -16,7 +16,7 @@ columndef_list <- function() {
       name = "min",
       width = 300,
       cell = reactablefmtr::color_tiles(
-        data = data,
+        data = table_data,
         colors = viridis::mako(n = 17, begin = 0, end = 0.7, direction = -1), #MetBrewer::met.brewer("VanGogh3", n = 5, direction = -1),
         opacity = 0.5,
         bold_text = TRUE,

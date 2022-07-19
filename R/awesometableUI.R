@@ -1,21 +1,21 @@
-awesometableFilterUI <- function(id, spatial_res_range, temporal_res_unique, temporal_cov_range) {
+awesometableFilterUI <- function(id) {
   tagList(
     selectInput(
       NS(id, "Dataset name"),
       label = "Dataset name",
-      choices = unique(data$`Dataset name`) %>% sort(),
+      choices = unique(table_data$`Dataset name`) %>% sort(),
       multiple = TRUE
     ),
     selectInput(
       NS(id, "Parameter"),
       label = "Parameter",
-      choices = unique(data$Parameter) %>% sort(),
+      choices = unique(table_data$Parameter) %>% sort(),
       multiple = TRUE
     ),
     selectInput(
       NS(id, "Tags"),
       label = "Tags",
-      choices = unique(data$Tags) %>%
+      choices = unique(table_data$Tags) %>%
         stringr::str_c(collapse = ",") %>%
         stringr::str_split(pattern = ",") %>%
         unlist() %>%
@@ -26,7 +26,7 @@ awesometableFilterUI <- function(id, spatial_res_range, temporal_res_unique, tem
     selectInput(
       NS(id, "Domain"),
       label = "Domain",
-      choices = unique(data$Domain) %>% sort(),
+      choices = unique(table_data$Domain) %>% sort(),
       multiple = TRUE
     ),
     sliderInput(
@@ -54,7 +54,7 @@ awesometableFilterUI <- function(id, spatial_res_range, temporal_res_unique, tem
     selectInput(
       NS(id, "spatial_coverage"),
       label = "Coverage (spatial)",
-      choices = unique(data$`Coverage (spatial)`) %>% sort(),
+      choices = unique(table_data$`Coverage (spatial)`) %>% sort(),
       multiple = TRUE
     )
   )

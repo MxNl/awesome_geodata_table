@@ -18,7 +18,7 @@ awesometableServer <- function(id) {
         str_c("-01-01") %>%
         ymd()
 
-      filtered <- data %>%
+      filtered <- table_data %>%
         filter(
           conditional(length(input$`Dataset name`) > 0, `Dataset name` %in% input$`Dataset name`),
           conditional(length(input$Parameter) > 0, Parameter %in% input$Parameter),

@@ -5,7 +5,7 @@
 #' @export
 
 agt_html <- function() {
-  data %>%
+  table_data %>%
     reactable::reactable(
       columnGroups = table_config$header_sketch[[2]],
       # searchable = TRUE,
