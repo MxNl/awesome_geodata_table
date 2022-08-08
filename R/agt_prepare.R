@@ -7,6 +7,6 @@ agt_prepare <- function (x, column_types) {
     format_lower_case() |>
     # format_resolution() |>
     format_comment() |>
-    format_equations() %>%
+    # format_equations() %>%
     impute_tags()
 }

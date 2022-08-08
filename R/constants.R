@@ -1,3 +1,5 @@
+TEMPORAL_COVERAGE_STARTVALUES <- c(2006, 2022)
+
 COLUMN_CATEGORIES_DOMAIN <- c(
   "Atmospheric Sciences",
   "Biogeosciences",

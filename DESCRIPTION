@@ -53,7 +53,8 @@ Imports:
     viridis,
     shinyjs,
     shinyWidgets,
-    lubridate
+    lubridate,
+    katexR
 Suggests:
     magrittr,
     devtools,

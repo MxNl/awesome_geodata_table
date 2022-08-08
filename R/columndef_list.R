@@ -12,6 +12,10 @@ columndef_list <- function() {
       sticky = "left",
       minWidth = 200
     ),
+    Unit = colDef(cell = function(value) {
+      # Omit inline = TRUE to render math in display mode
+      katexR::katex(value, inline = TRUE)
+    }),
     min = colDef(
       name = "min",
       width = 300,

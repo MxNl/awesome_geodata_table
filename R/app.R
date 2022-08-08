@@ -9,6 +9,7 @@ library(shinythemes)
 library(shinyWidgets)
 library(reactable)
 library(reactablefmtr)
+library(katexR)
 
 # data("COLUMN_CATEGORIES_TEMPRES")
 

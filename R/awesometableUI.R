@@ -1,18 +1,18 @@
 awesometableFilterUI <- function(id) {
   tagList(
-    selectInput(
+    selectizeInput(
       NS(id, "Dataset name"),
       label = "Dataset name",
       choices = unique(table_data$`Dataset name`) %>% sort(),
       multiple = TRUE
     ),
-    selectInput(
+    selectizeInput(
       NS(id, "Parameter"),
       label = "Parameter",
       choices = unique(table_data$Parameter) %>% sort(),
       multiple = TRUE
     ),
-    selectInput(
+    selectizeInput(
       NS(id, "Tags"),
       label = "Tags",
       choices = unique(table_data$Tags) %>%
@@ -23,7 +23,7 @@ awesometableFilterUI <- function(id) {
         sort(),
       multiple = TRUE
     ),
-    selectInput(
+    selectizeInput(
       NS(id, "Domain"),
       label = "Domain",
       choices = unique(table_data$Domain) %>% sort(),
@@ -48,10 +48,10 @@ awesometableFilterUI <- function(id) {
       label = "Coverage (temporal)",
       min = temporal_cov_range[1],
       max = temporal_cov_range[2],
-      value = temporal_cov_range,
+      value = TEMPORAL_COVERAGE_STARTVALUES,
       sep = ""
     ),
-    selectInput(
+    selectizeInput(
       NS(id, "spatial_coverage"),
       label = "Coverage (spatial)",
       choices = unique(table_data$`Coverage (spatial)`) %>% sort(),
