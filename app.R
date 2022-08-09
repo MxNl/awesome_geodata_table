@@ -7,6 +7,7 @@ library(shiny)
 library(shinyjs)
 library(shinythemes)
 library(shinyWidgets)
+library(shinymaterial)
 library(reactable)
 library(reactablefmtr)
 library(katexR)
@@ -32,32 +33,34 @@ temporal_cov_range <- c(table_data$start, table_data$end) %>%
 temporal_res_unique <- COLUMN_CATEGORIES_TEMPRES %>% discard(str_detect, "static")
 
 
-awesome_geodata_table_App <- function() {
+# awesome_geodata_table_App <- function() {
 
 
-  ui = tagList(
-    navbarPage(
-      # theme = "cerulean",  # <--- To use a theme, uncomment this
-      "",
-      tabPanel("Awesome Geodata Table",
-               sidebarPanel(
-                 awesometableFilterUI(
-                   "awesome_geodata_table"
-                 ),
-                 width = 3
-               ),
-               mainPanel(
-                 awesometableOutputUI("awesome_geodata_table"),
-                 width = 9
-               )
+ui = tagList(
+  material_page(
+    # theme = "cerulean",  # <--- To use a theme, uncomment this
+    # "",
+    material_parallax(image_source = "www/bg.jpeg"),
+    material_row(
+      material_column(
+        width = 3,
+        awesometableFilterUI(
+          "awesome_geodata_table"
+        )
       ),
-      tabPanel("Add a Dataset", "Content to come")
+      material_column(
+        width = 9,
+        mainPanel(
+          awesometableOutputUI("awesome_geodata_table")
+        )
+      )
     )
   )
+)
 
-  server <- function(input, output, session) {
-    awesometableServer("awesome_geodata_table")
-  }
-
-  shinyApp(ui, server)
+server <- function(input, output, session) {
+  awesometableServer("awesome_geodata_table")
 }
+
+shinyApp(ui, server)
+# }
