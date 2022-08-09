@@ -1,4 +1,4 @@
-awesometableFilterUI <- function(id) {
+awesometableFilterUI <- function(id, table_data, spatial_res_range, temporal_cov_range, temporal_res_unique) {
   tagList(
     selectizeInput(
       NS(id, "Dataset name"),

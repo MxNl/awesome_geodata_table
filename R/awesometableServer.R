@@ -1,4 +1,4 @@
-awesometableServer <- function(id) {
+awesometableServer <- function(id, table_data) {
   moduleServer(id, function(input, output, session) {
 
     output$table <- renderReactable({
