@@ -662,6 +662,23 @@
         "gtable"
       ]
     },
+    "gridlayout": {
+      "Package": "gridlayout",
+      "Version": "0.1.0",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "rstudio",
+      "RemoteRepo": "gridlayout",
+      "RemoteRef": "main",
+      "RemoteSha": "9869487df905ead3ad21c5192602ce1189b33c7f",
+      "Hash": "eb34790b255123ca8f36e9bdf12a2fe0",
+      "Requirements": [
+        "htmltools",
+        "magrittr",
+        "rlang"
+      ]
+    },
     "gtable": {
       "Package": "gtable",
       "Version": "0.3.0",
@@ -808,6 +825,22 @@
       "Repository": "CRAN",
       "Hash": "d07e729b27b372429d42d24d503613a0",
       "Requirements": []
+    },
+    "katexR": {
+      "Package": "katexR",
+      "Version": "0.1",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "timelyportfolio",
+      "RemoteRepo": "katexR",
+      "RemoteRef": "master",
+      "RemoteSha": "bc3c75c9f08a3e418d3cc973725ee9fb93beab23",
+      "Hash": "c9d8bd4da0178d4d548ec34dc4e17c12",
+      "Requirements": [
+        "htmltools",
+        "htmlwidgets"
+      ]
     },
     "knitr": {
       "Package": "knitr",
@@ -1394,6 +1427,31 @@
       "Hash": "30f0ebc41feba25691073626ff5e2cf4",
       "Requirements": [
         "shiny"
+      ]
+    },
+    "shinyuieditor": {
+      "Package": "shinyuieditor",
+      "Version": "0.1.0",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "rstudio",
+      "RemoteRepo": "shinyuieditor",
+      "RemoteRef": "main",
+      "RemoteSha": "2e8c1a358cc01d5dad8c0a1709e7459b853884d0",
+      "Remotes": "rstudio/gridlayout",
+      "Hash": "855483b2c2121af7a47bcdcd0c766b8e",
+      "Requirements": [
+        "callr",
+        "crayon",
+        "fs",
+        "gridlayout",
+        "httpuv",
+        "jsonlite",
+        "later",
+        "rlang",
+        "shiny",
+        "styler"
       ]
     },
     "sourcetools": {

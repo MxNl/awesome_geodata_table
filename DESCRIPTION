@@ -63,5 +63,6 @@ Suggests:
     badger,
     testthat (>= 3.0.0),
     knitr,
-    rmarkdown
+    rmarkdown,
+    shinyuieditor
 Config/testthat/edition: 3
