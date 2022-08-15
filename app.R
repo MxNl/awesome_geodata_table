@@ -35,53 +35,63 @@ ui = tagList(
   #   tags$link(rel = "stylesheet", type = "text/css", href = "bootstrap_custom.css")
   # ),
   fluidPage(
+    # tags$head(tags$script(type="text/javascript", src = "navbar_link_icon.js")),
+    tags$style("@import url(https://use.fontawesome.com/releases/v5.7.2/css/all.css);"),
     includeCSS("www/agt_style.css"),
     navbarPage(
       # theme = "agt_style.css",  # <--- To use a theme, uncomment this
       "",
-      tabPanel("Search the Awesome Geodata Table",
-               fluidRow(
-                 column(
-                   width = 10,
-                   offset = 1,
-                   h2("Welcome to the AwesomeGeodataTable!"),
-                   p("Here you can search for data that represents spatially
+      tabPanel(
+        "Search the Awesome Geodata Table",
+        icon = icon("search"),
+        fluidRow(
+          column(
+            width = 10,
+            offset = 1,
+            h2("Welcome to the AwesomeGeodataTable!"),
+            br(),
+            p("Here you can search for data that represents spatially
                  continuous data describing predominantly geophysical or environmental properties.
                  This data collection focusses on the application of
                  spatial predictor variables in machine learning tasks"),
-                   p("The completeness of this collection of datasets is still growing.
+            p("The completeness of this collection of datasets is still growing.
                  Therefore, any contribution of new datasets is very welcome.
                  To add a dataset of which you think it might be helpful,
                  please click on the tab 'Add a Dataset'."),
-                   p("Use the following filters to define your search
+            p("Use the following filters to define your search
                  for parameters or datasets.")
-                 ),
-                 style = "padding-bottom:20px"
-               ),
-               hr(),
-               fluidRow(
-                 width = 3,
-                 style = "padding-bottom:20px; padding-top:20px",
-                 awesometableFilterUI(
-                   "awesome_geodata_table",
-                   table_data,
-                   spatial_res_range,
-                   temporal_cov_range,
-                   temporal_res_unique
-                 ),
-               ),
-               hr(),
-               fluidRow(
-                 style = "padding-top:20px",
-                 column(
-                   width = 10,
-                   offset = 1,
-                   awesometableOutputUI("awesome_geodata_table")
-                 )
-               )
+          ),
+          style = "padding-bottom:20px"
+        ),
+        hr(),
+        fluidRow(
+          width = 3,
+          style = "padding-bottom:20px; padding-top:20px",
+          awesometableFilterUI(
+            "awesome_geodata_table",
+            table_data,
+            spatial_res_range,
+            temporal_cov_range,
+            temporal_res_unique
+          ),
+        ),
+        hr(),
+        fluidRow(
+          style = "padding-top:20px",
+          column(
+            width = 10,
+            offset = 1,
+            awesometableOutputUI("awesome_geodata_table")
+          )
+        )
       ),
-      tabPanel("Add a Dataset", "Content to come")
-    ))
+      tabPanel(
+        "Add a Dataset",
+        icon = icon("plus"),
+        "Content to come"
+      )
+    )
+  )
 )
 
 server <- function(input, output, session) {
