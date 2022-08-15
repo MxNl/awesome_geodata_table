@@ -1,17 +1,11 @@
-complex_header <- function(filepath) {
-  headers <- readr::read_csv2(
-    filepath,
-    col_names = FALSE,
-    skip = 1,
-    n_max = 2,
-    show_col_types = FALSE, locale = readr::locale(decimal_mark = ",", grouping_mark = ".")
-  ) |>
+complex_header <- function(double_column_names) {
+  headers <- double_column_names |>
     tidyr::pivot_longer(dplyr::everything()) |>
-    dplyr::mutate(name = stringr::str_remove(name, "X")) |>
+    dplyr::mutate(name = stringr::str_remove(name, "...")) |>
     dplyr::mutate(name = as.numeric(name)) |>
     dplyr::arrange(name)
 
-  sketch <- headers|>
+  sketch <- headers |>
     dplyr::group_by(name) |>
       dplyr::filter(length(unique(value)) > 1) |>
     dplyr::mutate(

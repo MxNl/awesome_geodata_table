@@ -1,4 +1,4 @@
-format_utf8_critical_characters <- function(x) {
+format_utf8_critical_characters <- function(x, column_types) {
   x |>
     dplyr::mutate(
       dplyr::across(
@@ -9,5 +9,5 @@ format_utf8_critical_characters <- function(x) {
         )
       )
     ) |>
-    readr::type_convert(col_types = true_column_types())
+    readr::type_convert(col_types = column_types)
 }

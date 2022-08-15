@@ -1,5 +1,5 @@
-CSV_TABLE_PATH <- here::here("inst", "extdata", "awesome_geodata_table.csv")
-NEW_ENTRY_DIRECTORY <- here::here("inst", "extdata", "new_entries")
+TEMPORAL_COVERAGE_STARTVALUES <- c(2006, 2022)
+
 COLUMN_CATEGORIES_DOMAIN <- c(
   "Atmospheric Sciences",
   "Biogeosciences",
@@ -23,4 +23,14 @@ COLUMN_CATEGORIES_DOMAIN <- c(
   "Soil System Sciences",
   "Solar-Terrestrial Sciences",
   "Tectonics & Structural Geology"
+)
+
+COLUMN_CATEGORIES_TEMPRES <- c(
+  "(0h, 1h]",
+  "(1h, 1d]",
+  "(1d, 7d]",
+  "(7d, 1m]",
+  "(1m, 1a]",
+  "(1a, 10a]",
+  "static"
 )
