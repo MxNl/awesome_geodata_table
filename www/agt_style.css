@@ -1,0 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik+Dirt&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
+
+* { font-family: "Quicksand"; }
+
+h2 { font-family: "Rubik Dirt"; }
+
+.navbar{padding-left:7.6%;}
