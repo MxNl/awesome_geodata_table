@@ -12,6 +12,16 @@ columndef_list <- function() {
       sticky = "left",
       minWidth = 200
     ),
+    Tags = colDef(
+      vAlign = "center",
+      cell = function(value, index, name) {
+        render_reactable_cell_with_tippy(text = value, tooltip = value)
+      }
+      # style = cell_style(
+      #   vertical_align = "center"
+      #   font_size = 6
+      # )
+    ),
     Unit = colDef(cell = function(value) {
       # Omit inline = TRUE to render math in display mode
       katexR::katex(value, inline = TRUE)
@@ -69,7 +79,8 @@ columndef_list <- function() {
     Comment = colDef(
       name = "Comment",
       cell = function(value, index, name) {
-        render_reactable_cell_with_tippy(text = value, tooltip = value) }
+        render_reactable_cell_with_tippy(text = value, tooltip = value)
+      }
     )
   )
 }

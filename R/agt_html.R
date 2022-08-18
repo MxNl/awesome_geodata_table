@@ -20,7 +20,9 @@ agt_html <- function() {
       highlight = TRUE,
       compact = TRUE,
       defaultColDef = colDef(
-        align = "center"
+        align = "center",
+        vAlign = "center",
+        headerVAlign = "center"
       ),
       columns = columndef_list(),
       # details = function(index) paste("Details for row:", index)
