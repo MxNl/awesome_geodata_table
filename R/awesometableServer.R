@@ -39,7 +39,7 @@ awesometableServer <- function(id, table_data) {
           as.character(nrow(table_filtered)),
           "Found Parameters",
           # icon("check-circle"),
-          "yellow"
+          color = "yellow"
         )
       })
 
@@ -51,7 +51,7 @@ awesometableServer <- function(id, table_data) {
             as.character(),
           "Found Datasets",
           # icon("check-circle"),
-          "yellow"
+          color = "yellow"
         )
       })
 
