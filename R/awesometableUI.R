@@ -89,6 +89,10 @@ awesometableOutputUI <- function(id) {
     column(
       width = 1,
       # h3("Number of parameters found"),
+      fluidRow(
+        style = "padding-bottom:10px",
+        downloadButton(NS(id, "download_data"))
+      ),
       fluidRow(valueBoxOutput(NS(id, "n_search_results"))),
       fluidRow(valueBoxOutput(NS(id, "n_search_datasets")))
     )

@@ -38,7 +38,7 @@ awesometableServer <- function(id, table_data) {
         valueBox(
           as.character(nrow(table_filtered)),
           "Found Parameters",
-          icon("check-circle"),
+          # icon("check-circle"),
           "yellow"
         )
       })
@@ -50,10 +50,19 @@ awesometableServer <- function(id, table_data) {
             length() %>%
             as.character(),
           "Found Datasets",
-          icon("check-circle"),
+          # icon("check-circle"),
           "yellow"
         )
       })
+
+      output$download_data <- downloadHandler(
+        filename = function() {
+          paste('awesome-geodata-table_results_', Sys.Date(), '.csv', sep = '')
+        },
+        content = function(con) {
+          write.csv(table_filtered, con)
+        }
+      )
 
       # Update Input choices
       # updateSelectizeInput(
