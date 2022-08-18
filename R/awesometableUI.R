@@ -84,13 +84,14 @@ awesometableOutputUI <- function(id) {
     column(
       width = 10,
       offset = 1,
-      reactableOutput(NS(id, "table"))
+      reactableOutput(NS(id, "table")) %>%
+        withSpinner()
     ),
     column(
       width = 1,
       # h3("Number of parameters found"),
       fluidRow(
-        style = "padding-bottom:10px",
+        style = "padding-bottom:10px; padding-left:14px",
         downloadButton(NS(id, "download_data"))
       ),
       fluidRow(valueBoxOutput(NS(id, "n_search_results"))),

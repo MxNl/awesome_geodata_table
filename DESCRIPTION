@@ -55,7 +55,8 @@ Imports:
     shinyWidgets,
     lubridate,
     katexR,
-    shinydashboard
+    shinydashboard,
+    shinycssloaders
 Suggests:
     magrittr,
     devtools,

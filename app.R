@@ -3,6 +3,7 @@ library(purrr)
 library(lubridate)
 library(googlesheets4)
 library(stringr)
+library(shinycssloaders)
 library(shiny)
 library(shinyjs)
 library(shinythemes)
@@ -29,6 +30,9 @@ temporal_cov_range <- c(table_data$start, table_data$end) %>%
   range(na.rm = TRUE) %>%
   year()
 temporal_res_unique <- COLUMN_CATEGORIES_TEMPRES %>% discard(str_detect, "static")
+
+# Custom colour ramp
+
 
 ui = tagList(
   header = tags$img(src = 'image_w_logo_300dpi.png', width = '100%'),

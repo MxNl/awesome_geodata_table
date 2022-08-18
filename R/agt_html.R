@@ -12,7 +12,7 @@ agt_html <- function() {
       # theme = nytimes(),
       pagination = FALSE,
       defaultSorted = c("Dataset name", "Parameter"),
-      groupBy = "Dataset name",
+      # groupBy = "Dataset name",
       defaultExpanded = TRUE,
       striped = TRUE,
       # bordered = TRUE,
@@ -22,7 +22,9 @@ agt_html <- function() {
       defaultColDef = colDef(
         align = "center",
         vAlign = "center",
-        headerVAlign = "center"
+        minWidth = 110,
+        headerVAlign = "center",
+        headerStyle = list(font_size = 16)
       ),
       columns = columndef_list(),
       # details = function(index) paste("Details for row:", index)
