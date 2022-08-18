@@ -34,6 +34,27 @@ awesometableServer <- function(id, table_data) {
         expanded = TRUE
       )
 
+      output$n_search_results <- renderValueBox({
+        valueBox(
+          as.character(nrow(table_filtered)),
+          "Found Parameters",
+          icon("check-circle"),
+          "yellow"
+        )
+      })
+
+      output$n_search_datasets <- renderValueBox({
+        valueBox(
+          table_filtered$`Dataset name` %>%
+            unique() %>%
+            length() %>%
+            as.character(),
+          "Found Datasets",
+          icon("check-circle"),
+          "yellow"
+        )
+      })
+
       # Update Input choices
       # updateSelectizeInput(
       #   inputId = "Dataset name",

@@ -54,7 +54,8 @@ Imports:
     shinyjs,
     shinyWidgets,
     lubridate,
-    katexR
+    katexR,
+    shinydashboard
 Suggests:
     magrittr,
     devtools,

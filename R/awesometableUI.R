@@ -80,5 +80,17 @@ awesometableFilterUI <- function(id, table_data, spatial_res_range, temporal_cov
 }
 
 awesometableOutputUI <- function(id) {
-  reactableOutput(NS(id, "table"))
+  tagList(
+    column(
+      width = 10,
+      offset = 1,
+      reactableOutput(NS(id, "table"))
+    ),
+    column(
+      width = 1,
+      # h3("Number of parameters found"),
+      fluidRow(valueBoxOutput(NS(id, "n_search_results"))),
+      fluidRow(valueBoxOutput(NS(id, "n_search_datasets")))
+    )
+  )
 }

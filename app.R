@@ -7,6 +7,7 @@ library(shiny)
 library(shinyjs)
 library(shinythemes)
 library(shinyWidgets)
+library(shinydashboard)
 library(reactable)
 library(reactablefmtr)
 library(katexR)
@@ -31,9 +32,6 @@ temporal_res_unique <- COLUMN_CATEGORIES_TEMPRES %>% discard(str_detect, "static
 
 ui = tagList(
   header = tags$img(src = 'image_w_logo_300dpi.png', width = '100%'),
-  # tags$head(
-  #   tags$link(rel = "stylesheet", type = "text/css", href = "bootstrap_custom.css")
-  # ),
   fluidPage(
     # tags$head(tags$script(type="text/javascript", src = "navbar_link_icon.js")),
     tags$style("@import url(https://use.fontawesome.com/releases/v5.7.2/css/all.css);"),
@@ -78,16 +76,17 @@ ui = tagList(
         hr(),
         fluidRow(
           style = "padding-top:20px",
-          column(
-            width = 10,
-            offset = 1,
-            awesometableOutputUI("awesome_geodata_table")
-          )
+          awesometableOutputUI("awesome_geodata_table")
         )
       ),
       tabPanel(
         "Add a Dataset",
         icon = icon("plus"),
+        "Content to come"
+      ),
+      tabPanel(
+        "Info",
+        icon = icon("info-circle"),
         "Content to come"
       )
     )
