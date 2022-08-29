@@ -1,6 +1,4 @@
-TEMPORAL_COVERAGE_STARTVALUES <- c(2006, 2022)
-
-COLUMN_CATEGORIES_DOMAIN <- c(
+column_categories_domain <- c(
   "Chemistry",
   "Lithosphere",
   "Biological classification",
@@ -16,14 +14,7 @@ COLUMN_CATEGORIES_DOMAIN <- c(
   "Human Dimensions",
   "Fisheries",
   "Agriculture"
-)
+) %>%
+  sort()
 
-COLUMN_CATEGORIES_TEMPRES <- c(
-  "(0h, 1h]",
-  "(1h, 1d]",
-  "(1d, 7d]",
-  "(7d, 1m]",
-  "(1m, 1a]",
-  "(1a, 10a]",
-  "static"
-)
+usethis::use_data(column_categories_domain, overwrite = TRUE)

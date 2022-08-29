@@ -7,6 +7,7 @@ library(shinycssloaders)
 library(shiny)
 library(shinyjs)
 library(shinythemes)
+library(shinyalert)
 library(shinyWidgets)
 library(shinydashboard)
 library(reactable)
@@ -59,7 +60,9 @@ ui = tagList(
             p("The completeness of this collection of datasets is still growing.
                  Therefore, any contribution of new datasets is very welcome.
                  To add a dataset of which you think it might be helpful,
-                 please click on the tab 'Add a Dataset'."),
+                 please click on the tab 'Add a Dataset'"
+              # shinyLink("adddataset", "'Add a Dataset'")
+              ),
             p("Use the following filters to define your search
                  for parameters or datasets.")
           ),
@@ -85,8 +88,9 @@ ui = tagList(
       ),
       tabPanel(
         "Add a Dataset",
+        value = "adddataset",
         icon = icon("plus"),
-        "Content to come"
+        adddatasetUI("adddataset")
       ),
       tabPanel(
         "Info",
@@ -99,6 +103,7 @@ ui = tagList(
 
 server <- function(input, output, session) {
   awesometableServer("awesome_geodata_table", table_data)
+  adddatasetServer("adddataset")
 }
 
 shinyApp(ui, server)
