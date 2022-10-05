@@ -1,20 +1,36 @@
 adddatasetServer <- function(id, table_data) {
   moduleServer(id, function(input, output, session) {
 
-    observe({
-      output$'Dataset name' <- renderText(input$'Dataset name')
-      output$Parameter <- renderText(input$Parameter)
-      output$Domain <- renderText(input$Domain)
-    })
+    table_data_empty <- table_data %>%
+      slice(0) %>%
+      mutate(across(everything(), as.character))
+
+    observeEvent(input$Dataset, { no_letters_feedback(input$Dataset, "Dataset") })
+    observeEvent(input$Parameter, { no_letters_feedback(input$Parameter, "Parameter") })
+    observeEvent(input$Tags, { no_letters_feedback(input$Tags, "Tags") })
+    observeEvent(input$Unit, { no_letters_feedback(input$Unit, "Unit") })
+    observeEvent(input$start_end, { date_order_feedback(input$start_end) })
 
     observeEvent(input$button_send, {
+
+      input_values <- collect_userinput_in_tibble(input) %>%
+        mutate(across(everything(), as.character)) %>%
+        bind_rows(table_data_empty, .)
+
+      input_values %>%
+        sheet_append(
+          ss = "18V8HpVDG3BVBxv03jbg-m1ZCnbz3R7t4Asty_Ub_tfw"
+        )
+
       shinyalert(
-        "Info!",
+        "Thank you!",
         "Your dataset entry has been added to AwesomeGeodataTable.
-Thanks a lot for contributing.
-If you want to add more parameters of the same dataset, please just continue with the prefilled values...",
-        type = "info")
+  Thanks a lot for contributing.
+  If you want to add more parameters of the same dataset, please just continue with the prefilled values...",
+        type = "success")
     })
 
-  })
+  }
+
+  )
 }

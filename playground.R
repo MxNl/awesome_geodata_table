@@ -1,6 +1,22 @@
-temporal_res_keep <- COLUMN_CATEGORIES_TEMPRES[
-  which(COLUMN_CATEGORIES_TEMPRES == inputmin):
-    which(COLUMN_CATEGORIES_TEMPRES == inputmax)
+test <- tibble(
+  name = rep("start_end", 2),
+  value = c(1231, 5555)
+  )
+
+test %>%
+  group_by(name) %>%
+  mutate(
+    name = ifelse(row_number() == 1 & n() == 2, "start", name),
+    name = ifelse(row_number() == 2 & n() == 2, "end", name)
+  )
+
+test %>%
+  separate_rows(name, sep = "_") %>%
+  group_by(name)
+
+temporal_res_keep <- column_categories_tempres[
+  which(column_categories_tempres == inputmin):
+    which(column_categories_tempres == inputmax)
 ] %>%
   c("static")
 

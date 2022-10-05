@@ -1,5 +1,6 @@
 library(dplyr)
 library(purrr)
+library(tidyr)
 library(lubridate)
 library(googlesheets4)
 library(stringr)
@@ -8,13 +9,14 @@ library(shiny)
 library(shinyjs)
 library(shinythemes)
 library(shinyalert)
+library(shinyFeedback)
 library(shinyWidgets)
 library(shinydashboard)
 library(reactable)
 library(reactablefmtr)
 library(katexR)
 
-# data("COLUMN_CATEGORIES_TEMPRES")
+# data("column_categories_tempres")
 
 # awesome_geodata_table_App <- function() {
 
@@ -25,13 +27,8 @@ table_data <<- table_raw %>%
   agt_table() %>%
   agt_prepare(column_types)
 table_config <<- agt_configure(table_data, double_column_names, column_types)
-spatial_res_range <- c(table_data$`min [m]`, table_data$`max [m]`) %>%
-  range(na.rm = TRUE)
-temporal_cov_range <- c(table_data$start, table_data$end) %>%
-  range(na.rm = TRUE) %>%
-  year()
-temporal_res_unique <- COLUMN_CATEGORIES_TEMPRES %>% discard(str_detect, "static")
-
+filter_specs <- generate_filter_specs(table_data)
+input_choices <- generate_input_choices(table_data)
 # Custom colour ramp
 
 
@@ -74,23 +71,23 @@ ui = tagList(
           style = "padding-bottom:20px; padding-top:20px",
           awesometableFilterUI(
             "awesome_geodata_table",
-            table_data,
-            spatial_res_range,
-            temporal_cov_range,
-            temporal_res_unique
+            filter_specs
           ),
         ),
         hr(),
         fluidRow(
           style = "padding-top:20px",
-          awesometableOutputUI("awesome_geodata_table")
+          # awesometableOutputUI("awesome_geodata_table")
         )
       ),
       tabPanel(
         "Add a Dataset",
         value = "adddataset",
         icon = icon("plus"),
-        adddatasetUI("adddataset")
+        adddatasetUI(
+          "adddataset",
+          input_choices
+        )
       ),
       tabPanel(
         "Info",
@@ -103,7 +100,7 @@ ui = tagList(
 
 server <- function(input, output, session) {
   awesometableServer("awesome_geodata_table", table_data)
-  adddatasetServer("adddataset")
+  adddatasetServer("adddataset", table_data)
 }
 
 shinyApp(ui, server)

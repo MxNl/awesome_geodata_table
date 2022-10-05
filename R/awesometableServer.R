@@ -7,9 +7,9 @@ awesometableServer <- function(id, table_data) {
 
     observe({
       # Filter data
-      temporal_res_keep <- COLUMN_CATEGORIES_TEMPRES[
-        which(COLUMN_CATEGORIES_TEMPRES == input$temporal_res[1]):
-          which(COLUMN_CATEGORIES_TEMPRES == input$temporal_res[2])
+      temporal_res_keep <- column_categories_tempres[
+        which(column_categories_tempres == input$temporal_res[1]):
+          which(column_categories_tempres == input$temporal_res[2])
       ] %>%
         c("static")
 

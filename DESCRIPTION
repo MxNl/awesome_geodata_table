@@ -57,7 +57,8 @@ Imports:
     katexR,
     shinydashboard,
     shinycssloaders,
-    shinyalert
+    shinyalert,
+    shinyFeedback
 Suggests:
     magrittr,
     devtools,
