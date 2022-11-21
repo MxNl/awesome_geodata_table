@@ -16,9 +16,14 @@ library(reactable)
 library(reactablefmtr)
 library(katexR)
 
-# data("column_categories_tempres")
+
+data("column_categories_tempres")
+data("column_categories_domain")
+data("temporal_coverage_startvalues")
 
 # awesome_geodata_table_App <- function() {
+
+gs4_auth(cache = ".secrets", email = TRUE)
 
 table_raw <- agt_raw_read()
 column_types <- get_column_types(table_raw)

@@ -12,3 +12,5 @@ staging/
 *.csv
 .idea
 README.html
+.secrets
+rsconnect
