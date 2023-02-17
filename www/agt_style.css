@@ -3,7 +3,8 @@
 
 * { font-family: "Quicksand"; }
 
-h2 { font-family: "Rubik Dirt"; }
+h1 { font-family: "Rubik Dirt";}
+h2 { font-family: "Rubik Dirt"; font-size: 80px}
 
 .navbar{padding-left:7.6%;}
 
