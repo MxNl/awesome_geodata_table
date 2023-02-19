@@ -53,6 +53,7 @@ Imports:
     viridis,
     shinyjs,
     shinyWidgets,
+    shinyBS,
     lubridate,
     katexR,
     shinydashboard,

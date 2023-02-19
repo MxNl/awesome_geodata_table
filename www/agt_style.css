@@ -3,8 +3,16 @@
 
 * { font-family: "Quicksand"; }
 
-h1 { font-family: "Rubik Dirt";}
-h2 { font-family: "Rubik Dirt"; font-size: 80px}
+h1 { font-family: "Rubik Dirt"; font-size: 80px}
+h2 { font-family: "Rubik Dirt";}
+h3 { font-family: "Rubik Dirt";}
 
 .navbar{padding-left:7.6%;}
 
+.popover{
+    max-width: 25%; /* Max Width of the popover (depending on the container!) */
+}
+
+$('[data-toggle="popover"]').popover({
+    container: 'body'
+});

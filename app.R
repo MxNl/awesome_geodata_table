@@ -11,10 +11,12 @@ library(shinythemes)
 library(shinyalert)
 library(shinyFeedback)
 library(shinyWidgets)
+library(shinyvalidate)
 library(shinydashboard)
 library(reactable)
 library(reactablefmtr)
 library(katexR)
+library(tippy)
 
 
 data("column_categories_tempres")
@@ -53,7 +55,7 @@ ui = tagList(
           column(
             width = 10,
             offset = 1,
-            h2("Welcome to the AwesomeGeodataTable!"),
+            h1("Welcome to the AwesomeGeodataTable!"),
             br(),
             p("Here you can search for data that represents spatially
                  continuous data describing predominantly geophysical or environmental properties.
