@@ -13,6 +13,7 @@ library(shinyFeedback)
 library(shinyWidgets)
 library(shinyvalidate)
 library(shinydashboard)
+library(shinyBS)
 library(reactable)
 library(reactablefmtr)
 library(katexR)
@@ -22,6 +23,9 @@ library(tippy)
 data("column_categories_tempres")
 data("column_categories_domain")
 data("temporal_coverage_startvalues")
+data("INPUT_CHOICES_VERSIONUPDATES")
+data("INPUT_CHOICES_TEMPORALTYPE")
+data("INPUT_CHOICES_COORDREFSYS")
 
 # awesome_geodata_table_App <- function() {
 
@@ -83,9 +87,9 @@ ui = tagList(
         ),
         hr(),
         fluidRow(
-          style = "padding-top:20px",
+          style = "padding-top:20px;padding-bottom:50px",
           # awesometableOutputUI("awesome_geodata_table")
-        )
+        ),
       ),
       tabPanel(
         "Add a Dataset",
@@ -99,7 +103,7 @@ ui = tagList(
       tabPanel(
         "Info",
         icon = icon("info-circle"),
-        "Content to come"
+        infotUI("info")
       )
     )
   )
@@ -107,7 +111,7 @@ ui = tagList(
 
 server <- function(input, output, session) {
   awesometableServer("awesome_geodata_table", table_data)
-  adddatasetServer("adddataset", table_data)
+  adddatasetServer("adddataset", table_data, input_choices)
 }
 
 shinyApp(ui, server)

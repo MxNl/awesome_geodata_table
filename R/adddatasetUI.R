@@ -125,6 +125,27 @@ adddatasetUI <- function(id, input_choices) {
           )
         ),
 
+        popify(
+          selectizeInput(
+            inputId = NS(id, "upload_delay"),
+            label = "Upload delay",
+            choices = input_choices$input_choices_uploaddelay,
+            selected = character(0),
+            multiple = TRUE,
+            width = "100%",
+            options = list(
+              create = TRUE,
+              placeholder = "Please choose a time period from the list or enter a new one",
+              maxItems = 1
+            )
+          ),
+          "Input help",
+          "<ul><li>Here you can enter a value for a <b>time period</b>. This period should indicate the temporal delay between data acquisition and publishing. This is important to know <b>how recent</b> the data might be!</li><li>Periods should be abbreviated according to this convention:<ul><li> 1 second = 1 s</li><li> 2 minutes = 2 min</li><li> 1 hour = 1 h</li><li> 1 day = 1 d</li><li> 2 month = 2 mo</li><li> 1 year = 1 yr</li></li></ul> ",
+          placement = "left",
+          trigger = "hover",
+          options = list(container = "body")
+        ),
+
         selectizeInput(
           NS(id, "min [m]"),
           "Minimum (smallest) spatial resolution",
@@ -192,6 +213,27 @@ adddatasetUI <- function(id, input_choices) {
           "<ul><li>Leave <b>both</b> inputs fields empty, if the parameter is time-invariant/static</li><li>Leave the <b>right</b> input field empty, if the temporal coverage is regularly extended to the present</li></ul> ",
           placement = "left",
           trigger = "hover",
+        ),
+
+        popify(
+          selectizeInput(
+            NS(id, "temporal_type"),
+            "Temporal type",
+            choices = input_choices$input_choices_temporaltype,
+            selected = character(0),
+            multiple = TRUE,
+            width = "100%",
+            options = list(
+              create = FALSE,
+              placeholder = "Please choose a temporal type from the list",
+              maxItems = 1
+            )
+          ),
+          "Input help",
+          "<ul><li>Text <b>here</b>!</li></ul> ",
+          placement = "left",
+          trigger = "hover",
+          options = list(container = "body")
         ),
 
         popify(
@@ -282,13 +324,13 @@ adddatasetUI <- function(id, input_choices) {
         ),
 
 
-        h3("Coordinate Reference System (CRS)"),
+        # h3("Coordinate Reference System (CRS)"),
 
         popify(
           selectizeInput(
             NS(id, "coord_refsys"),
-            NULL,
-            choices = input_choices$input_choices_coordrefsys,
+            "Coordinate Reference System (CRS)",
+            choices = NULL,
             selected = character(0),
             multiple = TRUE,
             width = "100%",
@@ -307,14 +349,19 @@ adddatasetUI <- function(id, input_choices) {
 
         h3("References"),
 
-
         popify(
-          textInput(
-            NS(id, "Download"),
-            "Download",
-            value = "",
-            placeholder = "Please type in a URL of the location for downloading the dataset",
-            width = "100%"
+          selectizeInput(
+            inputId = NS(id, "publisher"),
+            label = "Publisher",
+            choices = input_choices$input_choices_publisher,
+            selected = character(0),
+            multiple = TRUE,
+            width = "100%",
+            options = list(
+              create = TRUE,
+              placeholder = "Please choose a publisher from the list or create a new entry",
+              maxItems = 1
+            )
           ),
           "Input help",
           "<ul><li>Text <b>here</b>!</li></ul> ",
@@ -358,6 +405,123 @@ adddatasetUI <- function(id, input_choices) {
           trigger = "hover",
           options = list(container = "body")
         ),
+
+        popify(
+          selectizeInput(
+            inputId = NS(id, "Version_updates"),
+            label = "Version Updates",
+            choices = input_choices$input_choices_versionupdates,
+            selected = character(0),
+            multiple = TRUE,
+            width = "100%",
+            options = list(
+              create = FALSE,
+              placeholder = "Please choose an option",
+              maxItems = 1
+            )
+          ),
+          "Input help",
+          "<ul><li>Have there been <b>updates of the dataset version</b> in the past or are there updates planned?</li><li>In this context version updates refers to updates of the methods used to generate the dataset.</li></ul> ",
+          placement = "left",
+          trigger = "hover",
+          options = list(container = "body")
+        ),
+
+
+        h3("Access and Usage"),
+
+        popify(
+          textInput(
+            NS(id, "Download"),
+            "Download",
+            value = "",
+            placeholder = "Please type in a URL of the location for downloading the dataset",
+            width = "100%"
+          ),
+          "Input help",
+          "<ul><li>Text <b>here</b>!</li></ul> ",
+          placement = "left",
+          trigger = "hover",
+          options = list(container = "body")
+        ),
+
+        popify(
+          selectizeInput(
+            inputId = NS(id, "access"),
+            label = "Access",
+            choices = input_choices$input_choices_access,
+            selected = character(0),
+            multiple = TRUE,
+            width = "100%",
+            options = list(
+              create = TRUE,
+              placeholder = "Please choose an access from the list or create a new entry",
+              maxItems = 1
+            )
+          ),
+          "Input help",
+          "<ul><li>Text <b>here</b>!</li></ul> ",
+          placement = "left",
+          trigger = "hover",
+          options = list(container = "body")
+        ),
+
+        popify(
+          selectizeInput(
+            inputId = NS(id, "license"),
+            label = "License",
+            choices = input_choices$input_choices_license,
+            selected = character(0),
+            multiple = TRUE,
+            width = "100%",
+            options = list(
+              create = TRUE,
+              placeholder = "Please choose a license from the list or create a new entry",
+              maxItems = 1
+            )
+          ),
+          "Input help",
+          "<ul><li>Text <b>here</b>!</li></ul> ",
+          placement = "left",
+          trigger = "hover",
+          options = list(container = "body")
+        ),
+
+        popify(
+          textInput(
+            NS(id, "data_limitations"),
+            "Data limitations",
+            value = "",
+            placeholder = "Please type in a note about known limitations of the dataset",
+            width = "100%"
+          ),
+          "Input help",
+          "<ul><li>Text <b>here</b>!</li></ul> ",
+          placement = "left",
+          trigger = "hover",
+          options = list(container = "body")
+        ),
+
+        popify(
+          selectizeInput(
+            inputId = NS(id, "Mmethod"),
+            label = "Method",
+            choices = input_choices$input_choices_method,
+            selected = character(0),
+            multiple = TRUE,
+            width = "100%",
+            options = list(
+              create = TRUE,
+              placeholder = "Please choose a method from the list or create a new entry",
+              maxItems = 1
+            )
+          ),
+          "Input help",
+          "<ul><li>Text <b>here</b>!</li></ul> ",
+          placement = "left",
+          trigger = "hover",
+          options = list(container = "body")
+        )
       ),
       fluidRow(
         column(

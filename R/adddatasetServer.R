@@ -1,5 +1,13 @@
-adddatasetServer <- function(id, table_data) {
+adddatasetServer <- function(id, table_data, input_choices) {
   moduleServer(id, function(input, output, session) {
+
+    updateSelectizeInput(
+      session,
+      "coord_refsys",
+      choices = input_choices$input_choices_coordrefsys,
+      selected = character(0),
+      server = TRUE
+    )
 
     table_data_empty <- table_data %>%
       slice(0) %>%
@@ -31,14 +39,14 @@ adddatasetServer <- function(id, table_data) {
     })
 
     download_iv <- InputValidator$new()
-    download_iv$condition(~ isTruthy(input$Download))
+    download_iv$condition(~isTruthy(input$Download))
     download_iv$add_rule("Download", sv_url(allow_na = TRUE))
     # iv$add_rule("email", sv_required())
     # iv$add_rule("email", sv_email())
     download_iv$enable()
 
     literature_iv <- InputValidator$new()
-    literature_iv$condition(~ isTruthy(input$Literature))
+    literature_iv$condition(~isTruthy(input$Literature))
     literature_iv$add_rule("Literature", sv_url(allow_na = TRUE))
     # iv$add_rule("email", sv_required())
     # iv$add_rule("email", sv_email())
