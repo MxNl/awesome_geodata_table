@@ -30,7 +30,7 @@ adddatasetUI <- function(id, input_choices) {
         shinyFeedback::useShinyFeedback(),
         popify(
           textInput(
-            NS(id, "Dataset"),
+            NS(id, "Dataset name"),
             "Dataset name*",
             value = "",
             placeholder = "Please type in the dataset name",
@@ -127,7 +127,7 @@ adddatasetUI <- function(id, input_choices) {
 
         popify(
           selectizeInput(
-            inputId = NS(id, "upload_delay"),
+            inputId = NS(id, "Upload delay"),
             label = "Upload delay",
             choices = input_choices$input_choices_uploaddelay,
             selected = character(0),
@@ -217,7 +217,7 @@ adddatasetUI <- function(id, input_choices) {
 
         popify(
           selectizeInput(
-            NS(id, "temporal_type"),
+            NS(id, "Temporal type"),
             "Temporal type",
             choices = input_choices$input_choices_temporaltype,
             selected = character(0),
@@ -238,7 +238,7 @@ adddatasetUI <- function(id, input_choices) {
 
         popify(
           selectizeInput(
-            NS(id, "spatial_coverage"),
+            NS(id, "Coverage (spatial)"),
             "Spatial coverage*",
             choices = input_choices$input_choices_spatialcoverage,
             selected = character(0),
@@ -304,7 +304,7 @@ adddatasetUI <- function(id, input_choices) {
 
         popify(
           selectizeInput(
-            NS(id, "file_extension"),
+            NS(id, "file extension"),
             "File extension",
             choices = input_choices$input_choices_fileextension,
             selected = character(0),
@@ -328,7 +328,7 @@ adddatasetUI <- function(id, input_choices) {
 
         popify(
           selectizeInput(
-            NS(id, "coord_refsys"),
+            NS(id, "Coordinate reference system"),
             "Coordinate Reference System (CRS)",
             choices = NULL,
             selected = character(0),
@@ -351,7 +351,7 @@ adddatasetUI <- function(id, input_choices) {
 
         popify(
           selectizeInput(
-            inputId = NS(id, "publisher"),
+            inputId = NS(id, "Publisher"),
             label = "Publisher",
             choices = input_choices$input_choices_publisher,
             selected = character(0),
@@ -372,7 +372,7 @@ adddatasetUI <- function(id, input_choices) {
 
         popify(
           selectizeInput(
-            inputId = NS(id, "Published_first"),
+            inputId = NS(id, "Published first"),
             label = "Published first",
             choices = rev(1980:as.numeric(format(Sys.Date(), "%Y"))),
             selected = character(0),
@@ -408,7 +408,7 @@ adddatasetUI <- function(id, input_choices) {
 
         popify(
           selectizeInput(
-            inputId = NS(id, "Version_updates"),
+            inputId = NS(id, "Version updates"),
             label = "Version Updates",
             choices = input_choices$input_choices_versionupdates,
             selected = character(0),
@@ -447,7 +447,7 @@ adddatasetUI <- function(id, input_choices) {
 
         popify(
           selectizeInput(
-            inputId = NS(id, "access"),
+            inputId = NS(id, "Access"),
             label = "Access",
             choices = input_choices$input_choices_access,
             selected = character(0),
@@ -468,7 +468,7 @@ adddatasetUI <- function(id, input_choices) {
 
         popify(
           selectizeInput(
-            inputId = NS(id, "license"),
+            inputId = NS(id, "License"),
             label = "License",
             choices = input_choices$input_choices_license,
             selected = character(0),
@@ -489,7 +489,7 @@ adddatasetUI <- function(id, input_choices) {
 
         popify(
           textInput(
-            NS(id, "data_limitations"),
+            NS(id, "Data limitations"),
             "Data limitations",
             value = "",
             placeholder = "Please type in a note about known limitations of the dataset",
@@ -504,7 +504,7 @@ adddatasetUI <- function(id, input_choices) {
 
         popify(
           selectizeInput(
-            inputId = NS(id, "Mmethod"),
+            inputId = NS(id, "Method"),
             label = "Method",
             choices = input_choices$input_choices_method,
             selected = character(0),
