@@ -146,32 +146,48 @@ adddatasetUI <- function(id, input_choices) {
           options = list(container = "body")
         ),
 
-        selectizeInput(
-          NS(id, "min [m]"),
-          "Minimum (smallest) spatial resolution",
-          choices = input_choices$input_choices_spatialmin,
-          selected = character(0),
-          multiple = TRUE,
-          width = "100%",
-          options = list(
-            create = TRUE,
-            placeholder = "Please type in a spatial resolution in m",
-            maxItems = 1
-          )
+        popify(
+          numericInput(
+            NS(id, "min [m]"),
+            "Minimum (smallest) spatial resolution*",
+            # choices = input_choices$input_choices_spatialmin,
+            # selected = character(0),
+            # multiple = TRUE,
+            value = NULL,
+            width = "100%"
+            # options = list(
+            # create = TRUE,
+            # placeholder = "Please type in a spatial resolution in m"
+            # maxItems = 1
+            # )
+          ),
+          "Input help",
+          "<ul><li>Here you must enter a numeric value for the <b>minimum spatial resolution</b> of the dataset. For some datasets the minimum and maximum spatial resolution might be the same, if it is is based on a regular grid with a projected reference system</li></ul> ",
+          placement = "left",
+          trigger = "hover",
+          options = list(container = "body")
         ),
 
-        selectizeInput(
-          NS(id, "max [m]"),
-          "Maximum (greatest) spatial resolution",
-          choices = input_choices$input_choices_spatialmax,
-          selected = character(0),
-          multiple = TRUE,
-          width = "100%",
-          options = list(
-            create = TRUE,
-            placeholder = "Please type in a spatial resolution in m",
-            maxItems = 1
-          )
+        popify(
+          numericInput(
+            NS(id, "max [m]"),
+            "Maximum (greatest) spatial resolution*",
+            # choices = input_choices$input_choices_spatialmin,
+            # selected = character(0),
+            # multiple = TRUE,
+            value = NULL,
+            width = "100%"
+            # options = list(
+            # create = TRUE,
+            # placeholder = "Please type in a spatial resolution in m"
+            # maxItems = 1
+            # )
+          ),
+          "Input help",
+          "<ul><li>Here you must enter a numeric value for the <b>maximum spatial resolution</b> of the dataset. For some datasets the minimum and maximum spatial resolution might be the same, if it is is based on a regular grid with a projected reference system</li></ul> ",
+          placement = "left",
+          trigger = "hover",
+          options = list(container = "body")
         ),
 
         selectizeInput(
@@ -433,7 +449,7 @@ adddatasetUI <- function(id, input_choices) {
         popify(
           textInput(
             NS(id, "Download"),
-            "Download",
+            "Download*",
             value = "",
             placeholder = "Please type in a URL of the location for downloading the dataset",
             width = "100%"

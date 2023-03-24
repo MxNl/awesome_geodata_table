@@ -56,6 +56,15 @@ adddatasetServer <- function(id, table_data, input_choices) {
     required_iv$add_rule("Parameter", sv_required())
     required_iv$add_rule("Dataset name", sv_required())
     required_iv$add_rule("Download", sv_required())
+    required_iv$add_rule("Tags", sv_required())
+    required_iv$add_rule("Domain", sv_required())
+    required_iv$add_rule("Unit", sv_required())
+    required_iv$add_rule("min", sv_required())
+    required_iv$add_rule("max", sv_required())
+    required_iv$add_rule("min [m]", sv_required())
+    required_iv$add_rule("max [m]", sv_required())
+    required_iv$add_rule("start_end", sv_required())
+    required_iv$add_rule("Coverage (spatial)", sv_required())
     # required_iv$enable()
 
     # Format

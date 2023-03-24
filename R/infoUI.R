@@ -27,7 +27,7 @@ infotUI <- function(id) {
         HTML("<b>You have another question? </b>"),
         br(),
         HTML("<i class='fa fa-envelope fa-lg'></i>"),
-        HTML("   max-n[at]posteo[dot]de"),
+        HTML("   awesomegeodatatable[at]gmail[dot]com"),
         br()
         #   tags$script(HTML(
         #     '<script>
