@@ -88,7 +88,7 @@ ui = tagList(
         hr(),
         fluidRow(
           style = "padding-top:20px;padding-bottom:50px",
-          # awesometableOutputUI("awesome_geodata_table")
+          awesometableOutputUI("awesome_geodata_table")
         ),
       ),
       tabPanel(

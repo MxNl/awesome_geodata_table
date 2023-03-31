@@ -26,7 +26,8 @@ agt_html <- function() {
         headerVAlign = "center",
         headerStyle = list(font_size = 16)
       ),
-      columns = columndef_list(),
+      columns = columndef_list()
+      # server = TRUE
       # details = function(index) paste("Details for row:", index)
     )
 }

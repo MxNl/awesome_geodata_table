@@ -23,10 +23,10 @@ columndef_list <- function() {
         render_reactable_cell_with_tippy(text = value, tooltip = value)
       }
     ),
-    Unit = colDef(cell = function(value) {
-      # Omit inline = TRUE to render math in display mode
-      katexR::katex(value, inline = TRUE)
-    }),
+    # Unit = colDef(cell = function(value) {
+    #   # Omit inline = TRUE to render math in display mode
+    #   katexR::katex(value, inline = TRUE)
+    # }),
     min = colDef(
       name = "min",
       # cell = reactablefmtr::color_tiles(
@@ -81,7 +81,7 @@ columndef_list <- function() {
     ),
     Download = colDef(
       name = "Download",
-      cell = function(value, index) {
+      cell = function(value) {
         if (stringr::str_detect(value, "http") | is.na(value)) {
           htmltools::tags$a(href = value, target = "_blank", "link")
         } else {
@@ -91,7 +91,7 @@ columndef_list <- function() {
     ),
     Literature = colDef(
       name = "Literature",
-      cell = function(value, index) {
+      cell = function(value) {
         if (stringr::str_detect(value, "http") | is.na(value)) {
           htmltools::tags$a(href = value, target = "_blank", "link")
         } else {

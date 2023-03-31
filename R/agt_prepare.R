@@ -8,8 +8,8 @@ agt_prepare <- function(x, column_types) {
       # format_resolution() |>
       format_comment() |>
       # format_equations() %>%
-      set_levels(min, column_categories_tempres) %>%
-      set_levels(max, column_categories_tempres) %>%
-    impute_tags()
+      set_levels(min, column_categories_tempres) |>
+      set_levels(max, column_categories_tempres) |>
+      impute_tags()
 }
 
