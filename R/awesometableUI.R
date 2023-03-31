@@ -49,9 +49,10 @@ awesometableFilterUI <- function(id, filter_specs) {
         NS(id, "spatial_res"),
         label = "Resolution (spatial)",
         min = 0,
-        max = filter_specs$spatial_res_range[2],
-        value = filter_specs$spatial_res_range,
-        width = "100%"
+        max = min(c(3E4, filter_specs$spatial_res_range[2])),
+        value = min(c(3E4, filter_specs$spatial_res_range[2])),
+        width = "100%",
+        post = " m"
       ),
       sliderTextInput(
         NS(id, "temporal_res"),

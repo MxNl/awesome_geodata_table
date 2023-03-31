@@ -46,6 +46,7 @@ input_choices <- generate_input_choices(table_data)
 ui = tagList(
   header = tags$img(src = 'image_w_logo_300dpi.png', width = '100%'),
   fluidPage(
+    # tags$head(HTML(tags$script(src = "logslider.js"))),
     # tags$head(tags$script(type="text/javascript", src = "navbar_link_icon.js")),
     tags$style("@import url(https://use.fontawesome.com/releases/v5.7.2/css/all.css);"),
     includeCSS("www/agt_style.css"),
