@@ -72,6 +72,19 @@ awesometableFilterUI <- function(id, filter_specs) {
         sep = "",
         width = "100%"
       )
+    ),
+    fluidRow(
+      column(
+        width = 3,
+        offset = 4,
+        actionButton(
+        NS(id, "button_filter"),
+        "Apply filters",
+        width = "100%",
+        icon = icon("search"),
+        style = "background-color: #FCD8A5;"
+      )
+      )
     )
   )
 }

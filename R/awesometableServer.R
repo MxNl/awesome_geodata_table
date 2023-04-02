@@ -2,10 +2,42 @@ awesometableServer <- function(id, table_data) {
   moduleServer(id, function(input, output, session) {
 
     output$table <- renderReactable({
-      agt_html()
+      agt_html(table_data)
     })
 
-    observe({
+    output$n_search_results <- renderValueBox({
+        valueBox(
+          as.character(nrow(table_data)),
+          "Found Parameters",
+          # icon("check-circle"),
+          color = "yellow"
+        )
+      })
+
+      output$n_search_datasets <- renderValueBox({
+        valueBox(
+          table_data$`Dataset name` %>%
+            unique() %>%
+            length() %>%
+            as.character(),
+          "Found Datasets",
+          # icon("check-circle"),
+          color = "yellow"
+        )
+      })
+
+    output$download_data <- downloadHandler(
+        filename = function() {
+          paste('awesome-geodata-table_results_', Sys.Date(), '.csv', sep = '')
+        },
+        content = function(con) {
+          table_data %>%
+            select(-contains("_icon")) %>%
+          write.csv2(con)
+        }
+      )
+
+    observeEvent(input$button_filter, {
       # Filter data
       temporal_res_keep <- column_categories_tempres[
         which(column_categories_tempres == input$temporal_res[1]):
@@ -28,12 +60,11 @@ awesometableServer <- function(id, table_data) {
           conditional(length(input$temporal_coverage) > 0, (start <= temporal_coverage_date[1] | is.na(start)) & (end >= temporal_coverage_date[2] | is.na(end))),
           conditional(length(input$temporal_res) > 0, min %in% temporal_res_keep & max %in% temporal_res_keep)
         )
-      updateReactable(
-        "table",
-        data = table_filtered,
-        expanded = TRUE
-      )
-
+      # updateReactable(
+      #   "table",
+      #   data = table_filtered,
+      #   expanded = TRUE
+      # )
       output$n_search_results <- renderValueBox({
         valueBox(
           as.character(nrow(table_filtered)),
@@ -55,47 +86,20 @@ awesometableServer <- function(id, table_data) {
         )
       })
 
+      output$table <- renderReactable({
+        agt_html(table_filtered)
+      })
+
       output$download_data <- downloadHandler(
         filename = function() {
           paste('awesome-geodata-table_results_', Sys.Date(), '.csv', sep = '')
         },
         content = function(con) {
-          write.csv(table_filtered, con)
+          table_filtered %>%
+            select(-contains("_icon")) %>%
+          write.csv2(con)
         }
       )
-
-      # Update Input choices
-      # updateSelectizeInput(
-      #   inputId = "Dataset name",
-      #   label = "Dataset name",
-      #   choices = unique(table_filtered$`Dataset name`) %>% sort()
-      # )
-      # updateSelectizeInput(
-      #   inputId = "Parameter",
-      #   label = "Parameter",
-      #   choices = unique(table_filtered$Parameter) %>% sort()
-      # )
-      # updateSelectizeInput(
-      #   inputId = "Tags",
-      #   label = "Tags",
-      #   choices = unique(table_filtered$Tags) %>%
-      #     stringr::str_c(collapse = ",") %>%
-      #     stringr::str_split(pattern = ",") %>%
-      #     unlist() %>%
-      #     unique() %>%
-      #     sort()
-      # )
-      # updateSelectizeInput(
-      #   inputId = "Domain",
-      #   label = "Domain",
-      #   choices = unique(table_filtered$Domain) %>% sort()
-      # )
-      # updateSelectizeInput(
-      #   inputId = "spatial_coverage",
-      #   label = "Coverage (spatial)",
-      #   choices = unique(table_filtered$`Coverage (spatial)`) %>% sort()
-      # )
     })
-
   })
 }

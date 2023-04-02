@@ -42,7 +42,6 @@ filter_specs <- generate_filter_specs(table_data)
 input_choices <- generate_input_choices(table_data)
 # Custom colour ramp
 
-
 ui = tagList(
   header = tags$img(src = 'image_w_logo_300dpi.png', width = '100%'),
   fluidPage(
@@ -70,7 +69,7 @@ ui = tagList(
                  To add a dataset of which you think it might be helpful,
                  please click on the tab 'Add a Dataset'"
               # shinyLink("adddataset", "'Add a Dataset'")
-              ),
+            ),
             p("Use the following filters to define your search
                  for parameters or datasets.")
           ),
