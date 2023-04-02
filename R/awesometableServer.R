@@ -2,7 +2,7 @@ awesometableServer <- function(id, table_data) {
   moduleServer(id, function(input, output, session) {
 
     output$table <- renderReactable({
-      agt_html()
+      agt_html(table_data)
     })
 
     observe({
@@ -28,11 +28,14 @@ awesometableServer <- function(id, table_data) {
           conditional(length(input$temporal_coverage) > 0, (start <= temporal_coverage_date[1] | is.na(start)) & (end >= temporal_coverage_date[2] | is.na(end))),
           conditional(length(input$temporal_res) > 0, min %in% temporal_res_keep & max %in% temporal_res_keep)
         )
-      updateReactable(
-        "table",
-        data = table_filtered,
-        expanded = TRUE
-      )
+      # updateReactable(
+      #   "table",
+      #   data = table_filtered,
+      #   expanded = TRUE
+      # )
+      output$table <- renderReactable({
+      agt_html(table_filtered)
+    })
 
       output$n_search_results <- renderValueBox({
         valueBox(
@@ -60,7 +63,7 @@ awesometableServer <- function(id, table_data) {
           paste('awesome-geodata-table_results_', Sys.Date(), '.csv', sep = '')
         },
         content = function(con) {
-          write.csv(table_filtered, con)
+          write.csv2(table_filtered, con)
         }
       )
 
