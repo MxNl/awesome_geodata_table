@@ -65,8 +65,8 @@ ui = tagList(
             p("Here you can search for data that represents spatially
                  continuous data describing predominantly geophysical or environmental properties.
                  This data collection focusses on the application of
-                 spatial predictor variables in machine learning tasks"),
-            p("The completeness of this collection of datasets is still growing.
+                 spatial predictor variables in machine learning tasks."),
+            p("The collection of datasets is still growing and not yet comprehensive.
                  Therefore, any contribution of new datasets is very welcome.
                  To add a dataset of which you think it might be helpful,
                  please click on the tab 'Add a Dataset'"

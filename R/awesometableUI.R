@@ -49,8 +49,8 @@ awesometableFilterUI <- function(id, filter_specs) {
         NS(id, "spatial_res"),
         label = "Resolution (spatial)",
         min = 0,
-        max = min(c(3E4, filter_specs$spatial_res_range[2])),
-        value = min(c(3E4, filter_specs$spatial_res_range[2])),
+        max = max(c(3E4, filter_specs$spatial_res_range[2])),
+        value = max(c(3E4, filter_specs$spatial_res_range[2])),
         width = "100%",
         post = " m"
       ),
