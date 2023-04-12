@@ -1,7 +1,7 @@
 filter_table <- function() {
   # Filter data
-      temporal_res_keep <- column_categories_tempres[
-        1:which(column_categories_tempres == input$temporal_res)
+      temporal_res_keep <- INPUT_CHOICES_TEMPRES[
+        1:which(INPUT_CHOICES_TEMPRES == input$temporal_res)
       ] %>%
         c("static")
 

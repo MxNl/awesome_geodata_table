@@ -1,0 +1,36 @@
+## code to prepare `COLUMNS_TOGGLE_INVISIBLE` dataset goes here
+COLUMNS_TOGGLE_INVISIBLE <- list(
+  "Parameter" = TRUE,
+  "Dataset name" = TRUE,
+  "Tags" = TRUE,
+  "Domain" = TRUE,
+  "Unit" = TRUE,
+  "min" = TRUE,
+  "max" = TRUE,
+  "Upload delay" = TRUE,
+  "min [m]" = TRUE,
+  "max [m]" = TRUE,
+  "unconverted units" = TRUE,
+  "vertical" = FALSE,
+  "start" = TRUE,
+  "end" = TRUE,
+  "Temporal type" = TRUE,
+  "Coverage (spatial)" = TRUE,
+  "type" = TRUE,
+  "format" = FALSE,
+  "file extension" = FALSE,
+  "Coordinate reference system" = FALSE,
+  "Download" = TRUE,
+  "Publisher" = TRUE,
+  "Published first" = FALSE,
+  "Literature" = TRUE,
+  "Version updates" = FALSE,
+  "Access" = FALSE,
+  "License" = FALSE,
+  "Data limitations" = FALSE,
+  "Method" = FALSE,
+  "Usage requirement" = FALSE,
+  "Comment" = FALSE
+)
+
+usethis::use_data(COLUMNS_TOGGLE_INVISIBLE, overwrite = TRUE)

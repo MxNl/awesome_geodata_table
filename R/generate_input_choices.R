@@ -3,7 +3,7 @@ generate_input_choices <- function(x) {
     input_choices_parameter = unique_sorted(x$Parameter),
     input_choices_tags = get_comma_sep_unique_values(x$Tags),
     input_choices_unit = unique_sorted(x$Unit),
-    input_choices_tempres = column_categories_tempres,
+    input_choices_tempres = INPUT_CHOICES_TEMPRES,
     input_choices_spatialmin = unique_sorted(x$`min [m]`),
     input_choices_uploaddelay = unique_sorted(x$`Upload delay`),
     input_choices_spatialmax = unique_sorted(x$`max [m]`),

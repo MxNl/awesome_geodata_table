@@ -20,7 +20,7 @@ library(katexR)
 library(tippy)
 
 
-data("column_categories_tempres")
+data("INPUT_CHOICES_TEMPRES")
 data("column_categories_domain")
 data("temporal_coverage_startvalues")
 data("INPUT_CHOICES_VERSIONUPDATES")

@@ -122,8 +122,15 @@ awesometableFilterUI <- function(id, filter_specs) {
 awesometableOutputUI <- function(id) {
   tagList(
     column(
+      width = 1,
+      offset = 0,
+      style = "display: flex; justify-content: flex-end",
+      fluidRow(valueBoxOutput(NS(id, "n_search_datasets"))),
+      fluidRow(valueBoxOutput(NS(id, "n_search_results")))
+    ),
+    column(
       width = 10,
-      offset = 1,
+      offset = 0,
       reactableOutput(NS(id, "table")) %>%
         withSpinner()
     ),
@@ -131,11 +138,16 @@ awesometableOutputUI <- function(id) {
       width = 1,
       # h3("Number of parameters found"),
       fluidRow(
+        checkboxInput(
+          NS(id, "column_visibility_toggle"),
+          label = "Show all columns",
+          value = FALSE
+        )
+      ),
+      fluidRow(
         style = "padding-bottom:10px; padding-left:14px",
         downloadButton(NS(id, "download_data"))
-      ),
-      fluidRow(valueBoxOutput(NS(id, "n_search_results"))),
-      fluidRow(valueBoxOutput(NS(id, "n_search_datasets")))
+      )
     )
   )
 }

@@ -1,4 +1,4 @@
-column_categories_tempres <- c(
+INPUT_CHOICES_TEMPRES <- c(
   "(0h, 1h]",
   "(1h, 1d]",
   "(1d, 7d]",
@@ -8,4 +8,4 @@ column_categories_tempres <- c(
   "static"
 )
 
-usethis::use_data(column_categories_tempres, overwrite = TRUE)
+usethis::use_data(INPUT_CHOICES_TEMPRES, overwrite = TRUE)

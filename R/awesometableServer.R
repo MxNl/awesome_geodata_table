@@ -64,13 +64,20 @@ awesometableServer <- function(id, table_data) {
     })
 
     output$table <- renderReactable({
-      agt_html(table_data)
+      columns_to_show <- if(input$column_visibility_toggle) {
+        COLUMNS_TOGGLE_INVISIBLE %>%
+          purrr::map(~TRUE)
+      } else {
+        COLUMNS_TOGGLE_INVISIBLE
+      }
+      agt_html(table_data, columns_to_show)
     })
 
+    ### This part is reapeted from above TODO find solution to clean this up
     table_filtered <- reactive({
       # Filter data
-      temporal_res_keep <- column_categories_tempres[
-        1:which(column_categories_tempres == input$temporal_res)
+      temporal_res_keep <- INPUT_CHOICES_TEMPRES[
+        1:which(INPUT_CHOICES_TEMPRES == input$temporal_res)
       ] %>%
         c("static")
 
@@ -90,6 +97,7 @@ awesometableServer <- function(id, table_data) {
           conditional(length(input$temporal_res) > 0, max %in% temporal_res_keep)
         )
     })
+    ###
 
     output$n_search_results <- renderValueBox({
         valueBox(
@@ -119,8 +127,8 @@ awesometableServer <- function(id, table_data) {
       #   expanded = TRUE
       # )
       # Filter data
-      temporal_res_keep <- column_categories_tempres[
-        1:which(column_categories_tempres == input$temporal_res)
+      temporal_res_keep <- INPUT_CHOICES_TEMPRES[
+        1:which(INPUT_CHOICES_TEMPRES == input$temporal_res)
       ] %>%
         c("static")
 
@@ -141,7 +149,13 @@ awesometableServer <- function(id, table_data) {
         )
 
       output$table <- renderReactable({
-        agt_html(table_filtered)
+        columns_to_show <- if(input$column_visibility_toggle) {
+        COLUMNS_TOGGLE_INVISIBLE %>%
+          purrr::map(~TRUE)
+      } else {
+        COLUMNS_TOGGLE_INVISIBLE
+      }
+        agt_html(table_filtered, columns_to_show)
       })
 
       output$download_data <- downloadHandler(
