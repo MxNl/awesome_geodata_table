@@ -7,9 +7,11 @@ agt_prepare <- function(x, column_types) {
       format_lower_case() |>
       # format_resolution() |>
       format_comment() |>
+      format_version_update() %>%
+      format_domain() %>%
       # format_equations() %>%
-      set_levels(min, column_categories_tempres) %>%
-      set_levels(max, column_categories_tempres) %>%
-    impute_tags()
+      set_levels(min, INPUT_CHOICES_TEMPRES) |>
+      set_levels(max, INPUT_CHOICES_TEMPRES) |>
+      impute_tags()
 }
 

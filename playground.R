@@ -14,9 +14,9 @@ test %>%
   separate_rows(name, sep = "_") %>%
   group_by(name)
 
-temporal_res_keep <- column_categories_tempres[
-  which(column_categories_tempres == inputmin):
-    which(column_categories_tempres == inputmax)
+temporal_res_keep <- INPUT_CHOICES_TEMPRES[
+  which(INPUT_CHOICES_TEMPRES == inputmin):
+    which(INPUT_CHOICES_TEMPRES == inputmax)
 ] %>%
   c("static")
 

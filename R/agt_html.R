@@ -4,13 +4,14 @@
 #' @return The html table.
 #' @export
 
-agt_html <- function() {
+agt_html <- function(table_data, columns_to_show) {
   table_data %>%
     reactable::reactable(
       columnGroups = table_config$header_sketch[[2]],
       # searchable = TRUE,
       # theme = nytimes(),
       pagination = FALSE,
+      showPageSizeOptions = TRUE,
       defaultSorted = c("Dataset name", "Parameter"),
       # groupBy = "Dataset name",
       defaultExpanded = TRUE,
@@ -26,7 +27,8 @@ agt_html <- function() {
         headerVAlign = "center",
         headerStyle = list(font_size = 16)
       ),
-      columns = columndef_list(),
+      columns = columndef_list(table_data, columns_to_show),
+      server = TRUE
       # details = function(index) paste("Details for row:", index)
     )
 }

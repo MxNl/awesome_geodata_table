@@ -10,6 +10,6 @@ generate_filter_specs <- function(x) {
     temporal_cov_range = c(x$start, x$end) %>%
       range(na.rm = TRUE) %>%
       year(),
-    temporal_res_unique = column_categories_tempres %>% discard(str_detect, "static")
+    temporal_res_unique = INPUT_CHOICES_TEMPRES %>% discard(str_detect, "static")
   )
 }
