@@ -45,23 +45,53 @@ awesometableFilterUI <- function(id, filter_specs) {
     column(
       width = 4,
       offset = 0,
-      sliderInput(
-        NS(id, "spatial_res"),
-        label = "Resolution (spatial)",
-        min = 0,
-        max = filter_specs$spatial_res_range[2],
-        value = filter_specs$spatial_res_range,
-        width = "100%"
-      ),
-      sliderTextInput(
-        NS(id, "temporal_res"),
-        label = "Resolution (temporal)",
-        choices = filter_specs$temporal_res_unique,
-        selected = c(
-          filter_specs$temporal_res_unique[1],
-          filter_specs$temporal_res_unique[length(filter_specs$temporal_res_unique)]),
-        grid = TRUE,
-        width = "100%"
+      fluidRow(
+        column(
+          width = 10,
+          sliderInput(
+            NS(id, "spatial_res"),
+            label = "Lowest acceptable spatial resolution",
+            min = 0,
+            max = last(filter_specs$spatial_res_range),
+            value = last(filter_specs$spatial_res_range),
+            step = 10,
+            post = " m",
+            width = "100%"
+          ),
+          sliderTextInput(
+            NS(id, "temporal_res"),
+            label = "Lowest acceptable temporal resolution",
+            choices = filter_specs$temporal_res_unique,
+            selected = last(filter_specs$temporal_res_unique),
+            grid = TRUE,
+            width = "100%"
+          )
+        ),
+        column(
+          width = 2,
+          br(),
+          autonumericInput(
+            NS(id, "spatial_res_num"),
+            "",
+            minimumValue = 0,
+            maximumValue = last(filter_specs$spatial_res_range),
+            value = last(filter_specs$spatial_res_range),
+            currencySymbol = " m",
+            currencySymbolPlacement = "s",
+            allowDecimalPadding = FALSE,
+            decimalPlaces = 1
+          ),
+          br(),
+          br(),
+          selectizeInput(
+            NS(id, "temporal_res_num"),
+            label = "",
+            choices = filter_specs$temporal_res_unique,
+            selected = last(filter_specs$temporal_res_unique),
+            multiple = FALSE,
+            width = "100%"
+          )
+        )
       ),
       sliderInput(
         NS(id, "temporal_coverage"),
@@ -78,12 +108,12 @@ awesometableFilterUI <- function(id, filter_specs) {
         width = 3,
         offset = 4,
         actionButton(
-        NS(id, "button_filter"),
-        "Apply filters",
-        width = "100%",
-        icon = icon("search"),
-        style = "background-color: #FCD8A5;"
-      )
+          NS(id, "button_filter"),
+          HTML("<b>Apply filters</b>"),
+          width = "100%",
+          icon = icon("search"),
+          style = "background-color: #EC8791;"
+        )
       )
     )
   )

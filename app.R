@@ -40,6 +40,7 @@ table_data <<- table_raw %>%
 table_config <<- agt_configure(table_data, double_column_names, column_types)
 filter_specs <- generate_filter_specs(table_data)
 input_choices <- generate_input_choices(table_data)
+slider_ids <- 1:3
 # Custom colour ramp
 
 ui = tagList(
@@ -48,6 +49,7 @@ ui = tagList(
     # tags$head(tags$script(type="text/javascript", src = "navbar_link_icon.js")),
     tags$style("@import url(https://use.fontawesome.com/releases/v5.7.2/css/all.css);"),
     includeCSS("www/agt_style.css"),
+    setSliderColor(rep_len("#EC8791",   length(slider_ids)), slider_ids),
     navbarPage(
       # theme = "agt_style.css",  # <--- To use a theme, uncomment this
       "",
