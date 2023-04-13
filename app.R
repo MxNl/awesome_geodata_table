@@ -26,6 +26,7 @@ data("temporal_coverage_startvalues")
 data("INPUT_CHOICES_VERSIONUPDATES")
 data("INPUT_CHOICES_TEMPORALTYPE")
 data("INPUT_CHOICES_COORDREFSYS")
+data("COLUMNS_TOGGLE_INVISIBLE")
 
 # awesome_geodata_table_App <- function() {
 

@@ -11,7 +11,8 @@ adddatasetServer <- function(id, table_data, input_choices) {
 
     table_data_empty <- table_data %>%
       slice(0) %>%
-      mutate(across(everything(), as.character))
+      mutate(across(everything(), as.character)) %>%
+      select(-contains("_icon"))
 
     # observeEvent(input$Dataset, { no_letters_feedback(input$Dataset, "Dataset") })
     # observeEvent(input$Parameter, { no_letters_feedback(input$Parameter, "Parameter") })
@@ -20,15 +21,13 @@ adddatasetServer <- function(id, table_data, input_choices) {
     # observeEvent(input$start_end, { date_order_feedback(input$start_end) })
 
     observeEvent(input$button_send, {
+      #TODO undo
+      # if (TRUE) {
       if (iv$is_valid()) {
 
         input_values <- collect_userinput_in_tibble(input) %>%
           mutate(across(everything(), as.character)) %>%
           bind_rows(table_data_empty, .)
-
-        #TODO delete
-        print(input_values %>% names())
-        print(input_values)
 
         input_values %>%
           select(-any_of("shinyalert")) %>%
@@ -63,7 +62,7 @@ adddatasetServer <- function(id, table_data, input_choices) {
     required_iv$add_rule("max", sv_required())
     required_iv$add_rule("min [m]", sv_required())
     required_iv$add_rule("max [m]", sv_required())
-    required_iv$add_rule("start_end", sv_required())
+    # required_iv$add_rule("start_end", sv_required())
     required_iv$add_rule("Coverage (spatial)", sv_required())
     # required_iv$enable()
 
@@ -86,6 +85,12 @@ adddatasetServer <- function(id, table_data, input_choices) {
     )
     # dataset_name_iv$enable()
 
+    tags_iv <- InputValidator$new()
+    tags_iv$add_rule("Tags", sv_regex(
+      "^[A-Za-z]+(-[A-Za-z]+)*$",
+      "A Tag can only contain letters or a '-' to separate words, e.g. for a tag composed by two words"
+    ))
+
     parameter_iv <- InputValidator$new()
     parameter_iv$condition(~input_provided(input$Parameter))
     parameter_iv$add_rule("Parameter", sv_regex(
@@ -97,6 +102,28 @@ adddatasetServer <- function(id, table_data, input_choices) {
     start_end_iv$condition(~input_provided(input$start_end))
     start_end_iv$add_rule("start_end", sv_date_order())
 
+    min_iv <- InputValidator$new()
+    min_iv$add_rule("min [m]", sv_numeric())
+
+    max_iv <- InputValidator$new()
+    max_iv$add_rule("max [m]", sv_numeric())
+
+    min_max_iv <- InputValidator$new()
+    min_max_iv$condition(~{ input_provided(input$`max [m]`) & input_provided(input$`min [m]`) })
+    min_max_iv$add_rule("min [m]", ~if (. > input$`max [m]`) "Must be smaller than or equal to the maximum spatial resolution")
+    min_max_iv$add_rule("max [m]", ~if (. < input$`min [m]`) "Must be greater than or equal to the minimum spatial resolution")
+
+    temporal_type_iv <- InputValidator$new()
+    # temporal_type_iv$condition(~{ input_provided(input$min) | input_provided(input$max) })
+    temporal_type_iv$condition(~{ isTRUE(input$min == last(input_choices$input_choices_tempres)) | isTRUE(input$max == last(input_choices$input_choices_tempres)) })
+    temporal_type_iv$add_rule(
+      "Temporal type",
+      sv_in_set(
+        input_choices$input_choices_temporaltype[-1],
+        message_fmt = str_glue("Must be one of: {paste(input_choices$input_choices_temporaltype[-1], collapse = ', ')}")
+      )
+    )
+
     iv <- InputValidator$new()
     iv$add_validator(required_iv)
     iv$add_validator(download_iv)
@@ -104,6 +131,11 @@ adddatasetServer <- function(id, table_data, input_choices) {
     iv$add_validator(dataset_name_iv)
     iv$add_validator(parameter_iv)
     iv$add_validator(start_end_iv)
+    iv$add_validator(min_iv)
+    iv$add_validator(max_iv)
+    iv$add_validator(min_max_iv)
+    iv$add_validator(temporal_type_iv)
+    # iv$add_validator(tags_iv)
     iv$enable()
   })
 }

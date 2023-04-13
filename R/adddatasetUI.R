@@ -14,7 +14,8 @@ adddatasetUI <- function(id, input_choices) {
         ),
         HTML("<p><span style='font-weight:bold'>Hints</span></p>"),
         tags$ul(
-          tags$li("Required input fields are marked with an asterics (*)"),
+          tags$li(HTML("Required input fields are annotated with the note <span style='color:#A94442'>Required</span>
+ when unfilled")),
           tags$li("Fur further information about each input field, please just hover over the input field"),
           tags$li("To finally add your dataset, click on the 'Add entry' button at the bottom")
         )
@@ -31,7 +32,7 @@ adddatasetUI <- function(id, input_choices) {
         popify(
           textInput(
             NS(id, "Dataset name"),
-            "Dataset name*",
+            "Dataset name",
             value = "",
             placeholder = "Please type in the dataset name",
             width = "100%"
@@ -45,7 +46,7 @@ adddatasetUI <- function(id, input_choices) {
 
         selectizeInput(
           NS(id, "Parameter"),
-          "Parameter*",
+          "Parameter",
           choices = input_choices$input_choices_parameter,
           selected = character(0),
           multiple = TRUE,
@@ -59,7 +60,7 @@ adddatasetUI <- function(id, input_choices) {
 
         selectizeInput(
           NS(id, "Tags"),
-          "Tags*",
+          "Tags",
           choices = input_choices$input_choices_tags,
           selected = character(0),
           multiple = TRUE,
@@ -72,7 +73,7 @@ adddatasetUI <- function(id, input_choices) {
 
         selectizeInput(
           NS(id, "Domain"),
-          label = "Domain*",
+          label = "Domain",
           choices = column_categories_domain,
           selected = character(0),
           multiple = TRUE,
@@ -85,7 +86,7 @@ adddatasetUI <- function(id, input_choices) {
 
         selectizeInput(
           NS(id, "Unit"),
-          "Unit*",
+          "Unit",
           choices = input_choices$input_choices_unit,
           selected = character(0),
           multiple = TRUE,
@@ -101,7 +102,7 @@ adddatasetUI <- function(id, input_choices) {
 
         selectizeInput(
           NS(id, "min"),
-          "Minimum (shortest) temporal resolution*",
+          "Minimum (shortest) temporal resolution",
           choices = input_choices$input_choices_tempres,
           selected = character(0),
           multiple = TRUE,
@@ -114,7 +115,7 @@ adddatasetUI <- function(id, input_choices) {
 
         selectizeInput(
           NS(id, "max"),
-          "Maximum (longest) temporal resolution*",
+          "Maximum (longest) temporal resolution",
           choices = input_choices$input_choices_tempres,
           selected = character(0),
           multiple = TRUE,
@@ -140,7 +141,7 @@ adddatasetUI <- function(id, input_choices) {
             )
           ),
           "Input help",
-          "<ul><li>Here you can enter a value for a <b>time period</b>. This period should indicate the temporal delay between data acquisition and publishing. This is important to know <b>how recent</b> the data might be!</li><li>Periods should be abbreviated according to this convention:<ul><li> 1 second = 1 s</li><li> 2 minutes = 2 min</li><li> 1 hour = 1 h</li><li> 1 day = 1 d</li><li> 2 month = 2 mo</li><li> 1 year = 1 yr</li></li></ul> ",
+          "<ul><li>Here you can enter a value for a <b>time period</b>. This period should indicate the temporal delay between data acquisition and publishing. This important to know <b>how recent</b> the data might be!</li><li>Periods should be abbreviated according to this convention:<ul><li> 1 second = 1 s</li><li> 2 minutes = 2 min</li><li> 1 hour = 1 h</li><li> 1 day = 1 d</li><li> 2 month = 2 mo</li><li> 1 year = 1 yr</li></li></ul> ",
           placement = "left",
           trigger = "hover",
           options = list(container = "body")
@@ -149,12 +150,13 @@ adddatasetUI <- function(id, input_choices) {
         popify(
           numericInput(
             NS(id, "min [m]"),
-            "Minimum (smallest) spatial resolution*",
+            "Minimum (smallest) spatial resolution",
             # choices = input_choices$input_choices_spatialmin,
             # selected = character(0),
             # multiple = TRUE,
             value = NULL,
-            width = "100%"
+            width = "100%",
+            min = 0,
             # options = list(
             # create = TRUE,
             # placeholder = "Please type in a spatial resolution in m"
@@ -162,7 +164,7 @@ adddatasetUI <- function(id, input_choices) {
             # )
           ),
           "Input help",
-          "<ul><li>Here you must enter a numeric value for the <b>minimum spatial resolution</b> of the dataset. For some datasets the minimum and maximum spatial resolution might be the same, if it is is based on a regular grid with a projected reference system</li></ul> ",
+          "<ul><li>Here you must enter a numeric value for the <b>minimum spatial resolution</b> of the dataset. For some datasets the minimum and maximum spatial resolution might be the same, if it is based on a regular grid with a projected reference system</li></ul> ",
           placement = "left",
           trigger = "hover",
           options = list(container = "body")
@@ -171,12 +173,13 @@ adddatasetUI <- function(id, input_choices) {
         popify(
           numericInput(
             NS(id, "max [m]"),
-            "Maximum (greatest) spatial resolution*",
+            "Maximum (greatest) spatial resolution",
             # choices = input_choices$input_choices_spatialmin,
             # selected = character(0),
             # multiple = TRUE,
             value = NULL,
-            width = "100%"
+            width = "100%",
+            min = 0,
             # options = list(
             # create = TRUE,
             # placeholder = "Please type in a spatial resolution in m"
@@ -184,7 +187,7 @@ adddatasetUI <- function(id, input_choices) {
             # )
           ),
           "Input help",
-          "<ul><li>Here you must enter a numeric value for the <b>maximum spatial resolution</b> of the dataset. For some datasets the minimum and maximum spatial resolution might be the same, if it is is based on a regular grid with a projected reference system</li></ul> ",
+          "<ul><li>Here you must enter a numeric value for the <b>maximum spatial resolution</b> of the dataset. For some datasets the minimum and maximum spatial resolution might be the same, if it is based on a regular grid with a projected reference system</li></ul> ",
           placement = "left",
           trigger = "hover",
           options = list(container = "body")
@@ -206,7 +209,7 @@ adddatasetUI <- function(id, input_choices) {
 
         h3("Coverage"),
 
-        # tags$b("Temporal coverage*"),
+        # tags$b("Temporal coverage"),
         # br(),
         # tags$i("Hints:"),
         # tags$i(
@@ -218,7 +221,7 @@ adddatasetUI <- function(id, input_choices) {
         popify(
           dateRangeInput(
             NS(id, "start_end"),
-            "Temporal coverage*",
+            "Temporal coverage",
             start = "",
             end = "",
             width = "100%",
@@ -255,7 +258,7 @@ adddatasetUI <- function(id, input_choices) {
         popify(
           selectizeInput(
             NS(id, "Coverage (spatial)"),
-            "Spatial coverage*",
+            "Spatial coverage",
             choices = input_choices$input_choices_spatialcoverage,
             selected = character(0),
             multiple = TRUE,
@@ -279,7 +282,7 @@ adddatasetUI <- function(id, input_choices) {
         popify(
           selectizeInput(
             NS(id, "type"),
-            "Data type*",
+            "Data type",
             choices = input_choices$input_choices_type,
             selected = character(0),
             multiple = TRUE,
@@ -449,7 +452,7 @@ adddatasetUI <- function(id, input_choices) {
         popify(
           textInput(
             NS(id, "Download"),
-            "Download*",
+            "Download",
             value = "",
             placeholder = "Please type in a URL of the location for downloading the dataset",
             width = "100%"
