@@ -19,6 +19,6 @@ generate_input_choices <- function(x) {
     input_choices_publisher = unique_sorted(x$Publisher),
     input_choices_access = unique_sorted(x$Access),
     input_choices_license = unique_sorted(x$License),
-    input_choices_method = unique_sorted(x$method)
+    input_choices_method = unique_sorted(x$Method)
   )
 }

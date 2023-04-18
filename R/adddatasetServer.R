@@ -70,12 +70,10 @@ adddatasetServer <- function(id, table_data, input_choices) {
     download_iv <- InputValidator$new()
     download_iv$condition(~input_provided(input$Download))
     download_iv$add_rule("Download", sv_url(allow_na = TRUE))
-    # download_iv$enable()
 
     literature_iv <- InputValidator$new()
     literature_iv$condition(~input_provided(input$Literature))
     literature_iv$add_rule("Literature", sv_url(allow_na = TRUE))
-    # literature_iv$enable()
 
     dataset_name_iv <- InputValidator$new()
     dataset_name_iv$condition(~input_provided(input$`Dataset name`))
@@ -86,10 +84,15 @@ adddatasetServer <- function(id, table_data, input_choices) {
     # dataset_name_iv$enable()
 
     tags_iv <- InputValidator$new()
-    tags_iv$add_rule("Tags", sv_regex(
-      "^[A-Za-z]+(-[A-Za-z]+)*$",
-      "A Tag can only contain letters or a '-' to separate words, e.g. for a tag composed by two words"
-    ))
+    tags_iv$add_rule("Tags", ~if (
+      str_detect(
+        .,
+        "^[A-Za-z]+(-[A-Za-z]+)*$"
+      ) %>%
+        all() %>%
+        isFALSE() & all(length(.) != 0)
+    ) "A Tag can only contain letters or a '-' to separate words, e.g. for a tag composed by two words"
+    )
 
     parameter_iv <- InputValidator$new()
     parameter_iv$condition(~input_provided(input$Parameter))
@@ -119,7 +122,7 @@ adddatasetServer <- function(id, table_data, input_choices) {
     temporal_type_iv$add_rule(
       "Temporal type",
       sv_in_set(
-        input_choices$input_choices_temporaltype[-1],
+        input_choices$input_choices_temporaltype[-c(1:2)],
         message_fmt = str_glue("Must be one of: {paste(input_choices$input_choices_temporaltype[-1], collapse = ', ')}")
       )
     )
@@ -135,7 +138,7 @@ adddatasetServer <- function(id, table_data, input_choices) {
     iv$add_validator(max_iv)
     iv$add_validator(min_max_iv)
     iv$add_validator(temporal_type_iv)
-    # iv$add_validator(tags_iv)
+    iv$add_validator(tags_iv)
     iv$enable()
   })
 }

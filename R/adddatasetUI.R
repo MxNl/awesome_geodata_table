@@ -164,7 +164,7 @@ adddatasetUI <- function(id, input_choices) {
             # )
           ),
           "Input help",
-          "<ul><li>Here you must enter a numeric value for the <b>minimum spatial resolution</b> of the dataset. For some datasets the minimum and maximum spatial resolution might be the same, if it is based on a regular grid with a projected reference system</li></ul> ",
+          "<ul><li>Here you must enter a numeric value for the <b>minimum spatial resolution</b> in meters of the dataset. For some datasets the minimum and maximum spatial resolution might be the same, if it is based on a regular grid with a projected reference system</li></ul> ",
           placement = "left",
           trigger = "hover",
           options = list(container = "body")
@@ -187,7 +187,7 @@ adddatasetUI <- function(id, input_choices) {
             # )
           ),
           "Input help",
-          "<ul><li>Here you must enter a numeric value for the <b>maximum spatial resolution</b> of the dataset. For some datasets the minimum and maximum spatial resolution might be the same, if it is based on a regular grid with a projected reference system</li></ul> ",
+          "<ul><li>Here you must enter a numeric value for the <b>maximum spatial resolution</b> in meters of the dataset. For some datasets the minimum and maximum spatial resolution might be the same, if it is based on a regular grid with a projected reference system</li></ul> ",
           placement = "left",
           trigger = "hover",
           options = list(container = "body")
@@ -249,7 +249,7 @@ adddatasetUI <- function(id, input_choices) {
             )
           ),
           "Input help",
-          "<ul><li>Text <b>here</b>!</li></ul> ",
+          "<ul><li>Here you can choose one of the pre-defined values for <b>Temporal type</b>!</li><ul><li>Choose <b>dynamic</b> if the dataset is a time series, e.g. hourly precipitation</li><li>Choose <b>aggregated-dynamic</b> if the dataset represents long-term aggregates of a time series, e.g. long-term monthly maximum temperature</li><li>Choose <b>semi-static</b> if the dataset represents a 'snapshot' of a variable that changes within a period of multiple years to decades, e.g. land-use</li><li>Choose <b>static</b> if the dataset represents a variable that doesn't change within human scale periods, e.g. geological properties</li></ul></ul> ",
           placement = "left",
           trigger = "hover",
           options = list(container = "body")
@@ -349,7 +349,7 @@ adddatasetUI <- function(id, input_choices) {
           selectizeInput(
             NS(id, "Coordinate reference system"),
             "Coordinate Reference System (CRS)",
-            choices = NULL,
+            choices = input_choices$input_choices_coordrefsys,
             selected = character(0),
             multiple = TRUE,
             width = "100%",
@@ -360,7 +360,7 @@ adddatasetUI <- function(id, input_choices) {
             )
           ),
           "Input help",
-          "<ul><li>Text <b>here</b>!</li></ul> ",
+          "<ul><li>Here you can provide information about the <b>Coordinate reference system</b> of the dataset</li></ul> ",
           placement = "left",
           trigger = "hover",
           options = list(container = "body")
@@ -383,7 +383,7 @@ adddatasetUI <- function(id, input_choices) {
             )
           ),
           "Input help",
-          "<ul><li>Text <b>here</b>!</li></ul> ",
+          "<ul><li>Here you can provide information on the dataset <b>publisher</b>!</li><li>This can be an governmental authority, a research institute, the affiliation of the first author or just the first authors name</li></ul> ",
           placement = "left",
           trigger = "hover",
           options = list(container = "body")
@@ -404,7 +404,7 @@ adddatasetUI <- function(id, input_choices) {
             )
           ),
           "Input help",
-          "<ul><li>Text <b>here</b>!</li></ul> ",
+          "<ul><li>Here you can provide a year in which the dataset was <b>published</b> for the <b>first</b> time!</li><li>If a dataset has multiple versions, this year may relate to the first version or to the version that you are currently adding here now!</li></ul> ",
           placement = "left",
           trigger = "hover",
           options = list(container = "body")
@@ -419,7 +419,7 @@ adddatasetUI <- function(id, input_choices) {
             width = "100%"
           ),
           "Input help",
-          "<ul><li>Text <b>here</b>!</li></ul> ",
+          "<ul><li>Here you can provide an URL that links to a related scientific article, data desciptor, documentation!</li></ul> ",
           placement = "left",
           trigger = "hover",
           options = list(container = "body")
@@ -458,7 +458,7 @@ adddatasetUI <- function(id, input_choices) {
             width = "100%"
           ),
           "Input help",
-          "<ul><li>Text <b>here</b>!</li></ul> ",
+          "<ul><li>Here you can provide an URL that points to a location where the dataset can be <b>Download</b>ed!</li><li>This can be a data repository, a project website, an online portal or a documentation if multiple download options are available</li></ul> ",
           placement = "left",
           trigger = "hover",
           options = list(container = "body")
@@ -474,12 +474,12 @@ adddatasetUI <- function(id, input_choices) {
             width = "100%",
             options = list(
               create = TRUE,
-              placeholder = "Please choose an access from the list or create a new entry",
+              placeholder = "Please choose an access type from the list or create a new entry",
               maxItems = 1
             )
           ),
           "Input help",
-          "<ul><li>Text <b>here</b>!</li></ul> ",
+          "<ul><li>Here you can provide an <b>Access</b> type!</li><li>This should point out the requirements in order to be able to download the dataset.</li></ul> ",
           placement = "left",
           trigger = "hover",
           options = list(container = "body")
@@ -500,7 +500,7 @@ adddatasetUI <- function(id, input_choices) {
             )
           ),
           "Input help",
-          "<ul><li>Text <b>here</b>!</li></ul> ",
+          "<ul><li>Here you can provide information on the <b>License</b> under which the dataset was published!</li></ul> ",
           placement = "left",
           trigger = "hover",
           options = list(container = "body")
@@ -515,7 +515,7 @@ adddatasetUI <- function(id, input_choices) {
             width = "100%"
           ),
           "Input help",
-          "<ul><li>Text <b>here</b>!</li></ul> ",
+          "<ul><li>Here you can provide information on <b>Data limitations</b> when using the dataset, e.g. high uncertainty in some regions</li></ul> ",
           placement = "left",
           trigger = "hover",
           options = list(container = "body")
@@ -536,7 +536,7 @@ adddatasetUI <- function(id, input_choices) {
             )
           ),
           "Input help",
-          "<ul><li>Text <b>here</b>!</li></ul> ",
+          "<ul><li>Here you can provide information on the <b>Method</b>s used to generate the dataset, e.g. interpolation between station data!</li></ul> ",
           placement = "left",
           trigger = "hover",
           options = list(container = "body")
