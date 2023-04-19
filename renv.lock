@@ -949,6 +949,18 @@
       ],
       "Hash": "88d1b310583777edf01ccd1216fb0b2b"
     },
+    "hues": {
+      "Package": "hues",
+      "Version": "0.2.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "colorspace",
+        "methods"
+      ],
+      "Hash": "9d9a3cbcf39a3522f360980528b731fb"
+    },
     "ids": {
       "Package": "ids",
       "Version": "1.0.1",

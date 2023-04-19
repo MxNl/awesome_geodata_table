@@ -60,7 +60,8 @@ Imports:
     shinycssloaders,
     shinyalert,
     shinyvalidate,
-    shinyFeedback
+    shinyFeedback,
+    hues
 Suggests:
     magrittr,
     devtools,
