@@ -1790,6 +1790,19 @@
       ],
       "Hash": "855483b2c2121af7a47bcdcd0c766b8e"
     },
+    "shinyvalidate": {
+      "Package": "shinyvalidate",
+      "Version": "0.1.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "glue",
+        "htmltools",
+        "rlang",
+        "shiny"
+      ],
+      "Hash": "4ce7aa115e26a4eefbecab1b27bc3ada"
+    },
     "sourcetools": {
       "Package": "sourcetools",
       "Version": "0.1.7-1",
