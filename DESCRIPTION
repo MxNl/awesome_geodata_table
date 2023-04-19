@@ -59,6 +59,7 @@ Imports:
     shinydashboard,
     shinycssloaders,
     shinyalert,
+    shinyvalidate,
     shinyFeedback
 Suggests:
     magrittr,
