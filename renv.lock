@@ -1108,10 +1108,10 @@
     },
     "ps": {
       "Package": "ps",
-      "Version": "1.7.1",
+      "Version": "1.7.5",
       "Source": "Repository",
       "Repository": "CRAN",
-      "Hash": "8b93531308c01ad0e56d9eadcc0c4fcd",
+      "Hash": "709d852d33178db54b17c722e5b1e594",
       "Requirements": []
     },
     "purrr": {
