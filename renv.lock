@@ -165,6 +165,19 @@
       ],
       "Hash": "e749cae40fa9ef469b6050959517453c"
     },
+    "V8": {
+      "Package": "V8",
+      "Version": "4.2.2",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "Rcpp",
+        "curl",
+        "jsonlite",
+        "utils"
+      ],
+      "Hash": "ebee37dadb0a8f5086663825d2c33076"
+    },
     "allcontributors": {
       "Package": "allcontributors",
       "Version": "0.0.2",

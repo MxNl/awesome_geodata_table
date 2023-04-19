@@ -61,7 +61,8 @@ Imports:
     shinyalert,
     shinyvalidate,
     shinyFeedback,
-    hues
+    hues,
+    V8
 Suggests:
     magrittr,
     devtools,
