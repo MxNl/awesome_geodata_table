@@ -1,0 +1,67 @@
+# Validate the metadata, run the tests, render the site and deploy it to
+# GitHub Pages (Settings → Pages → Source: "GitHub Actions").
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+
+      - uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Validate metadata and run unit tests
+        run: Rscript tests/testthat.R
+
+      - name: Render site
+        run: quarto render
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Browser tests
+        working-directory: tests/e2e
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+          python3 -m http.server 8765 --directory ../../_site &
+          sleep 1
+          node e2e.js http://localhost:8765/ "$RUNNER_TEMP"
+
+      - uses: actions/upload-pages-artifact@v3
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        with:
+          path: _site
+
+  deploy:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

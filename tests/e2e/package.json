@@ -1,0 +1,11 @@
+{
+  "name": "awesome-geodata-table-e2e",
+  "private": true,
+  "description": "Browser tests for the rendered Awesome Geodata Table",
+  "scripts": {
+    "test": "node e2e.js"
+  },
+  "devDependencies": {
+    "playwright": "1.48.2"
+  }
+}

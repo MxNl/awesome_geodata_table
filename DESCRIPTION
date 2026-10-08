@@ -1,6 +1,6 @@
 Package: AwesomeGeodataTable
 Title: A Searchable Collection of Geodatasets Maintained by its Community
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: c(
     person(given = "Anne-Karin",
            family = "Cooke",
@@ -22,54 +22,29 @@ Authors@R: c(
            role = c("aut", "cre"),
            email = "maximilian.noelscher@bgr.de",
            comment = c(ORCID = "0000-0001-5606-1900")))
-Description: This page provides a searchable html table to simplify the search for data sets in many geoscientific domains by using column-wise filter functionality and a search box. Its database is meant to grow over time through its users and the geoscientific community.
+Description: A searchable, filterable table of metadata on geodatasets that are
+    useful for groundwater and environmental modelling. The metadata is kept as CSV
+    files in this repository and rendered to a static web page with Quarto and
+    reactable. This DESCRIPTION file only declares the dependencies of the build.
 License: CC BY 4.0
-Date: 2022-06-01
+Date: 2026-10-08
 Encoding: UTF-8
-LazyData: true
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
-URL: https://github.com/MxNl/awesome_geodata_table
+URL: https://mxnl.github.io/awesome_geodata_table/, https://github.com/MxNl/awesome_geodata_table
 BugReports: https://github.com/MxNl/awesome_geodata_table/issues
-Depends: 
+Depends:
     R (>= 4.1.0)
-Imports: 
-    readr,
+Imports:
     dplyr,
-    purrr,
-    here,
-    allcontributors,
-    stringr,
-    tidyr,
-    here,
-    reactable,
-    tippy,
-    shiny,
     htmltools,
-    assertr,
-    googlesheets4,
-    shinythemes,
-    reactablefmtr,
-    viridis,
-    shinyjs,
-    shinyWidgets,
-    shinyBS,
-    lubridate,
-    katexR,
-    shinydashboard,
-    shinycssloaders,
-    shinyalert,
-    shinyvalidate,
-    shinyFeedback,
-    hues,
-    V8
+    jsonlite,
+    purrr,
+    reactable (>= 0.4.4),
+    readr,
+    stringr,
+    tibble,
+    yaml
 Suggests:
-    magrittr,
-    devtools,
-    usethis,
-    styler,
-    badger,
     knitr,
     rmarkdown,
-    shinyuieditor
+    testthat (>= 3.0.0)
 Config/testthat/edition: 3
