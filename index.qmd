@@ -1,0 +1,64 @@
+---
+pagetitle: "Awesome Geodata Table"
+description: "A searchable collection of geodatasets for groundwater and environmental modelling, maintained by its community."
+format:
+  html:
+    page-layout: full
+    title-block-style: none
+    theme:
+      light: cosmo
+      dark: darkly
+    respect-user-color-scheme: true
+    toc: false
+    anchor-sections: false
+    include-in-header:
+      - text: |
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.3.1/css/tom-select.bootstrap5.min.css">
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.3.1/js/tom-select.complete.min.js"></script>
+          <link rel="stylesheet" href="assets/agt.css">
+          <link rel="icon" type="image/png" href="assets/logo.png">
+    include-after-body:
+      - text: |
+          <script src="assets/agt.js"></script>
+---
+
+```{r setup}
+for (f in list.files("R", pattern = "\\.R$", full.names = TRUE)) source(f)
+schema <- read_schema("metadata")
+agt_data <- read_metadata("metadata")
+n_datasets <- dplyr::n_distinct(agt_data$id)
+```
+
+:::: {.column-screen-inset}
+
+::: {.agt-hero}
+<img src="assets/logo.png" alt="Awesome Geodata Table logo">
+
+<div>
+<h1>Awesome Geodata Table</h1>
+<p>Find spatial datasets for groundwater and environmental modelling: `r nrow(agt_data)` parameters from `r n_datasets` datasets with resolution, coverage, access and license at a glance. Search or filter below, click <b>▸</b> for all metadata of a row.</p>
+</div>
+:::
+
+```{r table}
+htmltools::tagList(
+  agt_filters(agt_data, schema),
+  agt_table(agt_data, schema)
+)
+```
+
+::::
+
+## About
+
+The table collects **metadata** only – it links to the data providers but does not host any data.
+Each row is one parameter (variable) of a dataset. *Spatial res.* and *Temporal res.* show the finest – coarsest available resolution;
+the resolution filters keep a row if its *finest* resolution is at least as fine as the selected value.
+Rows with unknown values are never filtered out by the resolution filters.
+
+**Contribute a dataset:** open a [new-dataset issue](https://github.com/MxNl/awesome_geodata_table/issues/new?template=new-dataset.yml)
+or edit [`metadata/datasets.csv`](https://github.com/MxNl/awesome_geodata_table/blob/main/metadata/datasets.csv) and
+[`metadata/parameters.csv`](https://github.com/MxNl/awesome_geodata_table/blob/main/metadata/parameters.csv) in a pull request.
+The raw metadata can be downloaded as [datasets.csv](metadata/datasets.csv) and [parameters.csv](metadata/parameters.csv).
+
+<small>Last built `r format(Sys.Date(), "%d %B %Y")` · [GitHub](https://github.com/MxNl/awesome_geodata_table) · License CC BY 4.0</small>

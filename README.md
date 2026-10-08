@@ -1,114 +1,88 @@
+# Awesome Geodata Table <img src="man/figures/awesome_geodata_table_logo.png" align="right" height="139"/>
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+[![build](https://github.com/MxNl/awesome_geodata_table/actions/workflows/build.yaml/badge.svg)](https://github.com/MxNl/awesome_geodata_table/actions/workflows/build.yaml)
+[![License: CC BY 4.0](https://img.shields.io/badge/license-CC%20BY%204.0-blue.svg)](https://creativecommons.org/licenses/by/4.0/)
 
-# Awesome Geodata Table <img src='man/figures/awesome_geodata_table_logo.png' align="right" height="139"/>
+A searchable, filterable collection of **metadata on geodatasets** for groundwater and
+environmental modelling: climate forcings, hydrogeology, geology, soils, topography,
+land cover and more. Each row is one parameter (variable) of a dataset, with its
+spatial and temporal resolution, coverage, access, license and links.
 
-<!-- badges: start -->
+**→ [Open the table](https://mxnl.github.io/awesome_geodata_table/)**
 
-![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-[![Project Status: Active - The project has reached a stable, usable
-state and is being actively
-developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![](https://img.shields.io/github/last-commit/MxNl/awesome_geodata_table.svg)](https://github.com/MxNl/awesome_geodata_table/commits/main)
-[![License: CC BY
-4.0](https://img.shields.io/badge/license-CC%20BY%204.0-blue.svg)](https://cran.r-project.org/web/licenses/CC%20BY%204.0)
-[![R-CMD-check](https://github.com/MxNl/awesome_geodata_table/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/MxNl/awesome_geodata_table/actions/workflows/R-CMD-check.yaml)
-<!-- badges: end -->
+The table only collects metadata and links to the data providers; it does not host data.
 
-# What is it good for?
+## Using the table
 
-The **Awesome Geodata Table** is a searchable collection of geo data
-sets. If you are searching for spatial data sets for your research
-project, you can enter search terms or use the column filters to scan
-through the underlying data collection. But be aware that it just
-provides a collection of meta data and information on where to download
-the data. It does not provide the data itself. Its initial purpose was
-to collect data sets that could be used as environmental predictors or
-features in machine learning applications.
+- **Search** matches every word you type against parameter, dataset, tags, domain and publisher.
+- **Filters** combine with AND; several values within one filter combine with OR.
+  Clearing a filter or pressing **Reset** always brings back every row.
+- **Spatial / temporal res. at least** keeps parameters whose *finest* available
+  resolution is at least as fine as the selected value. Unknown values are never removed.
+- **Covers period** keeps parameters whose temporal coverage *overlaps* the selected years.
+- **▸** opens all metadata of a row. **Group by dataset** gives a dataset overview.
+- **Copy link** shares the current search; **Download CSV** exports the filtered rows.
 
-# How to use the table?
+## Contributing a dataset
 
-Just open the [**Awesome Geodata
-Table**](https://mxnl.github.io/awesome_geodata_table/) and search for
-data sets or use the column filters to narrow your search. <br><br>
-![alt text here](man/figures/awesomegeodatatable_howto.gif)
+- Open a [*Suggest a dataset* issue](https://github.com/MxNl/awesome_geodata_table/issues/new?template=new-dataset.yml), or
+- edit the CSV files in [`metadata/`](metadata) and open a pull request. The CI validates every change.
 
-# How to add entries to the table?
+### Data model
 
-## Step-by-step
+| File | One row per | Notes |
+|---|---|---|
+| [`metadata/datasets.csv`](metadata/datasets.csv) | dataset | id, name, domain, resolution, coverage, access, license, links … |
+| [`metadata/parameters.csv`](metadata/parameters.csv) | parameter | `dataset_id`, `parameter`, `unit` + optional overrides |
+| [`metadata/schema.yaml`](metadata/schema.yaml) | – | field types, required fields and allowed vocabularies |
 
-1.  Copy the content of the following code chunk by using the button at
-    the top right
+- Any column of `datasets.csv` may also appear in `parameters.csv`. A filled value
+  overrides the dataset value for that parameter, `none` means "not applicable", and an empty cell inherits.
+  `tags` in `parameters.csv` are added to the dataset tags.
+- Spatial resolution is given in **metres** (`res_spatial_finest_m`, `res_spatial_coarsest_m`).
+  Keep the original notation (e.g. `0.25°`, `1:250,000`) in `res_spatial_note`.
+- Temporal resolution uses the classes `hourly` (≤ 1 h), `daily`, `weekly`, `monthly`, `yearly`,
+  `decadal`, `multi-decadal` and `static`.
+- Coverage is given in years; `coverage_end` may be `present`.
+- Tags are lower case and separated by `;`.
 
-<!-- -->
+## Building locally
 
-    Parameter: <Name of a single parameter/variable in the dataset (data type: teeeeeeext)>
-    Dataset_name: <Full name of the dataset with optional abbreviation in round brackets (data type: teeeeeeext)>
-    Tags: <Tags related to the dataset (data type: teeeeeeext)>
-    Domain: <Strongest associated domain (data type: teeeeeeext)>
-    Unit: <Unit or dimension of the parameter (data type: teeeeeeext)>
-    Resolution_(temporal)-min: <Minimum temporal resolution (data type: teeeeeeext)>
-    Resolution_(temporal)-max: <Maximum temporal resolution (data type: teeeeeeext)>
-    Resolution_(spatial)-min_[m]: <Minimum spatial resolution in meters (data type: teeeeeeext)>
-    Resolution_(spatial)-max_[m]: <Maximum spatial resolution in meters (data type: teeeeeeext)>
-    Resolution_(spatial)-unconverted_units: <Raw units of the spatial resolution (data type: teeeeeeext)>
-    Resolution_(spatial)-vertical: <Vertical spatial resolution (data type: teeeeeeext)>
-    Coverage_(temporal)-start: <Start of the covered period (data type: teeeeeeext)>
-    Coverage_(temporal)-end: <End of the covered period (data type: teeeeeeext)>
-    Coverage_(spatial): <teeeeext (data type: teeeeeeext)>
-    Data-type: <teeeeext (data type: teeeeeeext)>
-    Data-format: <teeeeext (data type: teeeeeeext)>
-    Data-file_extension: <teeeeext (data type: teeeeeeext)>
-    Coordinate_reference_system: <teeeeext (data type: teeeeeeext)>
-    Download: <teeeeext (data type: teeeeeeext)>
-    Published_first: <teeeeext (data type: teeeeeeext)>
-    Literature: <teeeeext (data type: teeeeeeext)>
-    Version_updates: <teeeeext (data type: teeeeeeext)>
-    Upload_delay: <teeeeext (data type: teeeeeeext)>
-    Temporal_type: <teeeeext (data type: teeeeeeext)>
-    Access: <teeeeext (data type: teeeeeeext)>
-    Publisher: <teeeeext (data type: teeeeeeext)>
-    License: <teeeeext (data type: teeeeeeext)>
-    Data_limitations: <teeeeext (data type: teeeeeeext)>
-    Method: <teeeeext (data type: teeeeeeext)>
-    Usage_requirement: <teeeeext (data type: teeeeeeext)>
-    minTempRes: <teeeeext (data type: teeeeeeext)>
-    maxTempRes: <teeeeext (data type: teeeeeeext)>
-    Comment: <teeeeext (data type: teeeeeeext)>
+Requirements: R ≥ 4.1 with the packages listed in `DESCRIPTION`, and [Quarto](https://quarto.org).
 
-2.  Go to the directory
-    [inst/extdata/new_entries](https://github.com/MxNl/awesome_geodata_table/tree/main/inst/extdata/new_entries)
-3.  Click on `Add file` -\> `Create new file`
-4.  Enter a file name (!Please don’t use spaces) and use the file
-    extension .txt
-5.  Paste the previously copied text into the file and replace the
-    placeholders with the meta data of the dataset that you want to add.
-6.  When entered all meta data and finished editing of that file, scroll
-    down and select
-    `Create a new branch for this commit and start a pull request.`
-7.  Click on `Propose new file`
-8.  Click on `Create pull request`
-
-One of the administrators of this repository will then add your new
-entry! We might need to make some minor changes to the entered meta data
-in case it doesn’t match the requirements on the column specifications.
-
-## Detailed column specifications
-
-Text… (links to Wiki?!) sdf
-
-# Citation
-
-Please cite this table using the following bibtex entry:
-
-``` r
-  @Manual{,
-    title = {awesome_geodata_table A Searchable Collection of Geodatasets Maintained by its Community},
-    author = {Anne-Karin Cooke and Sandra Willkommen and Mariana Gomez-Ospina and Maximilian Nölscher},
-    year = {2022},
-    note = {R package version 0.0.0.9000},
-    url = {https://github.com/MxNl/awesome_geodata_table},
-  }
+```sh
+Rscript tests/testthat.R   # validate metadata + unit tests
+quarto render              # writes the site to _site/
 ```
+
+Browser tests (optional, need Node.js):
+
+```sh
+cd tests/e2e && npm ci && npx playwright install chromium
+python3 -m http.server 8765 --directory ../../_site &
+node e2e.js http://localhost:8765/
+```
+
+### Project structure
+
+```
+metadata/        datasets.csv, parameters.csv, schema.yaml   ← the content
+R/               read_metadata(), validate_metadata(), agt_table(), agt_filters()
+assets/          agt.js (filter panel), agt.css (styles), logo
+index.qmd        the page
+tests/           testthat unit tests, tests/e2e browser tests
+data-raw/        one-off migration of the legacy Google Sheet export
+legacy/          previous Shiny app (kept for reference)
+```
+
+All filtering runs client-side in [reactable](https://glin.github.io/reactable/), so the
+site is static and hosted on GitHub Pages.
+
+## Authors
+
+Anne-Karin Cooke, Sandra Willkommen, Mariana Gomez-Ospina, Maximilian Nölscher – and contributors.
+
+## License
+
+The metadata and code are licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+The licenses of the linked datasets are listed per dataset in the table.

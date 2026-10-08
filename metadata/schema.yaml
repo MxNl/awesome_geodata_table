@@ -1,0 +1,121 @@
+# Schema of the Awesome Geodata Table metadata.
+#
+# datasets.csv   – one row per dataset
+# parameters.csv – one row per parameter (variable) of a dataset. Any column that
+#                  also exists in datasets.csv may be filled to override the
+#                  dataset value for this parameter; leave it empty to inherit.
+#                  Use the literal value `none` to override with "not applicable".
+#                  `tags` are added to the dataset tags instead of replacing them.
+#
+# Field properties:
+#   type:     string | integer | number | year | url | tags | vocab
+#   vocab:    name of an entry under `vocabularies` (for type vocab)
+#   required: must not be empty (after inheritance)
+#   label:    column label in the table / detail view
+#   help:     description used in the README and the contribution form
+
+vocabularies:
+  domain:
+    - Climate & atmosphere
+    - Hydrology
+    - Hydrogeology
+    - Soil
+    - Geology
+    - Topography
+    - Land cover & land use
+    - Vegetation & ecology
+    - Agriculture & water use
+    - Water quality & pollution
+    - Human & socio-economic
+  # ordered from fine to coarse: hourly = ≤ 1 h, daily = ≤ 1 d, weekly = ≤ 7 d,
+  # monthly = ≤ 1 month, yearly = ≤ 1 a, decadal = ≤ 10 a, multi-decadal = > 10 a;
+  # `static` = no temporal dimension
+  temporal_resolution:
+    - {key: hourly,       label: "hourly"}
+    - {key: daily,        label: "daily"}
+    - {key: weekly,       label: "weekly"}
+    - {key: monthly,      label: "monthly"}
+    - {key: yearly,       label: "yearly"}
+    - {key: decadal,      label: "decadal"}
+    - {key: multidecadal, label: "multi-decadal"}
+    - {key: static,       label: "static"}
+  coverage_spatial:
+    - Global
+    - Europe
+    - Germany
+    - Africa
+    - Asia
+    - North America
+    - South America
+    - Oceania
+  data_type:
+    - raster
+    - vector
+    - point
+    - tabular
+  temporal_type:
+    - dynamic
+    - aggregated-dynamic
+    - semi-static
+    - static
+  vertical:
+    - atmosphere
+    - land surface
+    - shallow subsurface
+    - subsurface
+    - multiple
+  access:
+    - open
+    - registration
+    - on request
+    - restricted
+  method:
+    - observation-based
+    - model-based
+    - hybrid
+  processing_level:
+    - raw
+    - preprocessing needed
+    - final product
+  maintained:
+    - "yes"
+    - "no"
+    - unknown
+
+datasets:
+  id:                     {type: string, required: true, label: "ID", help: "Unique lower-case slug, e.g. era5-land"}
+  name:                   {type: string, required: true, label: "Dataset", help: "Full name with optional abbreviation in brackets"}
+  domain:                 {type: vocab, vocab: domain, required: true, label: "Domain"}
+  tags:                   {type: tags, label: "Tags", help: "Lower-case keywords separated by ';'"}
+  publisher:              {type: string, label: "Publisher"}
+  coverage_spatial:       {type: vocab, vocab: coverage_spatial, required: true, label: "Spatial coverage"}
+  data_type:              {type: vocab, vocab: data_type, label: "Data type"}
+  format:                 {type: string, label: "Format", help: "File formats, e.g. GeoTIFF; netCDF"}
+  crs:                    {type: string, label: "CRS", help: "Coordinate reference system, preferably as EPSG code"}
+  res_spatial_finest_m:   {type: number, label: "Spatial res. finest [m]", help: "Finest available spatial resolution in metres (approx. at the equator for geographic grids)"}
+  res_spatial_coarsest_m: {type: number, label: "Spatial res. coarsest [m]", help: "Coarsest available spatial resolution in metres"}
+  res_spatial_note:       {type: string, label: "Spatial res. (original)", help: "Resolution in original notation, e.g. 0.1°, 30 arc-sec, 1:1 million"}
+  res_temporal_finest:    {type: vocab, vocab: temporal_resolution, label: "Temporal res. finest"}
+  res_temporal_coarsest:  {type: vocab, vocab: temporal_resolution, label: "Temporal res. coarsest"}
+  coverage_start:         {type: year, label: "Coverage start", help: "First year covered"}
+  coverage_end:           {type: year, label: "Coverage end", help: "Last year covered, or 'present' if ongoing"}
+  temporal_type:          {type: vocab, vocab: temporal_type, label: "Temporal type"}
+  vertical:               {type: vocab, vocab: vertical, label: "Vertical position"}
+  maintained:             {type: vocab, vocab: maintained, label: "Updated regularly"}
+  latency:                {type: string, label: "Update latency", help: "Delay between observation and publication, e.g. 5 d, 3 months"}
+  published:              {type: year, label: "First published"}
+  method:                 {type: vocab, vocab: method, label: "Method"}
+  processing_level:       {type: vocab, vocab: processing_level, label: "Processing level"}
+  access:                 {type: vocab, vocab: access, required: true, label: "Access"}
+  access_method:          {type: string, label: "Access method", help: "e.g. download; API; WMS; Google Earth Engine"}
+  license:                {type: string, label: "License"}
+  download_url:           {type: url, required: true, label: "Download"}
+  doc_url:                {type: url, label: "Documentation / literature"}
+  doi:                    {type: string, label: "DOI", help: "DOI of the dataset or its describing publication, e.g. 10.5194/essd-13-4349-2021"}
+  quality_notes:          {type: string, label: "Limitations"}
+  comment:                {type: string, label: "Comment"}
+
+parameters:
+  dataset_id:             {type: string, required: true, label: "Dataset ID"}
+  parameter:              {type: string, required: true, label: "Parameter"}
+  unit:                   {type: string, label: "Unit", help: "Plain-text unit, e.g. kg/m³, mm/a, %, categorical"}

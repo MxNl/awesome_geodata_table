@@ -1,0 +1,99 @@
+name: Suggest a dataset
+description: Propose a geodataset for the Awesome Geodata Table
+title: "[Dataset]: "
+labels: ["new dataset"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for contributing! Fill in what you know – a maintainer will complete the rest and add it to
+        `metadata/datasets.csv` and `metadata/parameters.csv`. Allowed values are listed in
+        [`metadata/schema.yaml`](https://github.com/MxNl/awesome_geodata_table/blob/main/metadata/schema.yaml).
+  - type: input
+    id: name
+    attributes:
+      label: Dataset name
+      description: Full name with abbreviation in brackets
+      placeholder: "SoilGrids 2.0"
+    validations:
+      required: true
+  - type: input
+    id: download_url
+    attributes:
+      label: Download / access URL
+      placeholder: "https://…"
+    validations:
+      required: true
+  - type: input
+    id: doi
+    attributes:
+      label: DOI or reference publication
+      placeholder: "10.5194/soil-7-217-2021"
+  - type: textarea
+    id: parameters
+    attributes:
+      label: Parameters
+      description: One parameter per line, optionally with unit, e.g. `clay content; g/kg`
+      placeholder: |
+        clay content; g/kg
+        bulk density; cg/cm³
+    validations:
+      required: true
+  - type: dropdown
+    id: domain
+    attributes:
+      label: Domain
+      options:
+        - Climate & atmosphere
+        - Hydrology
+        - Hydrogeology
+        - Soil
+        - Geology
+        - Topography
+        - Land cover & land use
+        - Vegetation & ecology
+        - Agriculture & water use
+        - Water quality & pollution
+        - Human & socio-economic
+    validations:
+      required: true
+  - type: dropdown
+    id: coverage_spatial
+    attributes:
+      label: Spatial coverage
+      options: [Global, Europe, Germany, Africa, Asia, North America, South America, Oceania, Other (please specify below)]
+    validations:
+      required: true
+  - type: input
+    id: res_spatial
+    attributes:
+      label: Spatial resolution
+      description: Finest – coarsest, in metres if possible, otherwise original notation
+      placeholder: "250 m; or 0.1° – 0.25°"
+  - type: dropdown
+    id: res_temporal
+    attributes:
+      label: Finest temporal resolution
+      options: [hourly, daily, weekly, monthly, yearly, decadal, multi-decadal, static]
+  - type: input
+    id: coverage_temporal
+    attributes:
+      label: Temporal coverage
+      placeholder: "1950 – present"
+  - type: dropdown
+    id: access
+    attributes:
+      label: Access
+      options: [open, registration, on request, restricted]
+    validations:
+      required: true
+  - type: input
+    id: license
+    attributes:
+      label: License
+      placeholder: "CC BY 4.0"
+  - type: textarea
+    id: comment
+    attributes:
+      label: Anything else?
+      description: Limitations, processing hints, why it is useful for groundwater studies …
