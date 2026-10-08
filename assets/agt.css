@@ -99,7 +99,32 @@ body { background: var(--agt-bg); }
 }
 .agt-field select[multiple] { min-height: 2rem; }
 .agt-field input[type="range"] { width: 100%; accent-color: var(--agt-accent); }
-.agt-range { display: flex; align-items: center; gap: 0.35rem; }
+/* period slider: two range inputs stacked on one track; only the thumbs take pointer events */
+.agt-dual-range { position: relative; height: 1.5rem; }
+.agt-dual-range::before, .agt-dual-range-fill {
+  content: ""; position: absolute; top: 50%; height: 4px; margin-top: -2px; border-radius: 2px;
+}
+.agt-dual-range::before { left: 0; right: 0; background: var(--agt-border); }
+.agt-dual-range-fill { background: var(--agt-accent); }
+.agt-field .agt-dual-range input[type="range"] {
+  position: absolute; inset: 0; width: 100%; height: 100%; margin: 0;
+  background: none; pointer-events: none; -webkit-appearance: none; appearance: none;
+}
+.agt-dual-range input[type="range"]::-webkit-slider-runnable-track { background: none; }
+.agt-dual-range input[type="range"]::-moz-range-track { background: none; }
+.agt-dual-range input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; pointer-events: auto; cursor: pointer;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--agt-accent); border: 2px solid var(--agt-bg); box-shadow: 0 0 0 1px var(--agt-accent);
+}
+.agt-dual-range input[type="range"]::-moz-range-thumb {
+  pointer-events: auto; cursor: pointer;
+  width: 12px; height: 12px; border-radius: 50%;
+  background: var(--agt-accent); border: 2px solid var(--agt-bg); box-shadow: 0 0 0 1px var(--agt-accent);
+}
+.agt-dual-range input[type="range"]:focus-visible { outline: none; }
+.agt-dual-range input[type="range"]:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 3px var(--agt-accent); }
+.agt-dual-range input[type="range"]:focus-visible::-moz-range-thumb { box-shadow: 0 0 0 3px var(--agt-accent); }
 .agt-check { display: flex; align-items: center; gap: 0.35rem; color: var(--agt-muted); font-size: 0.75rem; }
 .agt-check input { accent-color: var(--agt-accent); }
 
@@ -120,6 +145,10 @@ body { background: var(--agt-bg); }
 /* ---- table ------------------------------------------------------------------- */
 /* the panel above drives filtering; hide reactable's own inputs */
 .agt-table .rt-search, .agt-table .rt-tr-filters { display: none; }
+/* tables with a sticky column use an opaque hover colour from reactable.css
+   (rgb(242,242,242)), which the theme does not override – it made the text
+   unreadable in dark mode */
+.agt-table .rt-tr-highlight-sticky:hover { background-color: var(--agt-hover); }
 .agt-table { border-radius: 8px; }
 .agt-table .rt-td-inner, .agt-table .rt-th-inner { overflow: hidden; text-overflow: ellipsis; }
 .agt-table .rt-th { line-height: 1.2; }

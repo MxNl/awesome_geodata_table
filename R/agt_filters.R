@@ -97,12 +97,19 @@ agt_filters <- function(data, schema) {
       ),
       htmltools::div(
         class = "agt-field",
-        htmltools::tags$label(`for` = "agt-f-from", "Covers period"),
+        htmltools::tags$label(`for` = "agt-f-from", "Covers period", htmltools::tags$output(id = "agt-f-period-out", "any")),
+        # two stacked range inputs form one slider with two handles
         htmltools::div(
-          class = "agt-range",
-          htmltools::tags$input(id = "agt-f-from", type = "number", min = year_range[1], max = year_range[2], placeholder = year_range[1], `aria-label` = "From year", `data-kind` = "period"),
-          htmltools::span("–"),
-          htmltools::tags$input(id = "agt-f-to", type = "number", min = year_range[1], max = year_range[2], placeholder = year_range[2], `aria-label` = "To year", `data-kind` = "period")
+          class = "agt-dual-range",
+          htmltools::div(class = "agt-dual-range-fill", id = "agt-f-period-fill"),
+          htmltools::tags$input(
+            id = "agt-f-from", type = "range", min = year_range[1], max = year_range[2],
+            value = year_range[1], step = 1, `aria-label` = "From year", `data-kind` = "period"
+          ),
+          htmltools::tags$input(
+            id = "agt-f-to", type = "range", min = year_range[1], max = year_range[2],
+            value = year_range[2], step = 1, `aria-label` = "To year", `data-kind` = "period"
+          )
         ),
         htmltools::tags$label(
           class = "agt-check",

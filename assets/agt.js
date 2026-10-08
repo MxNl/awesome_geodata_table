@@ -55,8 +55,10 @@
     state.spatial = sliderToMetres(+$('agt-f-spatial').value);
     state.temporal = toInt($('agt-f-temporal').value);
     state.includeStatic = $('agt-f-static').checked;
-    state.from = toInt($('agt-f-from').value);
-    state.to = toInt($('agt-f-to').value);
+    // handles at the ends of the slider = no limit on that side
+    const from = +$('agt-f-from').value, to = +$('agt-f-to').value;
+    state.from = from <= cfg.yearMin ? null : from;
+    state.to = to >= cfg.yearMax ? null : to;
     state.includeUndated = $('agt-f-undated').checked;
   }
 
@@ -67,10 +69,22 @@
     $('agt-f-spatial').value = metresToSlider(state.spatial);
     $('agt-f-temporal').value = state.temporal == null ? '' : String(state.temporal);
     $('agt-f-static').checked = state.includeStatic;
-    $('agt-f-from').value = state.from == null ? '' : state.from;
-    $('agt-f-to').value = state.to == null ? '' : state.to;
+    $('agt-f-from').value = state.from == null ? cfg.yearMin : state.from;
+    $('agt-f-to').value = state.to == null ? cfg.yearMax : state.to;
+    updatePeriodSlider();
     $('agt-f-undated').checked = state.includeUndated;
     $('agt-group').setAttribute('aria-pressed', String(state.grouped));
+  }
+
+  // label and coloured track between the two handles of the period slider
+  function updatePeriodSlider() {
+    const from = +$('agt-f-from').value, to = +$('agt-f-to').value;
+    const span = cfg.yearMax - cfg.yearMin || 1;
+    const fill = $('agt-f-period-fill');
+    fill.style.left = ((from - cfg.yearMin) / span * 100) + '%';
+    fill.style.right = ((cfg.yearMax - to) / span * 100) + '%';
+    $('agt-f-period-out').textContent =
+      from <= cfg.yearMin && to >= cfg.yearMax ? 'any' : from + ' – ' + to;
   }
 
   // ---- state -> table ---------------------------------------------------------
@@ -91,6 +105,7 @@
   let appliedFilters, appliedSearch, appliedGrouped;
   function apply() {
     $('agt-f-spatial-out').textContent = fmtMetres(state.spatial);
+    updatePeriodSlider();
 
     // one state update per change: each setFilter() would re-render the table
     const filters = tableFilters();
@@ -191,6 +206,14 @@
       clearTimeout(searchTimer);
       searchTimer = setTimeout(() => { readControls(); apply(); }, 100);
     });
+    // keep the handles from crossing and update the label while dragging
+    ['agt-f-from', 'agt-f-to'].forEach((id) => $(id).addEventListener('input', () => {
+      const from = $('agt-f-from'), to = $('agt-f-to');
+      if (+from.value > +to.value) {
+        if (id === 'agt-f-from') from.value = to.value; else to.value = from.value;
+      }
+      updatePeriodSlider();
+    }));
     $('agt-f-spatial').addEventListener('input', () => {
       $('agt-f-spatial-out').textContent = fmtMetres(sliderToMetres(+$('agt-f-spatial').value));
     });

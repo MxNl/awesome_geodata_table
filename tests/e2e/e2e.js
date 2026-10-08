@@ -17,6 +17,7 @@ const OUT = process.argv[3] || require('os').tmpdir();
   // wait until the counter is stable (reactable debounces search internally)
   const count = async () => {
     const read = async () => parseInt((await page.textContent('#agt-count')).match(/^(\d+)/)[1], 10);
+    await page.waitForTimeout(300); // let the debounced search start
     let prev = -1, cur = await read();
     while (cur !== prev) { await page.waitForTimeout(400); prev = cur; cur = await read(); }
     return cur;
@@ -86,9 +87,11 @@ const OUT = process.argv[3] || require('os').tmpdir();
   await setCheck('agt-f-undated', false);
   const nPeriodDated = await count();
   check('excluding undated narrows further', nPeriodDated < nPeriod, nPeriodDated);
-  await setInput('agt-f-from', '');
-  await setInput('agt-f-to', '');
-  check('period cleared restores', (await count()) === total);
+  check('period label', (await page.textContent('#agt-f-period-out')) === '1960 – 1970');
+  await setInput('agt-f-from', await page.getAttribute('#agt-f-from', 'min'));
+  await setInput('agt-f-to', await page.getAttribute('#agt-f-to', 'max'));
+  check('period slider at full range restores', (await count()) === total);
+  check('period label reset', (await page.textContent('#agt-f-period-out')) === 'any');
   await setCheck('agt-f-undated', true);
 
   // reset after combining several filters
@@ -134,6 +137,21 @@ const OUT = process.argv[3] || require('os').tmpdir();
   await dark.goto(BASE);
   await dark.waitForTimeout(800);
   check('dark mode body class', await dark.evaluate(() => document.body.classList.contains('quarto-dark')));
+
+  // hovered rows keep readable text (WCAG contrast >= 4.5) in both themes
+  for (const [name, pg] of [['light', page], ['dark', dark]]) {
+    const row = pg.locator('.rt-tbody .rt-tr').nth(1);
+    await row.hover();
+    await pg.waitForTimeout(150);
+    const ratio = await row.evaluate((r) => {
+      const rgb = (c) => c.match(/\d+(\.\d+)?/g).slice(0, 3).map(Number);
+      const lum = (c) => { const [R, G, B] = rgb(c).map((v) => { v /= 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }); return 0.2126 * R + 0.7152 * G + 0.0722 * B; };
+      const s = getComputedStyle(r);
+      const [a, b] = [lum(s.backgroundColor), lum(s.color)].sort((x, y) => y - x);
+      return (a + 0.05) / (b + 0.05);
+    });
+    check(`hovered row readable (${name})`, ratio >= 4.5, ratio.toFixed(1));
+  }
   await dark.screenshot({ path: `${OUT}/desktop-dark.png` });
   const mobile = await browser.newPage({ viewport: { width: 390, height: 844 }, isMobile: true });
   await mobile.goto(BASE);
