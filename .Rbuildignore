@@ -1,9 +1,13 @@
-^renv$
-^renv\.lock$
 ^awesome_geodata_table\.Rproj$
 ^\.Rproj\.user$
 ^data-raw$
+^legacy$
+^metadata$
+^assets$
+^_site$
+^_quarto\.yml$
+^\.quarto$
+^index\.qmd$
 ^LICENSE\.md$
 ^\.github$
 ^\.idea$
-^\.secrets$

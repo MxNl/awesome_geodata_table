@@ -1,16 +1,17 @@
-library/
-local/
-cellar/
-lock/
-python/
-staging/
 .Rproj.user
 .Rhistory
+.RData
 .Rdata
 .httr-oauth
 .DS_Store
-*.csv
 .idea
-README.html
 .secrets
 rsconnect
+
+# Quarto build output
+/_site/
+/.quarto/
+/index_files/
+node_modules/
+
+**/*.quarto_ipynb

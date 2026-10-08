@@ -1,0 +1,180 @@
+/* Awesome Geodata Table – table, filter panel and page styles.
+   Colours are CSS variables so light and dark mode share one stylesheet. */
+
+:root {
+  --agt-bg: #ffffff;
+  --agt-fg: #1f2933;
+  --agt-muted: #5f6b7a;
+  --agt-border: #e3e7ec;
+  --agt-stripe: #f7f9fb;
+  --agt-hover: #eef4fb;
+  --agt-panel: #f6f8fa;
+  --agt-accent: #c2185b;
+  --agt-accent-fg: #ffffff;
+  --agt-tag-bg: #eef1f4;
+  --agt-tag-fg: #3d4a5a;
+  --agt-active: #fdf0f5;
+  /* domain pills (order of the domain vocabulary in metadata/schema.yaml) */
+  --agt-d1: #dbeafe; --agt-d2: #cffafe; --agt-d3: #e0e7ff; --agt-d4: #fde68a;
+  --agt-d5: #e7e5e4; --agt-d6: #fed7aa; --agt-d7: #d9f99d; --agt-d8: #bbf7d0;
+  --agt-d9: #fef3c7; --agt-d10: #fecaca; --agt-d11: #f5d0fe;
+  --agt-pill-fg: #1f2933;
+}
+
+body.quarto-dark {
+  --agt-bg: #1c2128;
+  --agt-fg: #e6edf3;
+  --agt-muted: #9aa7b4;
+  --agt-border: #343c46;
+  --agt-stripe: #21272f;
+  --agt-hover: #26303b;
+  --agt-panel: #232a32;
+  --agt-accent: #f06292;
+  --agt-accent-fg: #1c2128;
+  --agt-tag-bg: #2d3640;
+  --agt-tag-fg: #c9d4df;
+  --agt-active: #3a2632;
+  --agt-d1: #1e3a5f; --agt-d2: #164e63; --agt-d3: #312e81; --agt-d4: #713f12;
+  --agt-d5: #44403c; --agt-d6: #7c2d12; --agt-d7: #3f6212; --agt-d8: #14532d;
+  --agt-d9: #78350f; --agt-d10: #7f1d1d; --agt-d11: #701a75;
+  --agt-pill-fg: #e6edf3;
+}
+
+body { background: var(--agt-bg); }
+
+/* ---- page header ---------------------------------------------------------- */
+.agt-hero {
+  display: flex; align-items: center; gap: 1.25rem;
+  margin: 0.5rem 0 1rem;
+}
+.agt-hero img { width: 72px; height: 72px; flex: none; }
+.agt-hero h1 { margin: 0; font-size: 1.75rem; font-weight: 700; }
+.agt-hero p { margin: 0.25rem 0 0; color: var(--agt-muted); max-width: 70ch; }
+
+/* ---- toolbar ---------------------------------------------------------------- */
+.agt-toolbar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 1rem;
+  margin-bottom: 0.5rem;
+}
+.agt-search { flex: 1 1 320px; }
+.agt-search input {
+  width: 100%; padding: 0.45rem 0.75rem; font-size: 0.95rem;
+  border: 1px solid var(--agt-border); border-radius: 6px;
+  background: var(--agt-bg); color: var(--agt-fg);
+}
+.agt-search input:focus { outline: 2px solid var(--agt-accent); outline-offset: -1px; }
+.agt-count { font-size: 0.85rem; color: var(--agt-muted); white-space: nowrap; }
+.agt-count strong { color: var(--agt-fg); }
+.agt-actions { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.agt-btn {
+  padding: 0.3rem 0.65rem; font-size: 0.8rem; line-height: 1.3;
+  border: 1px solid var(--agt-border); border-radius: 6px;
+  background: var(--agt-bg); color: var(--agt-fg); cursor: pointer;
+}
+.agt-btn:hover { background: var(--agt-hover); }
+.agt-btn[aria-pressed="true"], .agt-btn[aria-expanded="true"] { border-color: var(--agt-accent); color: var(--agt-accent); }
+.agt-btn-primary { background: var(--agt-accent); border-color: var(--agt-accent); color: var(--agt-accent-fg); }
+.agt-btn-primary:hover { background: var(--agt-accent); filter: brightness(1.08); }
+
+/* ---- filter panel ------------------------------------------------------------ */
+.agt-filters {
+  display: grid; gap: 0.6rem 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  padding: 0.75rem; margin-bottom: 0.75rem;
+  background: var(--agt-panel); border: 1px solid var(--agt-border); border-radius: 8px;
+}
+.agt-filters[hidden] { display: none; }
+.agt-field { display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; font-size: 0.8rem; }
+.agt-field > label:first-child {
+  display: flex; justify-content: space-between; gap: 0.5rem;
+  font-weight: 600; color: var(--agt-muted); font-size: 0.72rem;
+  text-transform: uppercase; letter-spacing: 0.03em;
+}
+.agt-field.is-active > label:first-child { color: var(--agt-accent); }
+.agt-field output { font-weight: 600; color: var(--agt-fg); text-transform: none; }
+.agt-field select, .agt-field input[type="number"] {
+  width: 100%; padding: 0.25rem 0.4rem; font-size: 0.8rem;
+  border: 1px solid var(--agt-border); border-radius: 5px;
+  background: var(--agt-bg); color: var(--agt-fg);
+}
+.agt-field select[multiple] { min-height: 2rem; }
+.agt-field input[type="range"] { width: 100%; accent-color: var(--agt-accent); }
+.agt-range { display: flex; align-items: center; gap: 0.35rem; }
+.agt-check { display: flex; align-items: center; gap: 0.35rem; color: var(--agt-muted); font-size: 0.75rem; }
+.agt-check input { accent-color: var(--agt-accent); }
+
+/* Tom Select, compact and theme-aware */
+.agt-field .ts-wrapper .ts-control {
+  min-height: 2rem; padding: 0.15rem 0.35rem; font-size: 0.8rem;
+  background: var(--agt-bg); color: var(--agt-fg); border-color: var(--agt-border);
+}
+.agt-field .ts-wrapper.multi .ts-control > .item {
+  padding: 0 0.3rem; margin: 1px 2px; font-size: 0.75rem; border-radius: 4px;
+  background: var(--agt-tag-bg); color: var(--agt-tag-fg); border: 0;
+}
+.agt-field .ts-wrapper.multi .ts-control > .item .remove { border-left: 0; padding: 0 0.25rem; }
+.agt-field .ts-dropdown { font-size: 0.8rem; background: var(--agt-bg); color: var(--agt-fg); border-color: var(--agt-border); }
+.agt-field .ts-dropdown .active { background: var(--agt-hover); color: var(--agt-fg); }
+.agt-field .ts-control input { color: var(--agt-fg); }
+
+/* ---- table ------------------------------------------------------------------- */
+/* the panel above drives filtering; hide reactable's own inputs */
+.agt-table .rt-search, .agt-table .rt-tr-filters { display: none; }
+.agt-table { border-radius: 8px; }
+.agt-table .rt-td-inner, .agt-table .rt-th-inner { overflow: hidden; text-overflow: ellipsis; }
+.agt-table .rt-th { line-height: 1.2; }
+.agt-table a { color: var(--agt-accent); text-decoration: none; }
+.agt-table a:hover { text-decoration: underline; }
+.agt-na { color: var(--agt-muted); }
+
+.agt-pill {
+  display: inline-block; max-width: 100%; padding: 0 0.45rem;
+  border-radius: 999px; font-size: 0.75rem; line-height: 1.5;
+  overflow: hidden; text-overflow: ellipsis; vertical-align: middle;
+  background: var(--agt-tag-bg); color: var(--agt-pill-fg);
+}
+.agt-pill[data-domain="1"] { background: var(--agt-d1); }
+.agt-pill[data-domain="2"] { background: var(--agt-d2); }
+.agt-pill[data-domain="3"] { background: var(--agt-d3); }
+.agt-pill[data-domain="4"] { background: var(--agt-d4); }
+.agt-pill[data-domain="5"] { background: var(--agt-d5); }
+.agt-pill[data-domain="6"] { background: var(--agt-d6); }
+.agt-pill[data-domain="7"] { background: var(--agt-d7); }
+.agt-pill[data-domain="8"] { background: var(--agt-d8); }
+.agt-pill[data-domain="9"] { background: var(--agt-d9); }
+.agt-pill[data-domain="10"] { background: var(--agt-d10); }
+.agt-pill[data-domain="11"] { background: var(--agt-d11); }
+.agt-pill[data-access="1"] { background: var(--agt-d8); }
+.agt-pill[data-access="2"] { background: var(--agt-d1); }
+.agt-pill[data-access="3"] { background: var(--agt-d9); }
+.agt-pill[data-access="4"] { background: var(--agt-d10); }
+
+.agt-tags { display: inline-flex; gap: 3px; max-width: 100%; overflow: hidden; }
+.agt-tag {
+  display: inline-block; padding: 0 0.35rem; border-radius: 4px;
+  font-size: 0.72rem; line-height: 1.5; white-space: nowrap;
+  background: var(--agt-tag-bg); color: var(--agt-tag-fg);
+}
+.agt-link {
+  display: inline-block; min-width: 1.6rem; padding: 0 0.3rem; margin-right: 2px;
+  font-size: 0.72rem; font-weight: 600; text-align: center;
+  border: 1px solid var(--agt-border); border-radius: 4px;
+}
+
+/* row details */
+.agt-details {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.35rem 1.25rem; margin: 0; padding: 0.6rem 1rem 0.8rem 2.5rem;
+  background: var(--agt-panel); border-bottom: 1px solid var(--agt-border);
+  font-size: 0.8rem; white-space: normal;
+}
+.agt-detail { min-width: 0; }
+.agt-details dt { font-weight: 600; color: var(--agt-muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.03em; }
+.agt-details dd { margin: 0; overflow-wrap: anywhere; }
+.agt-details .agt-tag { margin: 1px 3px 1px 0; }
+
+@media (max-width: 767px) {
+  .agt-hero img { width: 48px; height: 48px; }
+  .agt-hero h1 { font-size: 1.35rem; }
+  .agt-count { order: 3; width: 100%; }
+}

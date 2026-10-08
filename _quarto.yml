@@ -1,0 +1,16 @@
+project:
+  type: default
+  output-dir: _site
+  render:
+    - index.qmd
+  resources:
+    - assets/agt.js
+    - assets/agt.css
+    - assets/logo.png
+    - metadata/datasets.csv
+    - metadata/parameters.csv
+
+execute:
+  echo: false
+  warning: false
+  message: false
