@@ -1,5 +1,7 @@
 # One-off migration of the legacy Google-Sheet export
 # (legacy/extdata/awesome_geodata_table.csv, one row per parameter, 33 columns)
+# The legacy/ folder has since been deleted; restore the input from git history with
+#   mkdir -p legacy/extdata && git show 75b72df:legacy/extdata/awesome_geodata_table.csv > legacy/extdata/awesome_geodata_table.csv
 # into metadata/datasets.csv + metadata/parameters.csv.
 #
 # Run from the project root: Rscript data-raw/migrate_v1.R --force

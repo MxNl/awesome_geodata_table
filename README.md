@@ -72,7 +72,6 @@ assets/          agt.js (filter panel), agt.css (styles), logo
 index.qmd        the page
 tests/           testthat unit tests, tests/e2e browser tests
 data-raw/        one-off migration of the legacy Google Sheet export
-legacy/          previous Shiny app (kept for reference)
 ```
 
 All filtering runs client-side in [reactable](https://glin.github.io/reactable/), so the
