@@ -77,6 +77,34 @@ merge_metadata <- function(datasets, parameters) {
     dplyr::relocate(id, name, parameter, unit)
 }
 
+#' Bounding box per row: the row's own bbox_* if complete, otherwise the box of
+#' its `coverage_spatial` region from the schema (NA if neither exists)
+merged_bbox <- function(merged, schema) {
+  sides <- c("bbox_west", "bbox_south", "bbox_east", "bbox_north")
+  own <- purrr::map(sides, \(side) {
+    v <- if (side %in% names(merged)) merged[[side]] else rep(NA, nrow(merged))
+    suppressWarnings(as.numeric(v))
+  })
+  has_own <- Reduce(`&`, purrr::map(own, \(v) !is.na(v)))
+  coverage <- if ("coverage_spatial" %in% names(merged)) merged$coverage_spatial else rep(NA_character_, nrow(merged))
+  region <- schema$regions[coverage]
+  out <- purrr::imap(sides, \(side, i) {
+    from_region <- unname(purrr::map_dbl(region, \(r) if (is.null(r)) NA_real_ else as.numeric(r[[i]])))
+    dplyr::if_else(has_own, own[[i]], from_region)
+  })
+  tibble::as_tibble(purrr::set_names(out, sides))
+}
+
+#' Read the access snippets (metadata/snippets/<id>.R / .py)
+read_snippets <- function(dir) {
+  files <- list.files(dir, pattern = "\\.(R|py)$", full.names = TRUE)
+  tibble::tibble(
+    id = tools::file_path_sans_ext(basename(files)),
+    language = tolower(tools::file_ext(files)),
+    code = purrr::map_chr(files, \(f) paste(readLines(f, warn = FALSE, encoding = "UTF-8"), collapse = "\n"))
+  )
+}
+
 #' Read, validate and merge the metadata into one row per parameter
 #'
 #' @param dir Directory containing `datasets.csv`, `parameters.csv` and `schema.yaml`.
@@ -88,15 +116,30 @@ read_metadata <- function(dir = "metadata", validate = TRUE) {
   datasets <- read_metadata_csv(file.path(dir, "datasets.csv"))
   parameters <- read_metadata_csv(file.path(dir, "parameters.csv"))
 
+  snippet_dir <- file.path(dir, "snippets")
   if (validate) {
-    assert_valid_metadata(datasets, parameters, schema)
+    assert_valid_metadata(datasets, parameters, schema, snippet_dir)
   }
 
   temporal_levels <- vocab_keys(schema, "temporal_resolution")
   current_year <- as.integer(format(Sys.Date(), "%Y"))
 
-  merge_metadata(datasets, parameters) |>
+  variable_labels <- vocab_labels(schema, "variable")
+  snippets <- read_snippets(snippet_dir)
+  snippet_of <- function(ids, language) {
+    s <- snippets[snippets$language == language, ]
+    s$code[match(ids, s$id)]
+  }
+
+  merged <- merge_metadata(datasets, parameters)
+  bbox <- merged_bbox(merged, schema)
+  merged[names(bbox)] <- bbox
+
+  merged |>
     dplyr::mutate(
+      variable_label = unname(variable_labels[variable]),
+      snippet_r = snippet_of(id, "r"),
+      snippet_py = snippet_of(id, "py"),
       dplyr::across(c(res_spatial_finest_m, res_spatial_coarsest_m), as.numeric),
       res_temporal_finest_rank = match(res_temporal_finest, temporal_levels),
       res_temporal_coarsest_rank = match(res_temporal_coarsest, temporal_levels),

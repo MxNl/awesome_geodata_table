@@ -48,3 +48,27 @@ test_that("parameter tags are added to dataset tags", {
   expect_equal(merged$tags[merged$parameter == "sand content"], "soil; texture; sand")
   expect_equal(merged$tags[merged$parameter == "clay content"], "soil; texture")
 })
+
+test_that("bounding boxes come from the region unless the dataset has its own", {
+  schema <- read_schema(metadata_dir)
+  d <- fixture_datasets()
+  d$bbox_west <- c(NA, "0")
+  d$bbox_south <- c(NA, "40")
+  d$bbox_east <- c(NA, "20")
+  d$bbox_north <- c(NA, "60")
+  bbox <- merged_bbox(merge_metadata(d, fixture_parameters()), schema)
+  expect_equal(unlist(bbox[1, ]), c(bbox_west = -180, bbox_south = -90, bbox_east = 180, bbox_north = 90))
+  expect_equal(unlist(bbox[3, ]), c(bbox_west = 0, bbox_south = 40, bbox_east = 20, bbox_north = 60))
+})
+
+test_that("almost every parameter has a standard variable", {
+  x <- read_metadata(metadata_dir)
+  expect_gte(mean(!is.na(x$variable)), 0.95)
+  expect_false(any(is.na(x$variable_label[!is.na(x$variable)])))
+})
+
+test_that("every repository snippet parses", {
+  for (f in list.files(file.path(metadata_dir, "snippets"), pattern = "\\.R$", full.names = TRUE)) {
+    expect_no_error(parse(file = f), message = basename(f))
+  }
+})
