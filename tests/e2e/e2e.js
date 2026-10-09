@@ -122,10 +122,94 @@ const OUT = process.argv[3] || require('os').tmpdir();
   check('CSV has raw metadata columns', lines[0].startsWith('"id","name","parameter"') || lines[0].startsWith('id,name,parameter'), lines[0].slice(0, 60));
   await page.click('#agt-reset');
 
+  // standard variables, synonyms, licence
+  await setMulti('agt-f-variable', ['precipitation']);
+  const nPrecip = await count();
+  check('variable filter narrows', nPrecip > 3 && nPrecip < total, nPrecip);
+  const precipDatasets = parseInt((await page.textContent('#agt-count')).match(/in (\d+) datasets/)[1], 10);
+  check('variable filter spans several datasets', precipDatasets >= 5, precipDatasets);
+  await setMulti('agt-f-variable', []);
+  check('variable cleared restores', (await count()) === total);
+  await page.fill('#agt-search', 'Grundwasserneubildung');
+  const nSyn = await count();
+  check('German synonym search finds recharge', nSyn > 0 && nSyn < 10, nSyn);
+  await page.fill('#agt-search', '');
+  await setMulti('agt-f-license_class', ['non-commercial']);
+  const nNc = await count();
+  check('licence filter narrows', nNc > 0 && nNc < total, nNc);
+  await setMulti('agt-f-license_class', []);
+
+  // presets
+  const presets = await page.$$eval('.agt-preset', (bs) => bs.map((b) => b.textContent));
+  for (let i = 0; i < presets.length; i++) {
+    await page.click(`.agt-preset >> nth=${i}`);
+    const n = await count();
+    const pressed = await page.getAttribute(`.agt-preset >> nth=${i}`, 'aria-pressed');
+    check(`preset "${presets[i]}" narrows and is active`, n > 0 && n < total && pressed === 'true', n);
+  }
+  await page.click('#agt-reset');
+  check('reset after presets restores', (await count()) === total);
+  check('no preset active after reset', (await page.$$eval('.agt-preset[aria-pressed="true"]', (b) => b.length)) === 0);
+
+  // study area: Berlin keeps Global/Europe/Germany, drops e.g. CHIRPS (50°S–50°N)
+  await page.fill('#agt-f-lat', '52.52');
+  await page.fill('#agt-f-lon', '13.40');
+  await page.dispatchEvent('#agt-f-lon', 'change');
+  const nBerlin = await count();
+  const berlinHasChirps = await page.evaluate(() => Reactable.getState('agt').sortedData.some((r) => r.id === 'chirps-2'));
+  const berlinHasHyras = await page.evaluate(() => Reactable.getState('agt').sortedData.some((r) => r.id === 'hyras-de'));
+  check('study area Berlin narrows', nBerlin < total && nBerlin > 0, nBerlin);
+  check('study area keeps German data, drops CHIRPS', berlinHasHyras && !berlinHasChirps);
+  check('study area in URL', /lat=52\.52/.test(page.url()));
+  await page.fill('#agt-f-lat', '-33.9');
+  await page.fill('#agt-f-lon', '18.4');
+  await page.dispatchEvent('#agt-f-lon', 'change');
+  const capeHasHyras = await page.evaluate(() => Reactable.getState('agt').sortedData.some((r) => r.id === 'hyras-de'));
+  check('study area Cape Town drops German data', !capeHasHyras);
+  await page.click('#agt-f-map-toggle');
+  await page.waitForSelector('#agt-map.leaflet-container');
+  const box = await page.locator('#agt-map').boundingBox();
+  await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2);
+  await page.waitForTimeout(300);
+  check('map click sets the point', (await page.inputValue('#agt-f-lat')) !== '' && !!(await page.$('#agt-map .leaflet-marker-icon')));
+  await page.click('#agt-f-area-clear');
+  check('clearing study area restores', (await count()) === total);
+  await page.click('#agt-f-map-toggle');
+
+  // shortlist
+  await page.evaluate(() => { try { localStorage.removeItem('agt-shortlist'); } catch (e) {} });
+  const boxes = page.locator('.rt-tbody .rt-td-select input[type="checkbox"]');
+  for (let i = 0; i < 3; i++) await boxes.nth(i).check();
+  await page.waitForTimeout(200);
+  check('shortlist bar shows 3', /^3 parameters/.test(await page.textContent('#agt-shortlist-count')));
+  const [sdl] = await Promise.all([page.waitForEvent('download'), page.click('#agt-shortlist-csv')]);
+  const scsv = fs.readFileSync(await sdl.path(), 'utf8').trim().split('\n');
+  check('shortlist CSV has the 3 rows', scsv.length - 1 === 3, scsv.length - 1);
+  const bib = await page.evaluate(() => window.AGT_copyBibtex());
+  check('BibTeX has one entry per shortlisted dataset', (bib.match(/^@/gm) || []).length >= 1, (bib.match(/^@/gm) || []).length);
+  await page.click('#agt-shortlist-show');
+  check('show only shortlist', (await count()) === 3);
+  await page.reload();
+  await page.waitForFunction(() => /\d+ of \d+/.test(document.getElementById('agt-count')?.textContent || ''));
+  await page.waitForTimeout(500);
+  check('shortlist survives reload', /^3 parameters/.test(await page.textContent('#agt-shortlist-count')));
+  await page.click('#agt-shortlist-clear');
+  await page.waitForTimeout(200);
+  check('shortlist cleared', await page.evaluate(() => document.getElementById('agt-shortlist').hidden) && (await count()) === total);
+
   // details + grouping
+  await setMulti('agt-f-name', ['SoilGrids 2.0']);
   await page.click('.rt-expander-button');
   check('row details open', await page.isVisible('.agt-details'));
+  await page.waitForSelector('.agt-footprint.leaflet-container', { timeout: 5000 }).catch(() => {});
+  check('footprint map in details', !!(await page.$('.agt-footprint.leaflet-container')));
+  if (await page.$('.agt-snippet-tab')) {
+    const tabs = await page.$$('.agt-snippet-tab');
+    if (tabs.length > 1) { await tabs[1].click(); }
+    check('snippet tab switches', (await page.$$eval('.agt-snippet:not([hidden])', (e) => e.length)) === 1);
+  }
   await page.screenshot({ path: `${OUT}/desktop-details.png` });
+  await setMulti('agt-f-name', []);
   await page.click('#agt-group');
   await page.waitForTimeout(300);
   check('group by dataset', (await page.$$('.rt-tr-group')).length > 0 && (await count()) === total);
