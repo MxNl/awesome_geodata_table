@@ -33,7 +33,7 @@ body:
     id: parameters
     attributes:
       label: Parameters
-      description: One parameter per line, optionally with unit, e.g. `clay content; g/kg`
+      description: One parameter per line, optionally with unit, e.g. `clay content; g/kg`. Standard variables are listed under `variable` in metadata/schema.yaml.
       placeholder: |
         clay content; g/kg
         bulk density; cg/cm³
@@ -92,6 +92,11 @@ body:
     attributes:
       label: License
       placeholder: "CC BY 4.0"
+  - type: dropdown
+    id: license_class
+    attributes:
+      label: Commercial use allowed?
+      options: [open (any use with attribution), non-commercial only, custom terms, unknown]
   - type: textarea
     id: comment
     attributes:
