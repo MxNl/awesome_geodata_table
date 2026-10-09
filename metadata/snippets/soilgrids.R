@@ -1,0 +1,5 @@
+# SoilGrids 2.0: read a window of the global VRT directly (Homolosine projection)
+library(terra)
+clay <- rast("/vsicurl/https://files.isric.org/soilgrids/latest/data/clay/clay_0-5cm_mean.vrt")
+aoi <- project(vect(ext(9, 10, 50, 51), crs = "EPSG:4326"), crs(clay))
+clay_aoi <- crop(clay, aoi)  # g/kg x 10 (see the SoilGrids conversion factors)

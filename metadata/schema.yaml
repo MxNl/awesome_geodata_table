@@ -81,6 +81,7 @@ vocabularies:
     - {key: aquifer_units, label: "Aquifers & groundwater bodies", group: Groundwater, synonyms: [aquifer type, groundwater body, transboundary aquifer, karst, Grundwasserleiter, Grundwasserkörper, Hydrogeologie]}
     - {key: groundwater_monitoring, label: "Monitoring networks & wells", group: Groundwater, synonyms: [wells, boreholes, monitoring network, Messstellen, Brunnen, Bohrungen]}
     - {key: ground_deformation, label: "Ground deformation", group: Groundwater, synonyms: [subsidence, InSAR, ground motion, Bodenbewegung, Senkung]}
+    - {key: groundwater_dependent_ecosystems, label: "Groundwater-dependent ecosystems", group: Groundwater, synonyms: [GDE, phreatophytes, springs, grundwasserabhängige Ökosysteme]}
     # Geology & soil
     - {key: lithology, label: "Lithology & geology", group: Geology & soil, synonyms: [rock type, stratigraphy, geological map, Geologie, Gestein, Lithologie]}
     - {key: subsurface_thickness, label: "Soil, regolith & sediment thickness", group: Geology & soil, synonyms: [depth to bedrock, regolith, sediment thickness, Mächtigkeit, Festgesteinstiefe]}
