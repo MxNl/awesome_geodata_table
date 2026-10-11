@@ -4,7 +4,7 @@
 #' @param schema Schema as returned by `read_schema()`.
 #' @return A tibble of problems (`file`, `row`, `field`, `value`, `problem`);
 #'   zero rows when everything is valid. `row` is the line number in the CSV.
-validate_metadata <- function(datasets, parameters, schema) {
+validate_metadata <- function(datasets, parameters, schema, snippet_dir = NULL) {
   problems <- list()
   add <- function(file, row, field, value, problem) {
     if (length(row) > 0) {
@@ -36,16 +36,19 @@ validate_metadata <- function(datasets, parameters, schema) {
 
       bad <- switch(f$type,
         vocab = filled & !v %in% vocab_keys(schema, f$vocab),
-        number = filled & (is.na(suppressWarnings(as.numeric(v))) | suppressWarnings(as.numeric(v)) <= 0),
+        number = filled & (is.na(suppressWarnings(as.numeric(v))) |
+          (!startsWith(field, "bbox_") & suppressWarnings(as.numeric(v)) <= 0)),
         year = filled & !stringr::str_detect(v, if (field == "coverage_end") "^(\\d{4}|present)$" else "^\\d{4}$"),
+        date = filled & is.na(suppressWarnings(as.Date(v, format = "%Y-%m-%d"))),
         url = filled & !stringr::str_detect(v, "^https?://\\S+$"),
         tags = filled & (stringr::str_detect(v, ",") | v != stringr::str_to_lower(v)),
         rep(FALSE, length(v))
       )
       message <- switch(f$type,
         vocab = paste0("not in vocabulary '", f$vocab, "'"),
-        number = "must be a positive number",
+        number = if (startsWith(field, "bbox_")) "must be a number" else "must be a positive number",
         year = "must be a 4-digit year",
+        date = "must be a date (YYYY-MM-DD)",
         url = "must be an http(s) URL",
         tags = "tags must be lower case and separated by ';'",
         ""
@@ -95,10 +98,30 @@ validate_metadata <- function(datasets, parameters, schema) {
     idx <- which(match(merged$res_temporal_finest, levels) > match(merged$res_temporal_coarsest, levels))
     add("parameters.csv", row_of[idx], "res_temporal_finest", merged$res_temporal_finest[idx], "finest temporal resolution is coarser than the coarsest")
 
+    bbox <- merged_bbox(merged, schema)
+    idx <- which(bbox$bbox_west >= bbox$bbox_east | bbox$bbox_south >= bbox$bbox_north |
+      bbox$bbox_west < -180 | bbox$bbox_east > 180 | bbox$bbox_south < -90 | bbox$bbox_north > 90)
+    add("parameters.csv", row_of[idx], "bbox_west", bbox$bbox_west[idx], "bounding box must satisfy -180 <= west < east <= 180 and -90 <= south < north <= 90")
+    idx <- which(is.na(bbox$bbox_west))
+    add("parameters.csv", row_of[idx], "coverage_spatial", merged$coverage_spatial[idx], "no bounding box: add bbox_* or a region to schema.yaml")
+
     start <- suppressWarnings(as.integer(merged$coverage_start))
     end <- dplyr::if_else(merged$coverage_end %in% "present", 9999L, suppressWarnings(as.integer(merged$coverage_end)))
     idx <- which(start > end)
     add("parameters.csv", row_of[idx], "coverage_start", start[idx], "coverage starts after it ends")
+  }
+
+  # presets: known filter keys and vocabulary values
+  for (i in seq_along(schema$presets)) {
+    for (problem in validate_preset_query(schema$presets[[i]]$query, schema, datasets, parameters)) {
+      add("schema.yaml", i - 1, "presets", schema$presets[[i]]$label, problem)
+    }
+  }
+
+  # snippets must belong to a dataset
+  if (!is.null(snippet_dir) && dir.exists(snippet_dir)) {
+    snippet_ids <- tools::file_path_sans_ext(list.files(snippet_dir, pattern = "\\.(R|py)$"))
+    for (id in setdiff(snippet_ids, datasets$id)) add("snippets/", 0, "id", id, "snippet for unknown dataset id")
   }
 
   dplyr::bind_rows(
@@ -110,8 +133,8 @@ validate_metadata <- function(datasets, parameters, schema) {
 }
 
 #' Stop with a readable report if the metadata is invalid
-assert_valid_metadata <- function(datasets, parameters, schema) {
-  problems <- validate_metadata(datasets, parameters, schema)
+assert_valid_metadata <- function(datasets, parameters, schema, snippet_dir = NULL) {
+  problems <- validate_metadata(datasets, parameters, schema, snippet_dir)
   if (nrow(problems) > 0) {
     report <- stringr::str_glue_data(
       problems,
@@ -120,4 +143,39 @@ assert_valid_metadata <- function(datasets, parameters, schema) {
     stop("Invalid metadata (", nrow(problems), " problems):\n", paste(report, collapse = "\n"), call. = FALSE)
   }
   invisible(TRUE)
+}
+
+#' Columns a preset / shared link may filter on (see assets/agt.js)
+PRESET_MULTI_KEYS <- c(
+  "name", "parameter", "variable", "tags", "domain", "coverage_spatial",
+  "access", "license_class", "data_type"
+)
+PRESET_SCALAR_KEYS <- c("q", "spatial", "temporal", "static", "from", "to", "undated", "lat", "lon", "group")
+
+#' Problems of one preset query string (character vector, empty when valid)
+validate_preset_query <- function(query, schema, datasets, parameters) {
+  problems <- character()
+  pairs <- stringr::str_split(query, "&")[[1]]
+  for (pair in pairs) {
+    kv <- stringr::str_split_fixed(pair, "=", 2)
+    key <- kv[1]
+    values <- stringr::str_split(kv[2], stringr::fixed("|"))[[1]]
+    if (key %in% PRESET_SCALAR_KEYS) next
+    if (!key %in% PRESET_MULTI_KEYS) {
+      problems <- c(problems, paste0("unknown filter '", key, "'"))
+      next
+    }
+    allowed <- switch(key,
+      variable = vocab_keys(schema, "variable"),
+      tags = unique(unlist(purrr::map(c(datasets$tags, parameters$tags), split_tags))),
+      name = datasets$name,
+      parameter = parameters$parameter,
+      vocab_keys(schema, schema$datasets[[key]]$vocab)
+    )
+    unknown <- setdiff(values, allowed)
+    if (length(unknown) > 0) {
+      problems <- c(problems, paste0("unknown value(s) for '", key, "': ", paste(unknown, collapse = ", ")))
+    }
+  }
+  problems
 }

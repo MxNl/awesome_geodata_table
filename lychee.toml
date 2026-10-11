@@ -1,0 +1,20 @@
+# Configuration of the weekly link check (.github/workflows/link-check.yaml)
+
+# be gentle with data portals
+max_concurrency = 4
+max_retries = 3
+retry_wait_time = 10
+timeout = 30
+user_agent = "Mozilla/5.0 (compatible; awesome-geodata-table link check)"
+
+# rate limiting (429) is not a broken link
+accept = ["200..=299", "429"]
+
+exclude = [
+  # block automated requests (403 for bots); checked manually
+  "^https://gdk\\.gdi-de\\.org/",
+  "^https://doi\\.org/10\\.(1002|1029|1073)/",   # Wiley, AGU, PNAS
+  "^https://www\\.worldwildlife\\.org/",
+  # placeholders in snippets
+  "<your-",
+]

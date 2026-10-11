@@ -1,0 +1,36 @@
+# Weekly check of all dataset links (download, documentation, snippets).
+# Broken links are collected in one issue ("Broken dataset links").
+name: link-check
+
+on:
+  schedule:
+    - cron: "0 5 * * 1"   # Mondays 05:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  links:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check links
+        id: lychee
+        uses: lycheeverse/lychee-action@v2
+        with:
+          args: >-
+            --config lychee.toml
+            metadata/datasets.csv metadata/snippets/
+          output: lychee-report.md
+          fail: false
+
+      - name: Open or update issue
+        if: steps.lychee.outputs.exit_code != 0
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: Broken dataset links
+          content-filepath: lychee-report.md
+          labels: broken links

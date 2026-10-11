@@ -5,15 +5,24 @@ present_in_order <- function(levels, values) {
   levels[levels %in% values]
 }
 
-multi_select <- function(column, label, choices) {
+#' Multi-select filter; `labels` (named by value) and `groups` (named by value,
+#' rendered as <optgroup>) are optional
+multi_select <- function(column, label, choices, labels = NULL, groups = NULL) {
   input_id <- paste0("agt-f-", column)
+  option <- function(x) htmltools::tags$option(value = x, if (is.null(labels)) x else labels[[x]])
+  options <- if (is.null(groups)) {
+    purrr::map(choices, option)
+  } else {
+    purrr::map(unique(groups[choices]), \(g) {
+      htmltools::tags$optgroup(label = g, purrr::map(choices[groups[choices] == g], option))
+    })
+  }
   htmltools::div(
     class = "agt-field",
     htmltools::tags$label(`for` = input_id, label),
     htmltools::tags$select(
       id = input_id, multiple = NA, `data-filter` = column, `data-kind` = "multi",
-      `aria-label` = label, placeholder = "any",
-      purrr::map(choices, \(x) htmltools::tags$option(value = x, x))
+      `aria-label` = label, placeholder = "any", options
     )
   )
 }
@@ -38,10 +47,22 @@ agt_filters <- function(data, schema) {
     yearMax = year_range[2]
   )
 
+  variables <- schema$vocabularies$variable
+  variable_keys <- present_in_order(vocab_keys(schema, "variable"), data$variable)
+  variable_groups <- purrr::set_names(purrr::map_chr(variables, "group"), vocab_keys(schema, "variable"))
+
   htmltools::tagList(
     htmltools::tags$script(
       id = "agt-config", type = "application/json",
       htmltools::HTML(jsonlite::toJSON(config, auto_unbox = TRUE))
+    ),
+    htmltools::div(
+      class = "agt-presets", role = "group", `aria-label` = "Quick start searches",
+      htmltools::span(class = "agt-presets-label", "Quick start:"),
+      purrr::map(schema$presets, \(p) htmltools::tags$button(
+        type = "button", class = "agt-preset", `data-query` = p$query, title = p$description,
+        `aria-pressed` = "false", p$label
+      ))
     ),
     htmltools::div(
       class = "agt-toolbar",
@@ -66,12 +87,26 @@ agt_filters <- function(data, schema) {
     htmltools::div(
       id = "agt-filters", class = "agt-filters",
       multi_select("name", "Dataset", sort(unique(data$name))),
+      multi_select("variable", "Variable", variable_keys, labels = vocab_labels(schema, "variable"), groups = variable_groups),
       multi_select("parameter", "Parameter", sort(unique(data$parameter))),
       multi_select("tags", "Tags", all_tags),
       multi_select("domain", "Domain", present_in_order(vocab_keys(schema, "domain"), data$domain)),
       multi_select("coverage_spatial", "Spatial coverage", present_in_order(vocab_keys(schema, "coverage_spatial"), data$coverage_spatial)),
       multi_select("access", "Access", present_in_order(vocab_keys(schema, "access"), data$access)),
       multi_select("data_type", "Data type", present_in_order(vocab_keys(schema, "data_type"), data$data_type)),
+      multi_select("license_class", "License", present_in_order(vocab_keys(schema, "license_class"), data$license_class)),
+      htmltools::div(
+        class = "agt-field agt-field-area",
+        htmltools::tags$label(`for` = "agt-f-lat", "Study area (point)"),
+        htmltools::div(
+          class = "agt-area",
+          htmltools::tags$input(id = "agt-f-lat", type = "number", step = "any", min = -90, max = 90, placeholder = "lat", `aria-label` = "Latitude"),
+          htmltools::tags$input(id = "agt-f-lon", type = "number", step = "any", min = -180, max = 180, placeholder = "lon", `aria-label` = "Longitude"),
+          htmltools::tags$button(id = "agt-f-map-toggle", type = "button", class = "agt-btn", `aria-expanded` = "false", `aria-controls` = "agt-map", "Map"),
+          htmltools::tags$button(id = "agt-f-area-clear", type = "button", class = "agt-btn", `aria-label` = "Clear study area", "×")
+        ),
+        htmltools::div(class = "agt-hint", "Keeps datasets whose extent covers the point")
+      ),
       htmltools::div(
         class = "agt-field",
         htmltools::tags$label(`for` = "agt-f-spatial", "Spatial res. at least", htmltools::tags$output(id = "agt-f-spatial-out", `for` = "agt-f-spatial", "any")),
@@ -116,7 +151,17 @@ agt_filters <- function(data, schema) {
           htmltools::tags$input(id = "agt-f-undated", type = "checkbox", checked = NA),
           "include undated data"
         )
-      )
+      ),
+      htmltools::div(id = "agt-map", class = "agt-map", hidden = NA, `aria-label` = "Click to set the study area point")
+    ),
+    htmltools::div(
+      id = "agt-shortlist", class = "agt-shortlist", hidden = NA, role = "region", `aria-label` = "Shortlist",
+      htmltools::span(id = "agt-shortlist-count", class = "agt-shortlist-count"),
+      htmltools::tags$button(id = "agt-shortlist-show", type = "button", class = "agt-btn", `aria-pressed` = "false", "Show only shortlist"),
+      htmltools::tags$button(id = "agt-shortlist-csv", type = "button", class = "agt-btn", "Download shortlist CSV"),
+      htmltools::tags$button(id = "agt-shortlist-bib", type = "button", class = "agt-btn", "Copy BibTeX"),
+      htmltools::tags$button(id = "agt-shortlist-clear", type = "button", class = "agt-btn", "Clear"),
+      htmltools::span(id = "agt-shortlist-status", class = "agt-hint", role = "status", `aria-live` = "polite")
     )
   )
 }

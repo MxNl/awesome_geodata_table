@@ -83,3 +83,41 @@ test_that("assert_valid_metadata gives a readable report", {
   d$domain[1] <- "Soils"
   expect_error(assert_valid_metadata(d, fixture_parameters(), schema), "datasets.csv:2 \\[domain\\]")
 })
+
+test_that("dates and bounding boxes are validated", {
+  d <- fixture_datasets()
+  d$last_verified <- c("2026-10-08", "08.10.2026")
+  expect_equal(problems_for(d)$problem, "must be a date (YYYY-MM-DD)")
+
+  d <- fixture_datasets()
+  d$bbox_west <- c("10", NA)
+  d$bbox_south <- c("40", NA)
+  d$bbox_east <- c("5", NA) # east < west
+  d$bbox_north <- c("50", NA)
+  expect_true(any(grepl("bounding box", problems_for(d)$problem)))
+
+  d$bbox_east <- c("20", NA)
+  expect_equal(nrow(problems_for(d)), 0)
+})
+
+test_that("a coverage without region and bbox is reported", {
+  # Oceania has a region; drop it from a copy of the schema
+  s <- schema
+  s$regions$Europe <- NULL
+  expect_true(any(grepl("no bounding box", validate_metadata(fixture_datasets(), fixture_parameters(), s)$problem)))
+})
+
+test_that("preset queries are validated", {
+  expect_length(validate_preset_query("variable=precipitation|soil_moisture&data_type=raster", schema, fixture_datasets(), fixture_parameters()), 0)
+  expect_match(validate_preset_query("variable=rainfall", schema, fixture_datasets(), fixture_parameters()), "unknown value")
+  expect_match(validate_preset_query("colour=red", schema, fixture_datasets(), fixture_parameters()), "unknown filter")
+  expect_length(validate_preset_query("q=soil&lat=52.5&lon=13.4", schema, fixture_datasets(), fixture_parameters()), 0)
+})
+
+test_that("snippets must belong to a dataset", {
+  dir <- withr::local_tempdir()
+  writeLines("x <- 1", file.path(dir, "ds-a.R"))
+  expect_equal(nrow(validate_metadata(fixture_datasets(), fixture_parameters(), schema, dir)), 0)
+  writeLines("x = 1", file.path(dir, "ds-zzz.py"))
+  expect_equal(validate_metadata(fixture_datasets(), fixture_parameters(), schema, dir)$problem, "snippet for unknown dataset id")
+})

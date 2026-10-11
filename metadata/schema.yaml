@@ -8,13 +8,107 @@
 #                  `tags` are added to the dataset tags instead of replacing them.
 #
 # Field properties:
-#   type:     string | integer | number | year | url | tags | vocab
+#   type:     string | integer | number | year | date | url | tags | vocab
 #   vocab:    name of an entry under `vocabularies` (for type vocab)
 #   required: must not be empty (after inheritance)
 #   label:    column label in the table / detail view
 #   help:     description used in the README and the contribution form
+#
+# Access snippets: metadata/snippets/<dataset id>.R and .py (optional).
+
+# Bounding boxes [west, south, east, north] in degrees used for the study-area
+# filter when a dataset has no bbox of its own.
+regions:
+  Global:        [-180, -90, 180, 90]
+  Europe:        [-31.5, 27.5, 45.0, 71.5]
+  Germany:       [5.87, 47.27, 15.04, 55.06]
+  Africa:        [-25.4, -34.9, 63.5, 37.6]
+  Asia:          [25.0, -11.0, 180.0, 81.9]
+  North America: [-168.0, 7.0, -52.0, 83.7]
+  South America: [-82.0, -56.0, -34.0, 13.0]
+  Oceania:       [110.0, -48.0, 180.0, 0.0]
+
+# One-click searches shown above the table. `query` uses the same syntax as a
+# shared link (?…): filter columns or q/spatial/temporal/from/to/lat/lon,
+# multiple values separated by "|".
+presets:
+  - label: Recharge modelling
+    description: Climate forcing, evapotranspiration, soil and land surface data for groundwater recharge models
+    query: variable=precipitation|air_temperature|evapotranspiration|potential_evapotranspiration|soil_moisture|groundwater_recharge|land_cover|soil_physics|soil_texture|elevation
+  - label: Aquifer properties
+    description: Permeability, porosity, aquifer maps, lithology and thickness of the subsurface
+    query: variable=aquifer_properties|aquifer_units|lithology|subsurface_thickness|hydrologic_position
+  - label: Climate forcing
+    description: Gridded meteorological variables
+    query: variable=precipitation|air_temperature|humidity|radiation|wind|potential_evapotranspiration&data_type=raster
+  - label: ML predictors
+    description: Gridded, mostly static environmental predictors for machine learning
+    query: data_type=raster&variable=elevation|terrain_derivatives|drainage_network|hydrologic_position|lithology|subsurface_thickness|soil_texture|soil_physics|soil_chemistry|land_cover|aquifer_properties|climate_index
+  - label: Groundwater monitoring
+    description: Groundwater levels, storage, quality, abstraction and wells
+    query: variable=groundwater_level|groundwater_monitoring|water_storage|groundwater_quality|groundwater_use|ground_deformation
+  - label: Germany
+    description: National datasets for Germany
+    query: coverage_spatial=Germany
 
 vocabularies:
+  # Standard variables shared across datasets. `synonyms` (English and German)
+  # are added to the search.
+  variable:
+    # Climate
+    - {key: precipitation, label: "Precipitation", group: Climate, synonyms: [rainfall, rain, snowfall, Niederschlag, Regen]}
+    - {key: air_temperature, label: "Air temperature", group: Climate, synonyms: [temperature, Lufttemperatur, Temperatur]}
+    - {key: humidity, label: "Humidity & vapour pressure", group: Climate, synonyms: [dewpoint, vapour pressure deficit, VPD, Luftfeuchte]}
+    - {key: radiation, label: "Radiation & energy fluxes", group: Climate, synonyms: [solar radiation, albedo, heat flux, cloud cover, Strahlung, Globalstrahlung]}
+    - {key: wind, label: "Wind", group: Climate, synonyms: [wind speed, Wind]}
+    - {key: air_pressure, label: "Air pressure & geopotential", group: Climate, synonyms: [pressure, geopotential, Luftdruck]}
+    - {key: snow, label: "Snow", group: Climate, synonyms: [snow water equivalent, SWE, snow depth, snow cover, Schnee]}
+    - {key: climate_index, label: "Climate & drought indices", group: Climate, synonyms: [aridity, drought, PDSI, bioclim, Dürre, Trockenheit]}
+    # Water balance
+    - {key: evapotranspiration, label: "Evapotranspiration", group: Water balance, synonyms: [ET, evaporation, transpiration, latent heat, Verdunstung, Evapotranspiration]}
+    - {key: potential_evapotranspiration, label: "Potential / reference evapotranspiration", group: Water balance, synonyms: [PET, ET0, reference evapotranspiration, potenzielle Verdunstung]}
+    - {key: soil_moisture, label: "Soil moisture", group: Water balance, synonyms: [soil water, volumetric water content, Bodenfeuchte, Bodenwasser]}
+    - {key: runoff, label: "Runoff", group: Water balance, synonyms: [surface runoff, baseflow, Abfluss, Oberflächenabfluss, Basisabfluss]}
+    - {key: river_discharge, label: "River discharge & streamflow", group: Water balance, synonyms: [streamflow, discharge, gauge, Durchfluss, Pegel, Abfluss]}
+    - {key: water_storage, label: "Total water storage", group: Water balance, synonyms: [TWS, GRACE, terrestrial water storage, Wasserspeicher]}
+    - {key: surface_water, label: "Surface water & lakes", group: Water balance, synonyms: [lakes, reservoirs, wetlands, water bodies, Oberflächengewässer, See, Talsperre]}
+    # Groundwater
+    - {key: groundwater_level, label: "Groundwater level & water table depth", group: Groundwater, synonyms: [water table, hydraulic head, piezometric level, Grundwasserstand, Flurabstand]}
+    - {key: groundwater_recharge, label: "Groundwater recharge", group: Groundwater, synonyms: [recharge, Grundwasserneubildung, Neubildung]}
+    - {key: groundwater_quality, label: "Groundwater quality", group: Groundwater, synonyms: [nitrate, arsenic, fluoride, salinity, hydrochemistry, Grundwasserbeschaffenheit, Grundwasserqualität, Nitrat]}
+    - {key: groundwater_use, label: "Groundwater abstraction & stress", group: Groundwater, synonyms: [withdrawal, depletion, pumping, Grundwasserentnahme, Förderung]}
+    - {key: aquifer_properties, label: "Aquifer properties", group: Groundwater, synonyms: [permeability, hydraulic conductivity, porosity, transmissivity, Durchlässigkeit, Porosität, kf-Wert]}
+    - {key: aquifer_units, label: "Aquifers & groundwater bodies", group: Groundwater, synonyms: [aquifer type, groundwater body, transboundary aquifer, karst, Grundwasserleiter, Grundwasserkörper, Hydrogeologie]}
+    - {key: groundwater_monitoring, label: "Monitoring networks & wells", group: Groundwater, synonyms: [wells, boreholes, monitoring network, Messstellen, Brunnen, Bohrungen]}
+    - {key: ground_deformation, label: "Ground deformation", group: Groundwater, synonyms: [subsidence, InSAR, ground motion, Bodenbewegung, Senkung]}
+    - {key: groundwater_dependent_ecosystems, label: "Groundwater-dependent ecosystems", group: Groundwater, synonyms: [GDE, phreatophytes, springs, grundwasserabhängige Ökosysteme]}
+    # Geology & soil
+    - {key: lithology, label: "Lithology & geology", group: Geology & soil, synonyms: [rock type, stratigraphy, geological map, Geologie, Gestein, Lithologie]}
+    - {key: subsurface_thickness, label: "Soil, regolith & sediment thickness", group: Geology & soil, synonyms: [depth to bedrock, regolith, sediment thickness, Mächtigkeit, Festgesteinstiefe]}
+    - {key: soil_texture, label: "Soil texture", group: Geology & soil, synonyms: [clay, sand, silt, coarse fragments, Bodenart, Ton, Schluff]}
+    - {key: soil_physics, label: "Soil physical & hydraulic properties", group: Geology & soil, synonyms: [bulk density, field capacity, water retention, hydraulic conductivity, Lagerungsdichte, Feldkapazität]}
+    - {key: soil_chemistry, label: "Soil chemistry & carbon", group: Geology & soil, synonyms: [organic carbon, SOC, pH, nitrogen, cation exchange capacity, Humus]}
+    - {key: soil_type, label: "Soil type & soil map units", group: Geology & soil, synonyms: [soil class, Bodentyp, Bodenkarte]}
+    - {key: soil_temperature, label: "Soil temperature", group: Geology & soil, synonyms: [Bodentemperatur]}
+    # Topography & hydrography
+    - {key: elevation, label: "Elevation", group: Topography & hydrography, synonyms: [DEM, DSM, DTM, terrain, Höhe, Geländemodell, DGM]}
+    - {key: terrain_derivatives, label: "Terrain derivatives & landforms", group: Topography & hydrography, synonyms: [slope, aspect, curvature, roughness, TPI, landforms, Hangneigung, Relief]}
+    - {key: drainage_network, label: "Drainage network & flow routing", group: Topography & hydrography, synonyms: [flow direction, flow accumulation, river network, HAND, stream order, catchments, Gewässernetz, Fließrichtung]}
+    - {key: hydrologic_position, label: "Hydrologic position", group: Topography & hydrography, synonyms: [MOHP, stream distance, lateral position, Gewässerabstand]}
+    # Land surface & human
+    - {key: land_cover, label: "Land cover & land use", group: Land surface & human, synonyms: [land use, land cover map, Landnutzung, Landbedeckung]}
+    - {key: vegetation, label: "Vegetation", group: Land surface & human, synonyms: [NDVI, EVI, LAI, leaf area index, Vegetation, Blattflächenindex]}
+    - {key: imperviousness, label: "Imperviousness & artificial surfaces", group: Land surface & human, synonyms: [sealing, impervious, Versiegelung]}
+    - {key: irrigation, label: "Irrigation", group: Land surface & human, synonyms: [irrigated area, Bewässerung]}
+    - {key: population, label: "Population & settlements", group: Land surface & human, synonyms: [population density, Bevölkerung, Siedlung]}
+    - {key: pollution, label: "Pollution & pesticides", group: Land surface & human, synonyms: [pesticides, contamination, Schadstoffe, Pestizide]}
+    - {key: catchment_attributes, label: "Catchment attributes", group: Land surface & human, synonyms: [large-sample hydrology, CAMELS, catchment, Einzugsgebiet]}
+    - {key: other, label: "Other", group: Land surface & human, synonyms: []}
+  license_class:
+    - open
+    - non-commercial
+    - custom terms
+    - unknown
   domain:
     - Climate & atmosphere
     - Hydrology
@@ -109,13 +203,20 @@ datasets:
   access:                 {type: vocab, vocab: access, required: true, label: "Access"}
   access_method:          {type: string, label: "Access method", help: "e.g. download; API; WMS; Google Earth Engine"}
   license:                {type: string, label: "License"}
+  license_class:          {type: vocab, vocab: license_class, label: "License class", help: "open = any use incl. commercial (with attribution); non-commercial; custom terms = read the provider terms"}
   download_url:           {type: url, required: true, label: "Download"}
   doc_url:                {type: url, label: "Documentation / literature"}
   doi:                    {type: string, label: "DOI", help: "DOI of the dataset or its describing publication, e.g. 10.5194/essd-13-4349-2021"}
   quality_notes:          {type: string, label: "Limitations"}
   comment:                {type: string, label: "Comment"}
+  bbox_west:              {type: number, label: "West", help: "Bounding box in degrees; leave empty to use the box of coverage_spatial (see regions)"}
+  bbox_south:             {type: number, label: "South"}
+  bbox_east:              {type: number, label: "East"}
+  bbox_north:             {type: number, label: "North"}
+  last_verified:          {type: date, label: "Last verified", help: "Date (YYYY-MM-DD) the entry was last checked against the provider page"}
 
 parameters:
   dataset_id:             {type: string, required: true, label: "Dataset ID"}
   parameter:              {type: string, required: true, label: "Parameter"}
   unit:                   {type: string, label: "Unit", help: "Plain-text unit, e.g. kg/m³, mm/a, %, categorical"}
+  variable:               {type: vocab, vocab: variable, label: "Variable", help: "Standard variable from the `variable` vocabulary"}

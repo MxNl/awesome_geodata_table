@@ -62,6 +62,16 @@ js_filter_period <- js_fn("rows, columnId, f", "
   });
 ")
 
+# study area: the dataset's bounding box contains the point {lat, lon}
+js_filter_point <- js_fn("rows, columnId, p", "
+  if (!p || p.lat == null || p.lon == null) return rows;
+  return rows.filter((row) => {
+    const v = row.values;
+    if (v.bbox_west == null) return true;
+    return p.lon >= v.bbox_west && p.lon <= v.bbox_east && p.lat >= v.bbox_south && p.lat <= v.bbox_north;
+  });
+")
+
 # every search word must occur in the pre-built search text
 js_search <- js_fn("rows, columnIds, query", "
   const words = String(query || '').toLowerCase().split(/\\s+/).filter(Boolean);
@@ -134,7 +144,21 @@ js_details <- function(fields) {
       else v = esc(v);
       return '<div class=\"agt-detail\"><dt>' + esc(f.label) + '</dt><dd>' + v + '</dd></div>';
     }).join('');
-    return '<dl class=\"agt-details\">' + items + '</dl>';
+    let side = '';
+    if (r.bbox_west != null) {
+      side += '<div class=\"agt-footprint\" data-bbox=\"' + [r.bbox_west, r.bbox_south, r.bbox_east, r.bbox_north].join(',') +
+        '\" role=\"img\" aria-label=\"Spatial coverage map\"></div>';
+    }
+    const snippets = [['r', 'R', r.snippet_r], ['py', 'Python', r.snippet_py]].filter((x) => x[2]);
+    if (snippets.length) {
+      side += '<div class=\"agt-snippets\"><div class=\"agt-snippet-tabs\" role=\"tablist\">' +
+        snippets.map((x, i) => '<button type=\"button\" role=\"tab\" class=\"agt-snippet-tab\" data-lang=\"' + x[0] + '\" aria-selected=\"' + (i === 0) + '\">' + x[1] + '</button>').join('') +
+        '<button type=\"button\" class=\"agt-snippet-copy\">Copy</button></div>' +
+        snippets.map((x, i) => '<pre class=\"agt-snippet\" data-lang=\"' + x[0] + '\"' + (i === 0 ? '' : ' hidden') + '><code>' + esc(x[2]) + '</code></pre>').join('') +
+        '</div>';
+    }
+    return '<div class=\"agt-details-wrap\"><dl class=\"agt-details\">' + items + '</dl>' +
+      (side ? '<div class=\"agt-details-side\">' + side + '</div>' : '') + '</div>';
   ", jsonlite::toJSON(fields, auto_unbox = TRUE)), escape = TRUE)
 }
 
@@ -142,7 +166,7 @@ js_details <- function(fields) {
 
 #' Columns that are exported by the CSV download (raw metadata, no helpers)
 agt_export_columns <- function(schema) {
-  c("id", "name", "parameter", "unit", setdiff(names(schema$datasets), c("id", "name")))
+  c("id", "name", "parameter", "unit", "variable", setdiff(names(schema$datasets), c("id", "name")))
 }
 
 #' Build the interactive reactable widget
@@ -153,25 +177,31 @@ agt_table <- function(data, schema) {
   temporal_labels <- vocab_labels(schema, "temporal_resolution")
   domains <- vocab_keys(schema, "domain")
   access_levels <- vocab_keys(schema, "access")
+  variable_synonyms <- purrr::map_chr(schema$vocabularies$variable, \(v) paste(unlist(v$synonyms), collapse = " "))
+  names(variable_synonyms) <- vocab_keys(schema, "variable")
 
   data <- data |>
     dplyr::mutate(
       search_text = stringr::str_to_lower(paste(
-        name, parameter, tags, domain, publisher, coverage_spatial, comment, id,
+        name, parameter, variable_label, unname(variable_synonyms[variable]),
+        tags, domain, publisher, coverage_spatial, comment, id,
         sep = " | "
       )),
-      links = download_url
+      links = download_url,
+      # stable row identity for the shortlist (assets/agt.js)
+      row_key = paste(id, parameter, sep = "|")
     )
 
   detail_fields <- c(
-    "tags", "publisher", "data_type", "format", "crs", "res_spatial_note",
+    "variable_label", "tags", "publisher", "data_type", "format", "crs", "res_spatial_note",
     "temporal_type", "vertical", "maintained", "latency", "published", "method",
-    "processing_level", "access_method", "license", "download_url", "doc_url",
-    "doi", "quality_notes", "comment"
+    "processing_level", "access_method", "license", "license_class", "download_url", "doc_url",
+    "doi", "quality_notes", "comment", "last_verified"
   )
-  details <- purrr::map(detail_fields, \(f) list(
-    id = f, label = schema$datasets[[f]]$label, type = schema$datasets[[f]]$type
-  ))
+  details <- purrr::map(detail_fields, \(f) {
+    spec <- if (f == "variable_label") list(label = "Variable", type = "string") else schema$datasets[[f]]
+    list(id = f, label = spec$label, type = spec$type)
+  })
 
   visible <- list(
     parameter = reactable::colDef(
@@ -180,6 +210,15 @@ agt_table <- function(data, schema) {
       # shown on dataset rows when grouped
       aggregate = "count", aggregated = js_fn("cellInfo", "return cellInfo.value + (cellInfo.value === 1 ? ' parameter' : ' parameters');"),
       style = list(fontWeight = 600)
+    ),
+    variable = reactable::colDef(
+      name = "Variable", minWidth = 150, filterMethod = js_filter_in,
+      cell = js_fn("cellInfo", sprintf("
+        const labels = %s;
+        const label = labels[cellInfo.value] || cellInfo.value || '';
+        return '<span title=\"' + esc(label) + '\">' + esc(label) + '</span>';
+      ", jsonlite::toJSON(as.list(vocab_labels(schema, "variable")), auto_unbox = TRUE)), escape = TRUE),
+      html = TRUE, aggregate = "unique"
     ),
     unit = reactable::colDef(name = "Unit", minWidth = 80, maxWidth = 120),
     name = reactable::colDef(
@@ -225,7 +264,12 @@ agt_table <- function(data, schema) {
     \(col) reactable::colDef(
       show = FALSE,
       searchable = col == "search_text",
-      filterMethod = if (col == "data_type") js_filter_in
+      filterMethod = switch(col,
+        data_type = js_filter_in,
+        license_class = js_filter_in,
+        row_key = js_filter_in,
+        bbox_west = js_filter_point
+      )
     )
   )
 
@@ -246,6 +290,8 @@ agt_table <- function(data, schema) {
     # built-in search box is hidden via CSS, the filter panel calls setSearch()
     searchable = TRUE,
     searchMethod = js_search,
+    # checkbox column for the shortlist (assets/agt.js)
+    selection = "multiple",
     sortable = TRUE,
     resizable = TRUE,
     defaultSorted = c("name", "parameter"),
