@@ -90,6 +90,7 @@ agt_filters <- function(data, schema, dictionary = read_dictionary()) {
       multi_select("name", "Dataset", sort(unique(data$name))),
       multi_select("variable", "Variable", variable_keys, labels = vocab_labels(schema, "variable"), groups = variable_groups),
       multi_select("parameter", "Parameter", sort(unique(data$parameter))),
+      multi_select("publisher_label", "Publisher", sort(unique(dplyr::coalesce(data$publisher_short, data$publisher)))),
       multi_select("tags", "Tags", all_tags),
       multi_select("domain", "Domain", present_in_order(vocab_keys(schema, "domain"), data$domain)),
       multi_select("coverage_spatial", "Spatial coverage", present_in_order(vocab_keys(schema, "coverage_spatial"), data$coverage_spatial)),

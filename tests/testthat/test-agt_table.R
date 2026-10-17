@@ -10,7 +10,7 @@ test_that("the widget is built with every filter column filterable", {
   filter_columns <- c(
     "name", "parameter", "tags", "domain", "coverage_spatial", "access", "data_type",
     "res_spatial_finest_m", "res_temporal_finest_rank", "coverage_start_year",
-    "variable", "license_class", "bbox_west", "row_key"
+    "variable", "license_class", "bbox_west", "row_key", "publisher_label"
   )
   for (col in filter_columns) {
     def <- columns[[match(col, ids)]]
@@ -45,7 +45,7 @@ test_that("the filter panel offers every multi-select used by the table", {
   schema <- read_schema(metadata_dir)
   data <- read_metadata(metadata_dir)
   html <- as.character(agt_filters(data, schema, read_dictionary(metadata_dir)))
-  for (col in c("name", "parameter", "variable", "tags", "domain", "coverage_spatial", "access", "data_type", "license_class")) {
+  for (col in c("name", "parameter", "variable", "publisher_label", "tags", "domain", "coverage_spatial", "access", "data_type", "license_class")) {
     expect_match(html, sprintf('data-filter="%s"', col), fixed = TRUE)
   }
   expect_match(html, 'id="agt-config"', fixed = TRUE)

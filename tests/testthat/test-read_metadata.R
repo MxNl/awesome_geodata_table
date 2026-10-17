@@ -72,3 +72,10 @@ test_that("every repository snippet parses", {
     expect_no_error(parse(file = f), message = basename(f))
   }
 })
+
+test_that("every dataset names its publishing institution", {
+  datasets <- read_metadata_csv(file.path(metadata_dir, "datasets.csv"))
+  expect_false(any(is.na(datasets$publisher)))
+  # journals publish papers, not the data
+  expect_false(any(grepl("^(nature|scientific data|wiley)", datasets$publisher, ignore.case = TRUE)))
+})

@@ -179,9 +179,11 @@ agt_table <- function(data, schema) {
     dplyr::mutate(
       # normalised like the query (see normalise_text() / AGT_search)
       search_text = normalise_text(paste(
-        name, parameter, variable_label, tags, domain, publisher,
+        name, parameter, variable_label, tags, domain, publisher, publisher_short,
         coverage_spatial, comment, id
       )),
+      # short institution name for the Publisher column and filter
+      publisher_label = dplyr::coalesce(publisher_short, publisher),
       links = download_url,
       # stable row identity for the shortlist (assets/agt.js)
       row_key = paste(id, parameter, sep = "|")
@@ -220,6 +222,14 @@ agt_table <- function(data, schema) {
       name = "Dataset", minWidth = 260, filterMethod = js_filter_in,
       cell = js_fn("cellInfo", "return '<span title=\"' + esc(cellInfo.value) + '\">' + esc(cellInfo.value) + '</span>';", escape = TRUE),
       html = TRUE
+    ),
+    publisher_label = reactable::colDef(
+      name = "Publisher", minWidth = 120, maxWidth = 180, filterMethod = js_filter_in,
+      cell = js_fn("cellInfo", "
+        if (cellInfo.value == null) return '';
+        return '<span title=\"' + esc(cellInfo.row.publisher || cellInfo.value) + '\">' + esc(cellInfo.value) + '</span>';
+      ", escape = TRUE),
+      html = TRUE, aggregate = "unique"
     ),
     domain = reactable::colDef(
       name = "Domain", minWidth = 150, filterMethod = js_filter_in,

@@ -167,6 +167,17 @@ const OUT = process.argv[3] || require('os').tmpdir();
   await page.fill('#agt-search', '');
   check('cleared dictionary search restores all rows', (await count()) === total);
 
+  // publisher column + filter
+  check('publisher column shown', await page.$$eval('.rt-th', (ths) => ths.some((th) => th.textContent.trim() === 'Publisher')));
+  await setMulti('agt-f-publisher_label', ['DWD']);
+  const nDwd = await count();
+  const onlyDwd = await page.evaluate(() => Reactable.getState('agt').sortedData.every((r) => r.publisher_label === 'DWD'));
+  check('publisher filter keeps only DWD datasets', nDwd > 0 && onlyDwd, nDwd);
+  await setMulti('agt-f-publisher_label', []);
+  check('publisher filter cleared restores', (await count()) === total);
+  check('"Deutscher Wetterdienst" = "DWD"', (await searchCount('Deutscher Wetterdienst')) === (await searchCount('DWD')) && (await count()) > 0);
+  await page.fill('#agt-search', '');
+
   await setMulti('agt-f-license_class', ['non-commercial']);
   const nNc = await count();
   check('licence filter narrows', nNc > 0 && nNc < total, nNc);

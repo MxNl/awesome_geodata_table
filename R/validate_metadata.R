@@ -147,7 +147,7 @@ assert_valid_metadata <- function(datasets, parameters, schema, snippet_dir = NU
 
 #' Columns a preset / shared link may filter on (see assets/agt.js)
 PRESET_MULTI_KEYS <- c(
-  "name", "parameter", "variable", "tags", "domain", "coverage_spatial",
+  "name", "parameter", "variable", "publisher_label", "tags", "domain", "coverage_spatial",
   "access", "license_class", "data_type"
 )
 PRESET_SCALAR_KEYS <- c("q", "spatial", "temporal", "static", "from", "to", "undated", "lat", "lon", "group")
@@ -169,6 +169,7 @@ validate_preset_query <- function(query, schema, datasets, parameters) {
       variable = vocab_keys(schema, "variable"),
       tags = unique(unlist(purrr::map(c(datasets$tags, parameters$tags), split_tags))),
       name = datasets$name,
+      publisher_label = dplyr::coalesce(datasets$publisher_short, datasets$publisher),
       parameter = parameters$parameter,
       vocab_keys(schema, schema$datasets[[key]]$vocab)
     )

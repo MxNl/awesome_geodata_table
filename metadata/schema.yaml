@@ -181,7 +181,8 @@ datasets:
   name:                   {type: string, required: true, label: "Dataset", help: "Full name with optional abbreviation in brackets"}
   domain:                 {type: vocab, vocab: domain, required: true, label: "Domain"}
   tags:                   {type: tags, label: "Tags", help: "Lower-case keywords separated by ';'"}
-  publisher:              {type: string, label: "Publisher"}
+  publisher:              {type: string, required: true, label: "Publisher", help: "Institution that maintains and publishes the data (not the journal)"}
+  publisher_short:        {type: string, label: "Publisher (short)", help: "Short name for the table column, e.g. JRC, C3S, DWD; empty = publisher"}
   coverage_spatial:       {type: vocab, vocab: coverage_spatial, required: true, label: "Spatial coverage"}
   data_type:              {type: vocab, vocab: data_type, label: "Data type"}
   format:                 {type: string, label: "Format", help: "File formats, e.g. GeoTIFF; netCDF"}
