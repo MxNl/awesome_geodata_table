@@ -191,6 +191,13 @@ const OUT = process.argv[3] || require('os').tmpdir();
     const pressed = await page.getAttribute(`.agt-preset >> nth=${i}`, 'aria-pressed');
     check(`preset "${presets[i]}" narrows and is active`, n > 0 && n < total && pressed === 'true', n);
   }
+  await page.click('.agt-preset:text-is("Crop types")');
+  await count();
+  const cropIds = await page.evaluate(() => Array.from(new Set(Reactable.getState('agt').sortedData.map((r) => r.id))));
+  const expectedCrops = ['eucropmap', 'clms-crop-types', 'dlr-croptypes', 'thuenen-crop-types', 'worldcereal-2021'];
+  check('crop types preset lists the crop maps', expectedCrops.every((id) => cropIds.includes(id)), cropIds.join(', '));
+  check('"Feldfrucht" = "crop type"', (await searchCount('Feldfrucht')) === (await searchCount('crop type')));
+  await page.fill('#agt-search', '');
   await page.click('#agt-reset');
   check('reset after presets restores', (await count()) === total);
   check('no preset active after reset', (await page.$$eval('.agt-preset[aria-pressed="true"]', (b) => b.length)) === 0);

@@ -19,6 +19,7 @@ exclude = [
   "^https://doi\\.org/10\\.1088/",
   # templates and placeholders in snippets
   "%s",
+  "%d",
   "\\{",
   "%7B",
   "<your-",

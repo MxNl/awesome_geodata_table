@@ -47,6 +47,9 @@ presets:
   - label: Groundwater monitoring
     description: Groundwater levels, storage, quality, abstraction and wells
     query: variable=groundwater_level|groundwater_monitoring|water_storage|groundwater_quality|groundwater_use|ground_deformation
+  - label: Crop types
+    description: Classified crop type maps from Sentinel and other satellite data
+    query: variable=crop_type
   - label: Germany
     description: National datasets for Germany
     query: coverage_spatial=Germany
@@ -99,6 +102,7 @@ vocabularies:
     - {key: land_cover, label: "Land cover & land use", group: Land surface & human}
     - {key: vegetation, label: "Vegetation", group: Land surface & human}
     - {key: imperviousness, label: "Imperviousness & artificial surfaces", group: Land surface & human}
+    - {key: crop_type, label: "Crop types", group: Land surface & human}
     - {key: irrigation, label: "Irrigation", group: Land surface & human}
     - {key: population, label: "Population & settlements", group: Land surface & human}
     - {key: pollution, label: "Pollution & pesticides", group: Land surface & human}
