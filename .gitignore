@@ -15,3 +15,6 @@ rsconnect
 node_modules/
 
 **/*.quarto_ipynb
+
+# local temporary files
+/.scratch/

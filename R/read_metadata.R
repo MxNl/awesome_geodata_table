@@ -6,6 +6,30 @@ read_schema <- function(dir = "metadata") {
   yaml::read_yaml(file.path(dir, "schema.yaml"))
 }
 
+#' Normalise text for searching: lower case, umlauts spelled out (ä = ae),
+#' other accents removed, punctuation replaced by spaces, padded with one space
+#' on each side so terms can be matched at word starts (" term").
+#' Mirrored by `normalise()` in assets/agt.js.
+normalise_text <- function(x) {
+  x <- stringr::str_to_lower(dplyr::coalesce(as.character(x), ""))
+  x <- stringr::str_replace_all(x, c("ä" = "ae", "ö" = "oe", "ü" = "ue", "ß" = "ss"))
+  x <- stringi::stri_trans_general(x, "Latin-ASCII")
+  x <- stringr::str_squish(stringr::str_replace_all(x, "[^a-z0-9]+", " "))
+  paste0(" ", x, " ")
+}
+
+#' Read the bilingual search dictionary
+#'
+#' @return A list of concepts, each a list with `en` and `de` character vectors.
+read_dictionary <- function(dir = "metadata") {
+  yaml::read_yaml(file.path(dir, "dictionary.yaml"))
+}
+
+#' Dictionary as a list of normalised term vectors (one per concept), for the JS search
+dictionary_terms <- function(dictionary) {
+  purrr::map(dictionary, \(concept) unique(stringr::str_trim(normalise_text(c(concept$en, concept$de)))))
+}
+
 #' Read a metadata CSV with every column as character
 read_metadata_csv <- function(path) {
   readr::read_csv(
@@ -119,6 +143,10 @@ read_metadata <- function(dir = "metadata", validate = TRUE) {
   snippet_dir <- file.path(dir, "snippets")
   if (validate) {
     assert_valid_metadata(datasets, parameters, schema, snippet_dir)
+    dictionary_problems <- validate_dictionary(read_dictionary(dir))
+    if (length(dictionary_problems) > 0) {
+      stop("Invalid dictionary.yaml:\n", paste(dictionary_problems, collapse = "\n"), call. = FALSE)
+    }
   }
 
   temporal_levels <- vocab_keys(schema, "temporal_resolution")

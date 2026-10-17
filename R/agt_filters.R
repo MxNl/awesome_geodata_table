@@ -31,7 +31,7 @@ multi_select <- function(column, label, choices, labels = NULL, groups = NULL) {
 #'
 #' @param data Output of `read_metadata()`.
 #' @param schema Output of `read_schema()`.
-agt_filters <- function(data, schema) {
+agt_filters <- function(data, schema, dictionary = read_dictionary()) {
   all_tags <- sort(unique(unlist(purrr::map(data$tags, split_tags))))
   temporal <- vocab_labels(schema, "temporal_resolution")
   temporal <- temporal[names(temporal) != "static"]
@@ -44,7 +44,8 @@ agt_filters <- function(data, schema) {
     spatialMin = max(1, spatial_range[1]),
     spatialMax = spatial_range[2],
     yearMin = year_range[1],
-    yearMax = year_range[2]
+    yearMax = year_range[2],
+    dictionary = purrr::map(dictionary_terms(dictionary), I)  # I(): keep 1-term concepts as arrays
   )
 
   variables <- schema$vocabularies$variable

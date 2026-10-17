@@ -134,6 +134,39 @@ const OUT = process.argv[3] || require('os').tmpdir();
   const nSyn = await count();
   check('German synonym search finds recharge', nSyn > 0 && nSyn < 10, nSyn);
   await page.fill('#agt-search', '');
+
+  // bilingual dictionary: every term maps to its own concept, and English and
+  // German terms of a concept return the same rows
+  const dict = await page.evaluate(() => {
+    const cfg = JSON.parse(document.getElementById('agt-config').textContent);
+    const concepts = cfg.dictionary.map((t) => [].concat(t));
+    const data = Reactable.getState('agt').data.map((v) => ({ values: v }));
+    const keys = (q) => AGT_search(data, q).map((r) => r.values.row_key).sort().join('|');
+    const wrongConcept = [];
+    const unequal = [];
+    concepts.forEach((terms, i) => {
+      terms.forEach((t) => {
+        const g = AGT_parseQuery(t);
+        if (g.length !== 1 || g[0].concept !== i) wrongConcept.push(t);
+      });
+      const first = keys(terms[0]);
+      terms.slice(1).forEach((t) => { if (keys(t) !== first) unequal.push(terms[0] + ' / ' + t); });
+    });
+    return { n: concepts.length, wrongConcept, unequal };
+  });
+  check(`every dictionary term maps to its concept (${dict.n} concepts)`, dict.wrongConcept.length === 0, dict.wrongConcept.join(', '));
+  check('all terms of a concept return identical rows', dict.unequal.length === 0, dict.unequal.slice(0, 5).join('; '));
+  const searchCount = async (q) => { await page.fill('#agt-search', q); return count(); };
+  const nNieder = await searchCount('Niederschlag');
+  check('"Niederschlag" = "precipitation"', nNieder > 0 && nNieder === (await searchCount('precipitation')), nNieder);
+  check('"Dürre" = "Duerre" = "drought"', (await searchCount('Dürre')) === (await searchCount('Duerre')) && (await searchCount('Duerre')) === (await searchCount('drought')));
+  check('"Grundwasserstände" finds groundwater levels', (await searchCount('Grundwasserstände')) > 0);
+  await searchCount('drought');
+  check('"drought" finds the Dürremonitor', await page.evaluate(() => Reactable.getState('agt').sortedData.some((r) => r.id === 'ufz-duerremonitor')));
+  check('"rain" does not match terrain/drainage', !(await page.evaluate(() => AGT_search(Reactable.getState('agt').data.map((v) => ({ values: v })), 'rain').some((r) => /terrain|drainage/i.test(r.values.parameter)))));
+  await page.fill('#agt-search', '');
+  check('cleared dictionary search restores all rows', (await count()) === total);
+
   await setMulti('agt-f-license_class', ['non-commercial']);
   const nNc = await count();
   check('licence filter narrows', nNc > 0 && nNc < total, nNc);

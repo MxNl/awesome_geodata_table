@@ -179,3 +179,26 @@ validate_preset_query <- function(query, schema, datasets, parameters) {
   }
   problems
 }
+
+#' Problems of the search dictionary (character vector, empty when valid)
+validate_dictionary <- function(dictionary) {
+  problems <- character()
+  for (i in seq_along(dictionary)) {
+    concept <- dictionary[[i]]
+    if (length(concept$en) == 0 || length(concept$de) == 0) {
+      problems <- c(problems, sprintf("concept %d needs English and German terms", i))
+    }
+  }
+  terms <- dictionary_terms(dictionary)
+  owner <- rep(seq_along(terms), lengths(terms))
+  flat <- unlist(terms)
+  dup <- unique(flat[duplicated(flat)])
+  for (term in dup) {
+    problems <- c(problems, sprintf(
+      "term '%s' belongs to several concepts (%s)", term, paste(unique(owner[flat == term]), collapse = ", ")
+    ))
+  }
+  empty <- flat[flat == ""]
+  if (length(empty) > 0) problems <- c(problems, "empty term after normalisation")
+  problems
+}

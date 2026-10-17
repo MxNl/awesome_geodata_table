@@ -44,7 +44,7 @@ n_datasets <- dplyr::n_distinct(agt_data$id)
 
 ```{r table}
 htmltools::tagList(
-  agt_filters(agt_data, schema),
+  agt_filters(agt_data, schema, read_dictionary("metadata")),
   agt_table(agt_data, schema)
 )
 ```

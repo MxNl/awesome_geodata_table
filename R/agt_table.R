@@ -72,14 +72,12 @@ js_filter_point <- js_fn("rows, columnId, p", "
   });
 ")
 
-# every search word must occur in the pre-built search text
+# search with the bilingual dictionary (AGT_search in assets/agt.js); falls back
+# to "every word occurs in the text" if the script is not loaded
 js_search <- js_fn("rows, columnIds, query", "
+  if (window.AGT_search) return window.AGT_search(rows, query);
   const words = String(query || '').toLowerCase().split(/\\s+/).filter(Boolean);
-  if (words.length === 0) return rows;
-  return rows.filter((row) => {
-    const text = row.values.search_text || '';
-    return words.every((w) => text.includes(w));
-  });
+  return rows.filter((row) => words.every((w) => (row.values.search_text || '').includes(w)));
 ")
 
 # Cell renderers ----------------------------------------------------------------
@@ -177,15 +175,12 @@ agt_table <- function(data, schema) {
   temporal_labels <- vocab_labels(schema, "temporal_resolution")
   domains <- vocab_keys(schema, "domain")
   access_levels <- vocab_keys(schema, "access")
-  variable_synonyms <- purrr::map_chr(schema$vocabularies$variable, \(v) paste(unlist(v$synonyms), collapse = " "))
-  names(variable_synonyms) <- vocab_keys(schema, "variable")
-
   data <- data |>
     dplyr::mutate(
-      search_text = stringr::str_to_lower(paste(
-        name, parameter, variable_label, unname(variable_synonyms[variable]),
-        tags, domain, publisher, coverage_spatial, comment, id,
-        sep = " | "
+      # normalised like the query (see normalise_text() / AGT_search)
+      search_text = normalise_text(paste(
+        name, parameter, variable_label, tags, domain, publisher,
+        coverage_spatial, comment, id
       )),
       links = download_url,
       # stable row identity for the shortlist (assets/agt.js)

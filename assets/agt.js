@@ -52,6 +52,65 @@
   const empty = (v) => v == null || (Array.isArray(v) && v.length === 0);
   const round4 = (x) => Math.round(x * 1e4) / 1e4;
 
+  // ---- bilingual search (metadata/dictionary.yaml) -----------------------------
+  // Same normalisation as normalise_text() in R/read_metadata.R
+  const normalise = (s) => String(s == null ? '' : s).toLowerCase()
+    .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ').trim();
+
+  const DICT = (cfg.dictionary || []).map((t) => [].concat(t));  // concepts as arrays of normalised terms
+  const termConcept = new Map();
+  DICT.forEach((terms, i) => terms.forEach((t) => termConcept.set(t, i)));
+  const MAX_PHRASE = Math.max(1, ...Array.from(termConcept.keys()).map((t) => t.split(' ').length));
+  // single-word terms that may prefix a typed word (inflections, compounds), longest first
+  const prefixTerms = Array.from(termConcept.keys())
+    .filter((t) => t.length >= 6 && !t.includes(' '))
+    .sort((a, b) => b.length - a.length);
+
+  // query -> groups; a group is {concept, terms} (any term may match) or {literal}
+  function parseQuery(query) {
+    const words = normalise(query).split(' ').filter(Boolean);
+    const groups = [];
+    let i = 0;
+    while (i < words.length) {
+      let n = Math.min(MAX_PHRASE, words.length - i);
+      for (; n >= 1; n--) {
+        const phrase = words.slice(i, i + n).join(' ');
+        if (termConcept.has(phrase)) {
+          const c = termConcept.get(phrase);
+          groups.push({ concept: c, terms: DICT[c] });
+          break;
+        }
+      }
+      if (n >= 1) { i += n; continue; }
+      const word = words[i];
+      const prefix = prefixTerms.find((t) => word.startsWith(t));
+      if (prefix) {
+        const c = termConcept.get(prefix);
+        groups.push({ concept: c, terms: DICT[c] });
+      } else {
+        groups.push({ literal: word });
+      }
+      i++;
+    }
+    return groups;
+  }
+
+  // terms match at word starts; short terms (ET, DEM, DWD) only as whole words
+  const termIn = (text, t) => t.length <= 3 ? text.includes(' ' + t + ' ') : text.includes(' ' + t);
+
+  function search(rows, query) {
+    const groups = parseQuery(query);
+    if (groups.length === 0) return rows;
+    return rows.filter((row) => {
+      const text = row.values.search_text || '';
+      return groups.every((g) => g.literal != null ? text.includes(g.literal) : g.terms.some((t) => termIn(text, t)));
+    });
+  }
+  window.AGT_search = search;
+  window.AGT_parseQuery = parseQuery;
+
   function selectValues(el) {
     if (el.tomselect) return el.tomselect.getValue();
     return Array.from(el.selectedOptions).map((o) => o.value);
