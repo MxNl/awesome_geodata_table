@@ -1,20 +1,26 @@
-# Configuration of the weekly link check (.github/workflows/link-check.yaml)
+# Configuration of the weekly link check (.github/workflows/link-check.yaml).
+# For a closer look use the real-browser audit: node tests/e2e/linkcheck.js
 
 # be gentle with data portals
 max_concurrency = 4
 max_retries = 3
 retry_wait_time = 10
 timeout = 30
-user_agent = "Mozilla/5.0 (compatible; awesome-geodata-table link check)"
+user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36"
 
-# rate limiting (429) is not a broken link
-accept = ["200..=299", "429"]
+# 403: publishers and Zenodo block automated requests, the links work in browsers
+# 429: rate limiting
+accept = ["200..=299", "403", "429"]
 
 exclude = [
-  # block automated requests (403 for bots); checked manually
+  # resets automated connections; checked manually
   "^https://gdk\\.gdi-de\\.org/",
-  "^https://doi\\.org/10\\.(1002|1029|1073)/",   # Wiley, AGU, PNAS
-  "^https://www\\.worldwildlife\\.org/",
-  # placeholders in snippets
+  # IOP Publishing: cookie redirect loop for non-browsers
+  "^https://doi\\.org/10\\.1088/",
+  # templates and placeholders in snippets
+  "%s",
+  "%d",
+  "\\{",
+  "%7B",
   "<your-",
 ]

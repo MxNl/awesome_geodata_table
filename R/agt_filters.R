@@ -31,7 +31,7 @@ multi_select <- function(column, label, choices, labels = NULL, groups = NULL) {
 #'
 #' @param data Output of `read_metadata()`.
 #' @param schema Output of `read_schema()`.
-agt_filters <- function(data, schema) {
+agt_filters <- function(data, schema, dictionary = read_dictionary()) {
   all_tags <- sort(unique(unlist(purrr::map(data$tags, split_tags))))
   temporal <- vocab_labels(schema, "temporal_resolution")
   temporal <- temporal[names(temporal) != "static"]
@@ -44,7 +44,8 @@ agt_filters <- function(data, schema) {
     spatialMin = max(1, spatial_range[1]),
     spatialMax = spatial_range[2],
     yearMin = year_range[1],
-    yearMax = year_range[2]
+    yearMax = year_range[2],
+    dictionary = purrr::map(dictionary_terms(dictionary), I)  # I(): keep 1-term concepts as arrays
   )
 
   variables <- schema$vocabularies$variable
@@ -89,6 +90,7 @@ agt_filters <- function(data, schema) {
       multi_select("name", "Dataset", sort(unique(data$name))),
       multi_select("variable", "Variable", variable_keys, labels = vocab_labels(schema, "variable"), groups = variable_groups),
       multi_select("parameter", "Parameter", sort(unique(data$parameter))),
+      multi_select("publisher_label", "Publisher", sort(unique(dplyr::coalesce(data$publisher_short, data$publisher)))),
       multi_select("tags", "Tags", all_tags),
       multi_select("domain", "Domain", present_in_order(vocab_keys(schema, "domain"), data$domain)),
       multi_select("coverage_spatial", "Spatial coverage", present_in_order(vocab_keys(schema, "coverage_spatial"), data$coverage_spatial)),

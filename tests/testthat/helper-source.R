@@ -11,6 +11,7 @@ fixture_datasets <- function() {
     id = c("ds-a", "ds-b"),
     name = c("Dataset A", "Dataset B"),
     domain = c("Soil", "Hydrology"),
+    publisher = c("Institute A", "Agency B"),
     coverage_spatial = c("Global", "Europe"),
     tags = c("soil; texture", "river"),
     res_spatial_finest_m = c("250", "1000"),

@@ -147,7 +147,7 @@ assert_valid_metadata <- function(datasets, parameters, schema, snippet_dir = NU
 
 #' Columns a preset / shared link may filter on (see assets/agt.js)
 PRESET_MULTI_KEYS <- c(
-  "name", "parameter", "variable", "tags", "domain", "coverage_spatial",
+  "name", "parameter", "variable", "publisher_label", "tags", "domain", "coverage_spatial",
   "access", "license_class", "data_type"
 )
 PRESET_SCALAR_KEYS <- c("q", "spatial", "temporal", "static", "from", "to", "undated", "lat", "lon", "group")
@@ -169,6 +169,7 @@ validate_preset_query <- function(query, schema, datasets, parameters) {
       variable = vocab_keys(schema, "variable"),
       tags = unique(unlist(purrr::map(c(datasets$tags, parameters$tags), split_tags))),
       name = datasets$name,
+      publisher_label = dplyr::coalesce(datasets$publisher_short, datasets$publisher),
       parameter = parameters$parameter,
       vocab_keys(schema, schema$datasets[[key]]$vocab)
     )
@@ -177,5 +178,28 @@ validate_preset_query <- function(query, schema, datasets, parameters) {
       problems <- c(problems, paste0("unknown value(s) for '", key, "': ", paste(unknown, collapse = ", ")))
     }
   }
+  problems
+}
+
+#' Problems of the search dictionary (character vector, empty when valid)
+validate_dictionary <- function(dictionary) {
+  problems <- character()
+  for (i in seq_along(dictionary)) {
+    concept <- dictionary[[i]]
+    if (length(concept$en) == 0 || length(concept$de) == 0) {
+      problems <- c(problems, sprintf("concept %d needs English and German terms", i))
+    }
+  }
+  terms <- dictionary_terms(dictionary)
+  owner <- rep(seq_along(terms), lengths(terms))
+  flat <- unlist(terms)
+  dup <- unique(flat[duplicated(flat)])
+  for (term in dup) {
+    problems <- c(problems, sprintf(
+      "term '%s' belongs to several concepts (%s)", term, paste(unique(owner[flat == term]), collapse = ", ")
+    ))
+  }
+  empty <- flat[flat == ""]
+  if (length(empty) > 0) problems <- c(problems, "empty term after normalisation")
   problems
 }

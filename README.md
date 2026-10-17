@@ -15,9 +15,12 @@ The table only collects metadata and links to the data providers; it does not ho
 ## Using the table
 
 - **Quick start** chips (*Recharge modelling*, *Aquifer properties*, *Climate forcing*, *ML predictors*,
-  *Groundwater monitoring*, *Germany*) apply a ready-made search; click again to clear it.
+  *Groundwater monitoring*, *Crop types*, *Germany*) apply a ready-made search; click again to clear it.
 - **Search** matches every word you type against parameter, dataset, variable, tags, domain and publisher.
-  English and German synonyms work too (e.g. *ET*, *Grundwasserneubildung*).
+  English and German give **the same results**: a bilingual dictionary maps both to one concept
+  (*Niederschlag* = *precipitation*, *Grundwasserstände* = *groundwater levels*, *DWD* = *Deutscher Wetterdienst*).
+  Case, umlauts (*Dürre* = *Duerre*) and inflections are ignored; words outside the dictionary match literally.
+- **Publisher** shows the institution behind each dataset; the Publisher filter lists all datasets of one institution.
 - **Variable** puts comparable parameters of different datasets side by side, e.g. every precipitation product.
 - **Filters** combine with AND; several values within one filter combine with OR.
   Clearing a filter or pressing **Reset** always brings back every row.
@@ -45,7 +48,8 @@ The table only collects metadata and links to the data providers; it does not ho
 |---|---|---|
 | [`metadata/datasets.csv`](metadata/datasets.csv) | dataset | id, name, domain, resolution, coverage, access, license, links … |
 | [`metadata/parameters.csv`](metadata/parameters.csv) | parameter | `dataset_id`, `parameter`, `unit`, `variable` + optional overrides |
-| [`metadata/schema.yaml`](metadata/schema.yaml) | – | field types, vocabularies (incl. standard variables and synonyms), regions, quick-start presets |
+| [`metadata/schema.yaml`](metadata/schema.yaml) | – | field types, vocabularies (incl. standard variables), regions, quick-start presets |
+| [`metadata/dictionary.yaml`](metadata/dictionary.yaml) | search concept | English and German terms that return the same search results |
 | [`metadata/snippets/`](metadata/snippets) | dataset | optional `<id>.R` / `<id>.py` access examples shown in the row details |
 
 - Any column of `datasets.csv` may also appear in `parameters.csv`. A filled value
@@ -59,6 +63,9 @@ The table only collects metadata and links to the data providers; it does not ho
 - Tags are lower case and separated by `;`.
 - `variable` assigns each parameter to a standard variable from the schema, so it can be compared across datasets.
 - `license_class` is `open`, `non-commercial`, `custom terms` or `unknown`.
+- `publisher` is the institution that maintains the data (not the journal of the paper);
+  `publisher_short` (e.g. *JRC*, *DWD*) is shown in the Publisher column.
+- New words in names or tags? Add English and German terms to `dictionary.yaml` so both languages find them.
 - The study-area filter uses `bbox_west/south/east/north` (degrees). Leave them empty when the extent equals the
   region in `coverage_spatial` (boxes in `schema.yaml` → `regions`).
 - Set `last_verified` (YYYY-MM-DD) whenever you check an entry against the provider's page.
@@ -66,9 +73,14 @@ The table only collects metadata and links to the data providers; it does not ho
 
 ### Link check
 
-A weekly workflow checks every download, documentation and DOI link with
-[lychee](https://github.com/lycheeverse/lychee) and collects broken ones in the issue *Broken dataset links*.
-Hosts that block automated requests are excluded in [`lychee.toml`](lychee.toml).
+A weekly workflow extracts every download, documentation and DOI link
+([`tests/extract_links.py`](tests/extract_links.py)), checks them with
+[lychee](https://github.com/lycheeverse/lychee) and keeps one issue labelled *broken links* up to date;
+the issue is closed automatically when all links work again. Publishers that block automated
+requests (HTTP 403) count as working; hosts that cannot be checked at all are excluded in [`lychee.toml`](lychee.toml).
+
+For a closer look, `node tests/e2e/linkcheck.js` opens every link in a real browser and also reports
+"soft 404s" – pages that load but say *not found* or redirect to a home or news page.
 
 ## Building locally
 
