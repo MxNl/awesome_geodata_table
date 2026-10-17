@@ -65,8 +65,28 @@
   const MAX_PHRASE = Math.max(1, ...Array.from(termConcept.keys()).map((t) => t.split(' ').length));
   // single-word terms that may prefix a typed word (inflections, compounds), longest first
   const prefixTerms = Array.from(termConcept.keys())
-    .filter((t) => t.length >= 6 && !t.includes(' '))
+    .filter((t) => t.length >= 5 && !t.includes(' '))
     .sort((a, b) => b.length - a.length);
+  // filler words ("und", "for", "Daten") and data suffixes ("Klimadaten" -> "klima")
+  const IGNORE = new Set([].concat(cfg.searchIgnore || []));
+  const SUFFIXES = [].concat(cfg.searchSuffixes || []).sort((a, b) => b.length - a.length);
+
+  const conceptGroup = (c) => ({ concept: c, terms: DICT[c] });
+
+  // a single word -> concept index (exact, prefix, or after removing a data suffix)
+  function wordConcept(word) {
+    if (termConcept.has(word)) return termConcept.get(word);
+    const prefix = prefixTerms.find((t) => word.startsWith(t));
+    if (prefix) return termConcept.get(prefix);
+    const suffix = SUFFIXES.find((s) => word.endsWith(s) && word.length - s.length >= 4);
+    if (suffix) {
+      const stem = word.slice(0, -suffix.length);
+      if (termConcept.has(stem)) return termConcept.get(stem);
+      const stemPrefix = prefixTerms.find((t) => stem.startsWith(t));
+      if (stemPrefix) return termConcept.get(stemPrefix);
+    }
+    return null;
+  }
 
   // query -> groups; a group is {concept, terms} (any term may match) or {literal}
   function parseQuery(query) {
@@ -74,25 +94,21 @@
     const groups = [];
     let i = 0;
     while (i < words.length) {
+      // longest dictionary phrase first ("soil moisture", "digitales gelaendemodell")
       let n = Math.min(MAX_PHRASE, words.length - i);
       for (; n >= 1; n--) {
         const phrase = words.slice(i, i + n).join(' ');
         if (termConcept.has(phrase)) {
-          const c = termConcept.get(phrase);
-          groups.push({ concept: c, terms: DICT[c] });
+          groups.push(conceptGroup(termConcept.get(phrase)));
           break;
         }
       }
       if (n >= 1) { i += n; continue; }
       const word = words[i];
-      const prefix = prefixTerms.find((t) => word.startsWith(t));
-      if (prefix) {
-        const c = termConcept.get(prefix);
-        groups.push({ concept: c, terms: DICT[c] });
-      } else {
-        groups.push({ literal: word });
-      }
       i++;
+      if (IGNORE.has(word)) continue;
+      const c = wordConcept(word);
+      groups.push(c == null ? { literal: word } : conceptGroup(c));
     }
     return groups;
   }
@@ -479,6 +495,19 @@
     const total = tableState.data ? tableState.data.length : rows.length;
     $('agt-count').innerHTML = '<strong>' + rows.length + '</strong> of ' + total +
       ' parameters in <strong>' + datasets + '</strong> datasets';
+    // explain an empty result: which typed words match nothing at all
+    if (rows.length === 0 && state.search) {
+      const all = (tableState.data || []).map((v) => ({ values: v }));
+      const missing = parseQuery(state.search)
+        .filter((g) => search(all, g.literal != null ? g.literal : g.terms[0]).length === 0)
+        .map((g) => g.literal != null ? g.literal : g.terms[0]);
+      if (missing.length) {
+        const hint = document.createElement('span');
+        hint.className = 'agt-search-hint';
+        hint.textContent = ' – no match for “' + missing.join('”, “') + '”';
+        $('agt-count').appendChild(hint);
+      }
+    }
   }
 
   // ---- wiring -----------------------------------------------------------------

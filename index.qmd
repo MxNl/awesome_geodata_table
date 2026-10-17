@@ -17,11 +17,7 @@ format:
           <script src="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.3.1/js/tom-select.complete.min.js"></script>
           <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
           <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-          <link rel="stylesheet" href="assets/agt.css">
           <link rel="icon" type="image/png" href="assets/logo.png">
-    include-after-body:
-      - text: |
-          <script src="assets/agt.js"></script>
 ---
 
 ```{r setup}
@@ -29,6 +25,8 @@ for (f in list.files("R", pattern = "\\.R$", full.names = TRUE)) source(f)
 schema <- read_schema("metadata")
 agt_data <- read_metadata("metadata")
 n_datasets <- dplyr::n_distinct(agt_data$id)
+# version the own assets by content, so browsers never mix a new page with an old cached script
+asset_url <- function(path) paste0(path, "?v=", substr(unname(tools::md5sum(path)), 1, 10))
 ```
 
 :::: {.column-screen-inset}
@@ -44,8 +42,10 @@ n_datasets <- dplyr::n_distinct(agt_data$id)
 
 ```{r table}
 htmltools::tagList(
+  htmltools::tags$link(rel = "stylesheet", href = asset_url("assets/agt.css")),
   agt_filters(agt_data, schema, read_dictionary("metadata")),
-  agt_table(agt_data, schema)
+  agt_table(agt_data, schema),
+  htmltools::tags$script(src = asset_url("assets/agt.js"))
 )
 ```
 

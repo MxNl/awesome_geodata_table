@@ -164,6 +164,24 @@ const OUT = process.argv[3] || require('os').tmpdir();
   await searchCount('drought');
   check('"drought" finds the Dürremonitor', await page.evaluate(() => Reactable.getState('agt').sortedData.some((r) => r.id === 'ufz-duerremonitor')));
   check('"rain" does not match terrain/drainage', !(await page.evaluate(() => AGT_search(Reactable.getState('agt').data.map((v) => ({ values: v })), 'rain').some((r) => /terrain|drainage/i.test(r.values.parameter)))));
+  // natural German phrasings: compounds, filler words – same rows as the English phrase
+  const phrasePairs = [
+    ['Klimadaten', 'climate data'], ['Bodendaten', 'soil data'], ['Höhendaten', 'elevation data'],
+    ['Daten Grundwasser', 'groundwater'], ['Grundwasser für Deutschland', 'groundwater for Germany'],
+    ['Verdunstung und Niederschlag', 'evapotranspiration and precipitation'], ['Wasserstand', 'water level'],
+    ['Niederschlagsdaten', 'precipitation data'], ['Geologische Karte', 'geological map']
+  ];
+  const phraseResults = await page.evaluate((pairs) => {
+    const data = Reactable.getState('agt').data.map((v) => ({ values: v }));
+    const keys = (q) => AGT_search(data, q).map((r) => r.values.row_key).sort().join('|');
+    return pairs.map(([de, en]) => [de, en, AGT_search(data, de).length, keys(de) === keys(en)]);
+  }, phrasePairs);
+  const badPhrases = phraseResults.filter(([, , n, same]) => n === 0 || !same).map(([de, en, n]) => `${de}/${en} (${n})`);
+  check('German phrases find the same rows as English ones', badPhrases.length === 0, badPhrases.join('; '));
+  await page.fill('#agt-search', 'Grundwasser xyzunbekannt');
+  await count();
+  check('empty result names the unmatched word', /no match for “xyzunbekannt”/.test(await page.textContent('#agt-count')));
+
   await page.fill('#agt-search', '');
   check('cleared dictionary search restores all rows', (await count()) === total);
 

@@ -12,6 +12,15 @@
 #   - a typed word that starts with a term of 6+ characters maps to that concept,
 #     so inflections and compounds work ("Grundwasserstände" → groundwater level)
 #   - a term may belong to one concept only (checked by the tests)
+#   - `ignore` words are skipped (fillers like "und", "for", "Daten"), and a
+#     `suffixes` ending is removed from unknown words ("Klimadaten" → "Klima")
+
+- ignore: [and, or, for, of, the, in, on, at, by, with, to, from, a, an, about,
+           data, dataset, datasets, information,
+           und, oder, fuer, für, von, vom, zu, zum, zur, mit, im, am, auf, bei, aus, ueber, über,
+           der, die, das, des, den, ein, eine, einer, eines, einem, einen,
+           daten, datensatz, datensätze, information, informationen]
+- suffixes: [daten, datensatz, datensätze, datensaetze, werte, informationen]
 
 # ---- climate & atmosphere -------------------------------------------------------
 - en: [precipitation, rainfall, rain, snowfall]
@@ -52,8 +61,8 @@
   de: [Bodenfeuchte, Bodenwasser, Bodenwassergehalt, Wurzelzone]
 - en: [runoff, run-off, surface runoff, baseflow, base flow]
   de: [Abfluss, Oberflächenabfluss, Basisabfluss]
-- en: [discharge, river discharge, streamflow, gauge, gauges, stream gauge]
-  de: [Durchfluss, Abflussmenge, Pegel, Pegelmessung, Abflussmessung]
+- en: [discharge, river discharge, streamflow, gauge, gauges, stream gauge, water level, river stage]
+  de: [Durchfluss, Abflussmenge, Pegel, Pegelmessung, Abflussmessung, Wasserstand, Wasserstände, Pegelstand]
 - en: [terrestrial water storage, water storage, tws, grace, satellite gravimetry]
   de: [Wasserspeicherung, terrestrische Wasserspeicherung, Satellitengravimetrie]
 - en: [surface water, water bodies, water body, wetlands, wetland]

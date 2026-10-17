@@ -37,7 +37,9 @@ test_that("the dictionary reaches the page with every concept as an array", {
   html <- as.character(agt_filters(data, schema, read_dictionary(metadata_dir)))
   json <- regmatches(html, regexpr('(?s)id="agt-config" type="application/json">\\K.*?(?=<)', html, perl = TRUE))
   config <- jsonlite::fromJSON(json, simplifyVector = FALSE)
-  expect_length(config$dictionary, length(read_dictionary(metadata_dir)))
+  expect_length(config$dictionary, length(dictionary_concepts(read_dictionary(metadata_dir))))
+  expect_true("daten" %in% unlist(config$searchIgnore))
+  expect_true("daten" %in% unlist(config$searchSuffixes))
   expect_true(all(vapply(config$dictionary, is.list, logical(1))))
 })
 
