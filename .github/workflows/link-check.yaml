@@ -1,5 +1,6 @@
-# Weekly check of all dataset links (download, documentation, snippets).
-# Broken links are collected in one issue ("Broken dataset links").
+# Weekly check of all dataset links (download, documentation, DOI, snippets).
+# Problems are reported in ONE issue labelled "broken links", which is updated
+# on every failing run and closed automatically when all links work again.
 name: link-check
 
 on:
@@ -17,20 +18,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # one URL per line; lychee would otherwise read the CSV as plain text and
+      # glue neighbouring fields into one "URL"
+      - name: Extract links
+        run: python3 tests/extract_links.py metadata/datasets.csv > links.txt
+
       - name: Check links
         id: lychee
         uses: lycheeverse/lychee-action@v2
         with:
           args: >-
             --config lychee.toml
-            metadata/datasets.csv metadata/snippets/
+            links.txt 'metadata/snippets/*'
           output: lychee-report.md
           fail: false
 
-      - name: Open or update issue
-        if: steps.lychee.outputs.exit_code != 0
-        uses: peter-evans/create-issue-from-file@v5
-        with:
-          title: Broken dataset links
-          content-filepath: lychee-report.md
-          labels: broken links
+      - name: Update the "broken links" issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EXIT_CODE: ${{ steps.lychee.outputs.exit_code }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          gh label create "broken links" --color B60205 --force >/dev/null
+          issue=$(gh issue list --label "broken links" --state open --json number --jq '.[0].number // empty')
+          if [ "$EXIT_CODE" != "0" ]; then
+            printf '\n\n_Updated by [link-check run](%s). Links are tested again every Monday._\n' "$RUN_URL" >> lychee-report.md
+            if [ -n "$issue" ]; then
+              gh issue edit "$issue" --body-file lychee-report.md
+            else
+              gh issue create --title "Broken dataset links" --label "broken links" --body-file lychee-report.md
+            fi
+          elif [ -n "$issue" ]; then
+            gh issue close "$issue" --comment "All dataset links work again ([run]($RUN_URL))."
+          fi
