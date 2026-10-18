@@ -20,6 +20,9 @@ The table only collects metadata and links to the data providers; it does not ho
   English and German give **the same results**: a bilingual dictionary maps both to one concept
   (*Niederschlag* = *precipitation*, *Grundwasserstände* = *groundwater levels*, *DWD* = *Deutscher Wetterdienst*).
   Case, umlauts (*Dürre* = *Duerre*) and inflections are ignored; words outside the dictionary match literally.
+  Results are parameter-specific: *precipitation* lists the precipitation parameters of ERA5, not its wind or
+  temperature parameters; dataset-wide words (*ERA5*, *DWD*, *Germany*) list all parameters of a dataset.
+  The type-ahead of the filter dropdowns uses the same bilingual matching.
 - **Publisher** shows the institution behind each dataset; the Publisher filter lists all datasets of one institution.
 - **Variable** puts comparable parameters of different datasets side by side, e.g. every precipitation product.
 - **Filters** combine with AND; several values within one filter combine with OR.

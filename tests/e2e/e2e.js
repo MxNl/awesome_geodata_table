@@ -178,6 +178,33 @@ const OUT = process.argv[3] || require('os').tmpdir();
   }, phrasePairs);
   const badPhrases = phraseResults.filter(([, , n, same]) => n === 0 || !same).map(([de, en, n]) => `${de}/${en} (${n})`);
   check('German phrases find the same rows as English ones', badPhrases.length === 0, badPhrases.join('; '));
+  // relevance: parameter matches win over dataset-wide matches (tags, names)
+  const relevance = await page.evaluate(() => {
+    const data = Reactable.getState('agt').data.map((v) => ({ values: v }));
+    const precip = AGT_search(data, 'Niederschlag');
+    const era5All = data.filter((r) => r.values.id === 'era5').length;
+    return {
+      offTopic: precip.filter((r) => ['air_temperature', 'wind', 'radiation', 'humidity'].includes(r.values.variable)).map((r) => r.values.id + ': ' + r.values.parameter),
+      era5: [AGT_search(data, 'ERA5').filter((r) => r.values.id === 'era5').length, era5All],
+      dwd: AGT_search(data, 'Deutscher Wetterdienst').length === data.filter((r) => r.values.publisher_label === 'DWD').length
+    };
+  });
+  check('search "Niederschlag" shows no temperature/wind/radiation rows', relevance.offTopic.length === 0, relevance.offTopic.slice(0, 4).join('; '));
+  check('dataset-wide search ("ERA5") still lists all its parameters', relevance.era5[0] === relevance.era5[1], relevance.era5.join(' of '));
+  check('publisher search lists all parameters of the publisher', relevance.dwd);
+  // dictionary-aware option search in the filter dropdowns
+  const dropdown = async (q) => {
+    await page.click('#agt-f-parameter-ts-control');
+    await page.keyboard.type(q);
+    await page.waitForTimeout(400);
+    const opts = await page.$$eval('#agt-f-parameter-ts-dropdown .option', (o) => o.map((x) => x.textContent).sort().join('|'));
+    await page.keyboard.press('Escape');
+    await page.fill('#agt-f-parameter-ts-control', '');
+    return opts;
+  };
+  const optDe = await dropdown('Niederschlag');
+  check('parameter dropdown: "Niederschlag" = "precipitation"', optDe.length > 0 && optDe === (await dropdown('precipitation')), optDe.split('|').length);
+
   await page.fill('#agt-search', 'Grundwasser xyzunbekannt');
   await count();
   check('empty result names the unmatched word', /no match for “xyzunbekannt”/.test(await page.textContent('#agt-count')));
