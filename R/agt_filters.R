@@ -45,7 +45,9 @@ agt_filters <- function(data, schema, dictionary = read_dictionary()) {
     spatialMax = spatial_range[2],
     yearMin = year_range[1],
     yearMax = year_range[2],
-    dictionary = purrr::map(dictionary_terms(dictionary), I)  # I(): keep 1-term concepts as arrays
+    dictionary = purrr::map(dictionary_terms(dictionary), I),  # I(): keep 1-term concepts as arrays
+    searchIgnore = I(dictionary_words(dictionary, "ignore")),
+    searchSuffixes = I(dictionary_words(dictionary, "suffixes"))
   )
 
   variables <- schema$vocabularies$variable

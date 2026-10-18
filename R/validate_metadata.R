@@ -184,13 +184,18 @@ validate_preset_query <- function(query, schema, datasets, parameters) {
 #' Problems of the search dictionary (character vector, empty when valid)
 validate_dictionary <- function(dictionary) {
   problems <- character()
-  for (i in seq_along(dictionary)) {
-    concept <- dictionary[[i]]
+  concepts <- dictionary_concepts(dictionary)
+  for (i in seq_along(concepts)) {
+    concept <- concepts[[i]]
     if (length(concept$en) == 0 || length(concept$de) == 0) {
       problems <- c(problems, sprintf("concept %d needs English and German terms", i))
     }
   }
   terms <- dictionary_terms(dictionary)
+  # an ignored filler word must not be a search term at the same time
+  for (word in intersect(dictionary_words(dictionary, "ignore"), unlist(terms))) {
+    problems <- c(problems, sprintf("'%s' is both ignored and a dictionary term", word))
+  }
   owner <- rep(seq_along(terms), lengths(terms))
   flat <- unlist(terms)
   dup <- unique(flat[duplicated(flat)])

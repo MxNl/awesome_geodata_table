@@ -27,7 +27,18 @@ read_dictionary <- function(dir = "metadata") {
 
 #' Dictionary as a list of normalised term vectors (one per concept), for the JS search
 dictionary_terms <- function(dictionary) {
-  purrr::map(dictionary, \(concept) unique(stringr::str_trim(normalise_text(c(concept$en, concept$de)))))
+  purrr::map(dictionary_concepts(dictionary), \(concept) unique(stringr::str_trim(normalise_text(c(concept$en, concept$de)))))
+}
+
+#' Concept entries of the dictionary (entries with `en`/`de` terms)
+dictionary_concepts <- function(dictionary) {
+  purrr::keep(dictionary, \(entry) !is.null(entry$en) || !is.null(entry$de))
+}
+
+#' Normalised words of a special dictionary entry (`ignore` or `suffixes`)
+dictionary_words <- function(dictionary, key) {
+  words <- unlist(purrr::map(dictionary, key))
+  unique(stringr::str_trim(normalise_text(words)))
 }
 
 #' Read a metadata CSV with every column as character
