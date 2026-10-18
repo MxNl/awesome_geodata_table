@@ -182,6 +182,9 @@ agt_table <- function(data, schema) {
         name, parameter, variable_label, tags, domain, publisher, publisher_short,
         coverage_spatial, comment, id
       )),
+      # the row's own parameter: matches here take precedence over dataset-wide
+      # matches (tags, name, ...) of the same dataset, see AGT_search
+      search_param = normalise_text(paste(parameter, variable_label, unit)),
       # short institution name for the Publisher column and filter
       publisher_label = dplyr::coalesce(publisher_short, publisher),
       links = download_url,

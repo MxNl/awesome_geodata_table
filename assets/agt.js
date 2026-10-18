@@ -116,13 +116,47 @@
   // terms match at word starts; short terms (ET, DEM, DWD) only as whole words
   const termIn = (text, t) => t.length <= 3 ? text.includes(' ' + t + ' ') : text.includes(' ' + t);
 
+  const groupIn = (text, g) => g.literal != null ? text.includes(g.literal) : g.terms.some((t) => termIn(text, t));
+
+  // Relevance:
+  // 1. a dataset qualifies when every search word matches somewhere in it –
+  //    in one of its parameters or in its dataset-wide text (name, tags, publisher …)
+  // 2. within a qualifying dataset only the parameters that match at least one
+  //    search word themselves (name, variable, unit) are shown; if no parameter
+  //    matches any word, all its parameters are shown.
+  // So "precipitation" lists the precipitation rows of ERA5 (not its wind rows),
+  // "ERA5" or "DWD" list everything, and "Verdunstung und Niederschlag" lists
+  // the evaporation and precipitation rows of datasets that offer both.
   function search(rows, query) {
     const groups = parseQuery(query);
     if (groups.length === 0) return rows;
-    return rows.filter((row) => {
-      const text = row.values.search_text || '';
-      return groups.every((g) => g.literal != null ? text.includes(g.literal) : g.terms.some((t) => termIn(text, t)));
+    const paramHit = rows.map((r) => groups.map((g) => groupIn(r.values.search_param || '', g)));
+    const datasets = new Map();   // id -> {matched: Set(group), paramMatched: bool}
+    rows.forEach((r, i) => {
+      const d = datasets.get(r.values.id) || { matched: new Set(), paramMatched: false };
+      groups.forEach((g, k) => {
+        if (paramHit[i][k]) { d.matched.add(k); d.paramMatched = true; }
+        else if (groupIn(r.values.search_text || '', g)) d.matched.add(k);
+      });
+      datasets.set(r.values.id, d);
     });
+    return rows.filter((r, i) => {
+      const d = datasets.get(r.values.id);
+      if (d.matched.size < groups.length) return false;
+      return !d.paramMatched || paramHit[i].some(Boolean);
+    });
+  }
+
+  // option search of the filter dropdowns with the same bilingual matching
+  function optionScorer(extraText) {
+    return function (query) {
+      const groups = parseQuery(query);
+      if (groups.length === 0) return () => 1;
+      return (item) => {
+        const text = ' ' + normalise(item.text + ' ' + (extraText.get(item.value) || '')) + ' ';
+        return groups.every((g) => groupIn(text, g)) ? 1 : 0;
+      };
+    };
   }
   window.AGT_search = search;
   window.AGT_parseQuery = parseQuery;
@@ -512,12 +546,25 @@
 
   // ---- wiring -----------------------------------------------------------------
   function init() {
+    // extra search text per option: parameters are also found by their variable
+    // ("Niederschlag" -> every precipitation parameter), datasets by publisher
+    const rowsData = Reactable.getState(TABLE).data || [];
+    const extraFor = (column) => {
+      const extra = new Map();
+      const add = (key, text) => { if (key != null && text) extra.set(key, (extra.get(key) || '') + ' ' + text); };
+      rowsData.forEach((r) => {
+        if (column === 'parameter') add(r.parameter, r.variable_label);
+        if (column === 'name') add(r.name, r.publisher_label + ' ' + r.publisher);
+      });
+      return extra;
+    };
     multiSelects.forEach((el) => {
       if (window.TomSelect) {
         new TomSelect(el, {
           plugins: ['remove_button'],
           maxOptions: null,
           hidePlaceholder: true,
+          score: optionScorer(extraFor(el.dataset.filter)),
           onChange: () => { readControls(); apply(); }
         });
       } else {
